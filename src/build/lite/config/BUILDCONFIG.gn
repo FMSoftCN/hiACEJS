@@ -16,7 +16,6 @@ if (target_os == "hybridos") {
     "//build/lite/config:hybridos",
     "//build/lite/config:language_c",
     "//build/lite/config:language_cpp",
-    "//build/lite/config:kernel_macros",
   ]
 }
 

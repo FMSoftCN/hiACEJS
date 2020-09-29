@@ -3,5 +3,5 @@
 #
 
 declare_args() {
-  hybridos_build_type = getenv("HYBRIDOS_BUILD_TYPE")
+  hybridos_build_type = "debug"
 }

@@ -3,5 +3,7 @@
 #
 
 group("all") {
-  deps = []
+  deps = [
+    "//foundation/ace/frameworks/lite:ace_lite",
+  ]
 }

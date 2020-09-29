@@ -1,25 +1,7 @@
-#Copyright (c) 2020 Huawei Device Co., Ltd.
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-#Unless required by applicable law or agreed to in writing, software
-#distributed under the License is distributed on an "AS IS" BASIS,
-#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#See the License for the specific language governing permissions and
-#limitations under the License.
-
-import("//build/lite/config/component/lite_component.gni")
-import("//build/lite/config/subsystem/aafwk/config.gni")
+#Copyright (c) 2020 FMSoft.
 
 declare_args() {
   LOSCFG_TEST_JS_BUILD = false
-}
-
-lite_component("jsfwk") {
-  features = [ ":ace_lite" ]
 }
 
 config("ace_lite_config") {
@@ -79,18 +61,13 @@ config("ace_lite_config") {
     "//utils/native/lite/timer_task/include/",
     "//third_party/freetype/include",
   ]
-  if (ohos_kernel_type == "liteos_a" || ohos_kernel_type == "liteos_m" ||
-      ohos_kernel_type == "liteos_riscv") {
-    include_dirs += [ "targets/liteos_a" ]
-  } else if (ohos_kernel_type == "linux") {
+  if (target_os == "hybridos") {
     include_dirs += [
-        "targets/linux",
+      "targets/hybridos",
     ]
   }
 
-  ldflags = ["-lstdc++"]
-  ldflags += ["-lpthread"]
-  ldflags += ["-Wl,-rpath-link=$ohos_root_path/$root_out_dir"]
+  ldflags = [ "-lpthread" ]
 }
 
 shared_library("ace_lite") {
@@ -197,15 +174,12 @@ shared_library("ace_lite") {
     "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
     "//utils/native/lite/js/builtin:ace_utils_kits",
     "//utils/native/lite/timer_task:ace_kit_timer",
-    "//foundation/multimedia/frameworks/camera_lite:camera",
-    "//foundation/multimedia/frameworks/player_lite:player",
-    "//foundation/multimedia/interfaces/kits/player_lite/js/builtin:audio_api",
     "//foundation/graphic/lite/frameworks/surface:surface",
   ]
 
   defines = []
 
-  if (ohos_build_type == "debug") {
+  if (hybridos_build_type == "debug") {
     defines += [
       "JS_PROFILER=1"
     ]
@@ -219,11 +193,5 @@ shared_library("ace_lite") {
     defines += [
       "JSFWK_TEST"
     ]
-  }
-
-  if (enable_ohos_appexecfwk_feature_ability == true) {
-      defines += [
-          "ABILITY_WINDOW_SUPPORT"
-      ]
   }
 }
