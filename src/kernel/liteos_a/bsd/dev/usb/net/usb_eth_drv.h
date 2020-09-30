@@ -1,1 +1,0 @@
-../../../../../../third_party/FreeBSD/sys/dev/usb/net/usb_eth_drv.h
