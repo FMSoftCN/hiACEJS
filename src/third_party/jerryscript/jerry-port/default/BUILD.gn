@@ -1,0 +1,24 @@
+# Copyright (c) 2020 FMSoft.
+
+import("//third_party/jerryscript/engine.gni")
+
+group("jerry-port-default") {
+  deps = [
+    ":jerry-port-default_shared",
+  ]
+}
+
+shared_library("jerry-port-default_shared") {
+  sources = [
+    "default-date.c",
+    "default-debugger.c",
+    "default-external-context.c",
+    "default-fatal.c",
+    "default-io.c",
+    "default-module.c",
+  ]
+  include_dirs = [
+    "include",
+    "${core_path}/include",
+  ]
+}

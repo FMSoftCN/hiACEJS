@@ -1,0 +1,13 @@
+# Copyright (c) 2020 FMSoft.
+
+shared_library("kal_timer") {
+  sources = [
+    "src/kal.c",
+  ]
+  cflags = ["-Wall"]
+
+  include_dirs = [
+    "include",
+    "//utils/native/lite/include",
+  ]
+}

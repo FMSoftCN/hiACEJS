@@ -1,0 +1,96 @@
+# Copyright (c) 2020 FMSoft.
+
+# Common build options.
+config("common") {
+  defines = [ "_XOPEN_SOURCE=700" ]
+  cflags = [
+    "-fno-strict-aliasing",
+    "-fsigned-char",
+  ]
+}
+
+# Build options of c/cpp.
+config("language_c") {
+  cflags_c = [
+    "-std=c99"
+  ]
+}
+
+config("language_cpp") {
+  cflags_cc = [
+    "-std=c++11"
+  ]
+}
+
+# Any error causes build abort.
+config("werror") {
+  cflags = [
+    "-Werror"
+  ]
+}
+
+# Build options of exceptions.
+config("exceptions") {
+  cflags_cc = [ "-fexceptions" ]
+  cflags_objcc = cflags_cc
+  ldflags = cflags_cc
+}
+
+config("no_exceptions") {
+  cflags_cc = [ "-fno-exceptions" ]
+  cflags_objcc = cflags_cc
+  ldflags = cflags_cc
+}
+
+# Build shared library.
+config("shared_library_config") {
+  cflags = [ "-fPIC" ]
+}
+
+# Build executable and static.
+config("executable_pie_config") {
+  ldflags = [ "-pie" ]
+}
+
+config("static_pie_config") {
+  cflags = [ "-fPIE" ]
+}
+
+# Build debug or release.
+config("debug") {
+  cflags = [
+    "-O1",
+    "-fno-lto"
+  ]
+}
+
+config("release") {
+  cflags = [
+    "-Oz",
+    "-flto"
+  ]
+}
+
+config("default_link_path") {
+  out_dir = rebase_path(root_build_dir)
+  ldflags = [
+    "-L${out_dir}",
+    "-Wl,-rpath-link=${out_dir}"
+  ]
+}
+
+config("hybridos") {
+  configs = [
+    ":common",
+    ":werror",
+    ":exceptions",
+    ":default_link_path"
+  ]
+
+  if (hybridos_build_type == "debug") {
+    configs += [ ":debug" ]
+  } else if (hybridos_build_type == "release") {
+    configs += [ ":release" ]
+  }
+}
+

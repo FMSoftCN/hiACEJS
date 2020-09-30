@@ -1,0 +1,14 @@
+# Copyright (c) 2020 FMSoft.
+
+import("//build/lite/toolchain/gcc.gni")
+
+gcc_toolchain("linux_x64_gcc") {
+  cc = "gcc"
+  cxx = "g++"
+  ar = "ar"
+  ld = cc
+  if (hybridos_build_type == "release") {
+    strip = "strip --strip-unneeded"
+  }
+}
+

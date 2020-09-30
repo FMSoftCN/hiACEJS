@@ -1,0 +1,49 @@
+# Copyright (c) 2020 FMSoft.
+
+shared_library("surface") {
+  sources = [
+    "src/buffer_manager.cpp",
+    "src/buffer_queue_consumer.cpp",
+    "src/buffer_queue_producer.cpp",
+    "src/buffer_queue.cpp",
+    "src/surface_buffer_impl.cpp",
+    "src/surface_impl.cpp",
+    "src/surface.cpp"
+  ]
+  public_configs = [ ":surface_external_library_config" ]
+  include_dirs = [
+    "//kernel/liteos_a/kernel/include/",
+    "//kernel/liteos_a/kernel/common",
+    "//third_party/bounds_checking_function/include",
+    "//drivers/hdf/lite/hdi/display/include",
+    "//foundation/graphic/lite/interfaces/kits/utils",
+    "//foundation/graphic/lite/interfaces/kits/config",
+  ]
+  cflags = [
+    "-fPIC",
+    "-Wall",
+  ]
+  public_deps = [
+  ]
+  if (target_os == "linux") {
+    cflags += [ "-D_SURFACE_LINUX_" ]
+  }
+  ldflags = ["-ldisplay_gralloc"]
+  deps = [
+    "//third_party/bounds_checking_function:libsec_shared"
+  ]
+}
+
+config("surface_external_library_config") {
+  include_dirs = [
+    "//foundation/graphic/lite/interfaces/kits/surface",
+    "include",
+    "//drivers/hdf/lite/hdi/display/include"
+  ]
+}
+
+group("litesurface") {
+  deps = [
+    ":surface",
+  ]
+}

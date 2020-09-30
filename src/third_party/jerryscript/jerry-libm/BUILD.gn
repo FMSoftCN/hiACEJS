@@ -1,0 +1,35 @@
+# Copyright (c) 2020 FMSoft.
+
+import("//third_party/jerryscript/engine.gni")
+
+group("jerry-libm") {
+  deps = [
+    ":jerry-libm_shared",
+  ]
+}
+
+shared_library("jerry-libm_shared") {
+  sources = [
+    "acos.c",
+    "asin.c",
+    "atan.c",
+    "atan2.c",
+    "ceil.c",
+    "copysign.c",
+    "exp.c",
+    "fabs.c",
+    "finite.c",
+    "floor.c",
+    "fmod.c",
+    "isnan.c",
+    "log.c",
+    "nextafter.c",
+    "pow.c",
+    "scalbn.c",
+    "sqrt.c",
+    "trig.c",
+  ]
+  include_dirs = [
+    "include",
+  ]
+}

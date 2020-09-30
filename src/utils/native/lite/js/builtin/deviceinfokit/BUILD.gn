@@ -1,0 +1,21 @@
+# Copyright (c) 2020 FMSoft.
+
+shared_library("ace_kit_deviceinfo") {
+  sources = [
+    "src/nativeapi_deviceinfo.cpp",
+  ]
+  cflags = ["-Wall"]
+  ldflags = [ "-shared" ]
+
+  include_dirs = [
+    "include",
+    "../common/include",
+    "//base/startup/interfaces/kits/syspara_lite",
+    "//foundation/ace/interfaces/innerkits/builtin",
+    "//foundation/ace/interfaces/innerkits/builtin/base",
+    "//foundation/ace/interfaces/innerkits/builtin/async",
+    "//foundation/graphic/lite/interfaces/kits/config",
+    "//foundation/graphic/lite/interfaces/kits/ui/common",
+    "//foundation/graphic/lite/interfaces/kits/utils",
+  ]
+}

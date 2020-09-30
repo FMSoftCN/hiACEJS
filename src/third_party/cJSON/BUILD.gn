@@ -1,0 +1,23 @@
+# Copyright (c) 2020 FMSoft.
+
+config("cjson_config") {
+  include_dirs = [
+    ".",
+  ]
+}
+
+cjson_sources = [
+  "cJSON.c",
+  "cJSON_Utils.c",
+]
+
+static_library("cjson_static") {
+  sources = cjson_sources
+  public_configs = [ ":cjson_config" ]
+}
+
+shared_library("cjson_shared") {
+  sources = cjson_sources
+  public_configs = [ ":cjson_config" ]
+}
+

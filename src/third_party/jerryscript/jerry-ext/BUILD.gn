@@ -1,0 +1,36 @@
+# Copyright (c) 2020 FMSoft.
+
+import("//third_party/jerryscript/engine.gni")
+
+group("jerry-ext") {
+  deps = [ ":jerry-ext_shared" ]
+}
+
+shared_library("jerry-ext_shared") {
+  sources = [
+    "arg/arg-js-iterator-helper.c",
+    "arg/arg-transform-functions.c",
+    "arg/arg.c",
+    "debugger/debugger-common.c",
+    "debugger/debugger-rp.c",
+    "debugger/debugger-serial.c",
+    "debugger/debugger-sha1.c",
+    "debugger/debugger-tcp.c",
+    "debugger/debugger-ws.c",
+    "handle-scope/handle-scope-allocator.c",
+    "handle-scope/handle-scope.c",
+    "handler/handler-assert.c",
+    "handler/handler-gc.c",
+    "handler/handler-print.c",
+    "handler/handler-register.c",
+    "module/module.c",
+  ]
+  include_dirs = [
+    "include",
+    "debugger",
+    "common",
+    "arg",
+    "handle-scope",
+    "${core_path}/include",
+  ]
+}

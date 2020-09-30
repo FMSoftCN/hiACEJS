@@ -1,0 +1,7 @@
+#
+# Copyright(c) 2020 FMSoft.
+#
+
+declare_args() {
+  hybridos_build_type = "debug"
+}

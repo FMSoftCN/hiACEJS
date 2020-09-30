@@ -1,0 +1,22 @@
+# Copyright (c) 2020 FMSoft.
+
+shared_library("cipher_shared") {
+  sources = [
+    "src/cipher_aes.c",
+    "src/cipher_rsa.c",
+  ]
+
+  include_dirs = [
+    "include",
+    "//third_party/mbedtls/include/mbedtls",
+    "//third_party/bounds_checking_function/include",
+  ]
+  deps = [
+    "//third_party/mbedtls:mbedtls_shared",
+    "//third_party/bounds_checking_function:libsec_shared",
+  ]
+
+  cflags = [
+    "-Wall"
+  ]
+}
