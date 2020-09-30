@@ -1,0 +1,14 @@
+# Copyright (c) 2020 FMSoft.
+
+config("hilog_config") {
+  include_dirs = [
+    "//utils/native/lite",
+  ]
+}
+
+group("hilog") {
+  public_configs = [ ":hilog_config" ]
+  public_deps = [
+    "//third_party/bounds_checking_function:libsec_shared",
+  ]
+}

@@ -7,13 +7,14 @@ shared_library("cipher_shared") {
   ]
 
   include_dirs = [
-    "include",
     "//third_party/mbedtls/include/mbedtls",
     "//third_party/bounds_checking_function/include",
+    "include",
   ]
   deps = [
     "//third_party/mbedtls:mbedtls_shared",
     "//third_party/bounds_checking_function:libsec_shared",
+    "//utils/native/lite/hilog:hilog",
   ]
 
   cflags = [

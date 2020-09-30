@@ -81,14 +81,6 @@ shared_library("mbedtls_shared") {
   ]
 }
 
-static_library("mbedtls_static") {
-  sources = mbedtls_sources
-  output_name = "mbedtls"
-  public_configs = [
-    ":mbedtls_config",
-  ]
-}
-
 group("mbedtls") {
   deps = [ ":mbedtls_shared" ]
 }

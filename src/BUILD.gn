@@ -1,6 +1,4 @@
-#
-# Copyright(c) 2020 FMSoft.
-#
+# Copyright (c) 2020 FMSoft.
 
 group("all") {
   deps = [

@@ -10,14 +10,15 @@ shared_library("ace_kit_cipher") {
   ]
 
   include_dirs = [
-    "include",
-    "//third_party/bounds_checking_function/include",
     "//base/security/frameworks/crypto_lite/cipher/include",
     "//foundation/ace/interfaces/innerkits/builtin/jsi",
     "//foundation/ace/interfaces/innerkits/builtin/base",
+    "//third_party/bounds_checking_function/include",
+    "include",
   ]
   deps = [
     "//base/security/frameworks/crypto_lite/cipher:cipher_shared",
     "//third_party/bounds_checking_function:libsec_shared",
+    "//utils/native/lite/hilog:hilog",
   ]
 }

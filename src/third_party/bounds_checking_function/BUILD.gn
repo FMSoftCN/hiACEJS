@@ -48,11 +48,6 @@ libsec_sources = [
   "//third_party/bounds_checking_function/src/vsprintf_s.c",
 ]
 
-static_library("libsec_static") {
-  sources = libsec_sources
-  public_configs = [ ":libsec_config" ]
-}
-
 shared_library("libsec_shared") {
   sources = libsec_sources
   public_configs = [ ":libsec_config" ]

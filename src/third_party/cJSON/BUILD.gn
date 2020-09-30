@@ -11,11 +11,6 @@ cjson_sources = [
   "cJSON_Utils.c",
 ]
 
-static_library("cjson_static") {
-  sources = cjson_sources
-  public_configs = [ ":cjson_config" ]
-}
-
 shared_library("cjson_shared") {
   sources = cjson_sources
   public_configs = [ ":cjson_config" ]
