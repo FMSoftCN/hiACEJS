@@ -3,7 +3,7 @@
  */
 
 #include "cipher_module.h"
-#include "cipher.h"
+#include "hicipher.h"
 #include "hilog/log.h"
 #include "securec.h"
 

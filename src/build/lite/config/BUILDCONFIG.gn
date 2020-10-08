@@ -14,6 +14,7 @@ if (target_os == "hybridos") {
   set_default_toolchain("//build/lite/toolchain:linux_x64_gcc")
   default_target_configs = [
     "//build/lite/config:hybridos",
+    "//build/lite/config:kernel_macros",
     "//build/lite/config:language_c",
     "//build/lite/config:language_cpp",
   ]
