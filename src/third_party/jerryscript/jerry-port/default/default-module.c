@@ -144,7 +144,7 @@ jerry_port_normalize_path (const char *in_path_p,   /**< input file path */
 
   char *base_p = dirname (base_file_p);
   strncpy (path_p, base_p, MAX_JERRY_PATH_SIZE);
-  strncat (path_p, "/", 1);
+  strncat (path_p, "/", 2);
   strncat (path_p, in_path_p, MAX_JERRY_PATH_SIZE);
 
   char *norm_p = realpath (path_p, buffer_p);

@@ -74,6 +74,7 @@ shared_library("ace_lite") {
     "-Wall",
     "-Wno-format",
     "-Wno-format-extra-args",
+    "-Wno-narrowing",
   ]
   cflags_cc = [ "-std=c++14" ]
   cflags_cc += cflags
@@ -173,7 +174,7 @@ shared_library("ace_lite") {
     "//utils/native/lite/hilog:hilog_shared",
     "//utils/native/lite/js/builtin:ace_utils_kits",
     "//utils/native/lite/timer_task:ace_kit_timer",
-    "//foundation/graphic/lite/frameworks/surface:surface",
+    #"//foundation/graphic/lite/frameworks/surface:surface",
   ]
 
   defines = []

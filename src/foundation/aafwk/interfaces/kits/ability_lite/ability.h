@@ -1,16 +1,5 @@
 /*
- * Copyright (c) 2020 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2020 FMSoft.
  */
 
 /**
@@ -45,20 +34,22 @@
 #ifndef OHOS_ABILITY_H
 #define OHOS_ABILITY_H
 
-#ifdef ABILITY_WINDOW_SUPPORT
-#include <components/root_view.h>
-#endif
 #include <string>
+#include <components/root_view.h>
 
-#include "ability_context.h"
-#include "ability_manager.h"
-#include "serializer.h"
+typedef struct {
+    /**
+     * Pointer to the carried data
+     */
+    void *data;
+
+    /**
+     * Data length
+     */
+    uint16_t dataLength;
+} Want;
 
 namespace OHOS {
-#ifdef ABILITY_WINDOW_SUPPORT
-class AbilitySliceManager;
-class AbilityWindow;
-#endif
 
 /**
  * @brief Declares ability-related functions, including ability lifecycle callbacks and functions for connecting to or
@@ -72,7 +63,7 @@ class AbilityWindow;
  * @since 1.0
  * @version 1.0
  */
-class Ability : public AbilityContext {
+class Ability {
 public:
     Ability() = default;
     virtual ~Ability() = default;
@@ -122,16 +113,6 @@ public:
     virtual void OnStop();
 
     /**
-     * @brief Called when this Service ability is connected for the first time.
-     *
-     * You can override this function to implement your own processing logic.
-     *
-     * @param want Indicates the {@link Want} structure containing connection information about the Service ability.
-     * @return Returns a pointer to the <b>sid</b> of the connected Service ability.
-     */
-    virtual const SvcIdentity *OnConnect(const Want &want);
-
-    /**
      * @brief Called when all abilities connected to this Service ability are disconnected.
      *
      * You can override this function to implement your own processing logic.
@@ -141,7 +122,6 @@ public:
      */
     virtual void OnDisconnect(const Want &want);
 
-#ifdef ABILITY_WINDOW_SUPPORT
     /**
      * @brief Sets the main route for this ability.
      *
@@ -160,15 +140,6 @@ public:
      * @param rootView Indicates the pointer to the custom layout view you have created.
      */
     void SetUIContent(RootView *rootView);
-#endif
-    /**
-     * @brief Handles a message sent by the client to this Service ability.
-     *
-     * @param funcId Indicates the type of the message sent by the client.
-     * @param request Indicates the pointer to the serialized request parameters sent by the client.
-     * @param reply Indicates the pointer to the serialized result returned to the client.
-     */
-    virtual void MsgHandle(uint32_t funcId, IpcIo *request, IpcIo *reply);
 
     /**
      * @brief Prints ability information to the console.
@@ -178,6 +149,8 @@ public:
      * @param extra Indicates the extra parameter to be obtained or printed to the console.
      */
     virtual void Dump(const std::string &extra);
+
+    int TerminateAbility();
 
 private:
     typedef enum {
@@ -191,25 +164,11 @@ private:
     void Init(uint64_t token, int abilityType, bool isNativeApp);
     int GetState() const;
     std::string GetDumpInfo() const;
-#ifdef ABILITY_WINDOW_SUPPORT
-    void DispatchAbilityLifecycle(Action action, const Want *want = nullptr);
-#endif
-    static int32_t MsgHandleInner(const IpcContext* context, void *ipcMsg, IpcIo *data, void *arg);
 
-#ifdef ABILITY_WINDOW_SUPPORT
-    AbilitySliceManager *abilitySliceManager_ { nullptr };
-    AbilityWindow *abilityWindow_ { nullptr };
-#endif
     int abilityState_ { 0 };
     int abilityType_ { 0 };
     uint64_t token_ { 0 };
-    SvcIdentity *sid_ { nullptr };
     static const int MAX_OBJECTS = 6;
-
-    friend class AbilityThread;
-#ifdef ABILITY_WINDOW_SUPPORT
-    friend class AbilitySliceManager;
-#endif
 };
 } // namespace OHOS
 #endif // OHOS_ABILITY_H

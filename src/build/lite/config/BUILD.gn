@@ -39,19 +39,18 @@ config("werror") {
 # Build options of exceptions.
 config("exceptions") {
   cflags_cc = [ "-fexceptions" ]
-  cflags_objcc = cflags_cc
   ldflags = cflags_cc
 }
 
 config("no_exceptions") {
   cflags_cc = [ "-fno-exceptions" ]
-  cflags_objcc = cflags_cc
   ldflags = cflags_cc
 }
 
 # Build shared library.
 config("shared_library_config") {
   cflags = [ "-fPIC" ]
+  cflags_cc = cflags
 }
 
 # Build executable and static.
@@ -61,6 +60,7 @@ config("executable_pie_config") {
 
 config("static_pie_config") {
   cflags = [ "-fPIE" ]
+  cflags_cc = cflags
 }
 
 # Build debug or release.
