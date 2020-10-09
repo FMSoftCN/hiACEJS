@@ -6,7 +6,11 @@ config("hilog_config") {
   ]
 }
 
-group("hilog") {
+shared_library("hilog_shared") {
+  sources = [
+    "log.c",
+  ]
+
   public_configs = [ ":hilog_config" ]
   public_deps = [
     "//third_party/bounds_checking_function:libsec_shared",

@@ -14,7 +14,7 @@ shared_library("cipher_shared") {
   deps = [
     "//third_party/mbedtls:mbedtls_shared",
     "//third_party/bounds_checking_function:libsec_shared",
-    "//utils/native/lite/hilog:hilog",
+    "//utils/native/lite/hilog:hilog_shared",
   ]
 
   cflags = [

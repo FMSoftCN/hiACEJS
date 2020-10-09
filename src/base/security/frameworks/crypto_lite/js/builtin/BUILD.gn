@@ -19,6 +19,6 @@ shared_library("ace_kit_cipher") {
   deps = [
     "//base/security/frameworks/crypto_lite/cipher:cipher_shared",
     "//third_party/bounds_checking_function:libsec_shared",
-    "//utils/native/lite/hilog:hilog",
+    "//utils/native/lite/hilog:hilog_shared",
   ]
 }

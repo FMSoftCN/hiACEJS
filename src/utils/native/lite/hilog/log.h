@@ -174,8 +174,7 @@ typedef enum {
  * @since 1.1
  * @version 1.0
  */
-int HiLogPrint(LogType type, LogLevel level, unsigned int domain, const char* tag, const char* fmt, ...)
-    __attribute__((format(printf, 5, 6)));
+int HiLogPrint(LogType type, LogLevel level, unsigned int domain, const char* tag, const char* fmt, ...);
 
 /**
  * @brief Outputs debug logs. This is a function-like macro.

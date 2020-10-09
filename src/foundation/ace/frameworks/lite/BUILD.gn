@@ -170,7 +170,7 @@ shared_library("ace_lite") {
     "//third_party/jerryscript/jerry-libm:jerry-libm_shared",
     "//third_party/jerryscript/jerry-port/default:jerry-port-default_shared",
     "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
-    "//utils/native/lite/hilog:hilog",
+    "//utils/native/lite/hilog:hilog_shared",
     "//utils/native/lite/js/builtin:ace_utils_kits",
     "//utils/native/lite/timer_task:ace_kit_timer",
     "//foundation/graphic/lite/frameworks/surface:surface",
