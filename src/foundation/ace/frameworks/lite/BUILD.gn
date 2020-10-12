@@ -160,6 +160,7 @@ shared_library("ace_lite") {
     "src/core/stylemgr/app_style_manager.cpp",
     "src/core/stylemgr/app_style_sheet.cpp",
     "src/core/wrapper/js.cpp",
+    "targets/hybridos/hi_ace_js.cpp",
     "targets/platform_adapter.cpp",
   ]
 
