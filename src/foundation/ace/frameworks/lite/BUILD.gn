@@ -65,7 +65,10 @@ config("ace_lite_config") {
     ]
   }
 
-  ldflags = [ "-lpthread" ]
+  ldflags = [
+    "-lpthread",
+    "-lstdc++",
+  ]
 }
 
 shared_library("ace_lite") {
