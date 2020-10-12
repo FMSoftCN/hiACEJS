@@ -5,9 +5,9 @@ shared_library("kal_timer") {
     "src/kal.c",
   ]
   cflags = ["-Wall"]
+  ldflags = [ "-lrt" ]
 
   include_dirs = [
     "include",
-    "//utils/native/lite/include",
   ]
 }
