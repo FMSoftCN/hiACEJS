@@ -19,5 +19,8 @@ shared_library("ace_kit_file") {
     "//utils/native/lite/js/builtin/common/include",
     "include",
   ]
-  deps = ["//third_party/bounds_checking_function:libsec_shared"]
+  deps = [
+    "//foundation/aafwk/frameworks/ability_lite:ability_shared",
+    "//third_party/bounds_checking_function:libsec_shared",
+  ]
 }

@@ -168,17 +168,17 @@ shared_library("ace_lite") {
   ]
 
   public_deps = [
-    "//third_party/cJSON:cjson_shared",
+    "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
+#"//foundation/aafwk/frameworks/ability_lite:ability_shared",
     "//third_party/bounds_checking_function:libsec_shared",
+    "//third_party/cJSON:cjson_shared",
     "//third_party/jerryscript/jerry-core:jerry-core_shared",
     "//third_party/jerryscript/jerry-ext:jerry-ext_shared",
     "//third_party/jerryscript/jerry-libm:jerry-libm_shared",
     "//third_party/jerryscript/jerry-port/default:jerry-port-default_shared",
-    "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
     "//utils/native/lite/hilog:hilog_shared",
     "//utils/native/lite/js/builtin:ace_utils_kits",
     "//utils/native/lite/timer_task:ace_kit_timer",
-    #"//foundation/graphic/lite/frameworks/surface:surface",
   ]
 
   defines = []
