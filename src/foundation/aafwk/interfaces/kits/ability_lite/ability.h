@@ -2,40 +2,12 @@
  * Copyright (c) 2020 FMSoft.
  */
 
-/**
- * @addtogroup AbilityKit
- * @{
- *
- * @brief Provides ability-related functions, including ability lifecycle callbacks and functions for connecting to or
- *        disconnecting from Particle Abilities.
- *
- * Abilities are classified into Feature Abilities and Particle Abilities. Feature Abilities support the Page template,
- * and Particle Abilities support the Service template. An ability using the Page template is called a Page ability for
- * short and that using the Service template is called a Service ability.
- *
- * @since 1.0
- * @version 1.0
- */
-
-/**
- * @file ability.h
- *
- * @brief Declares ability-related functions, including ability lifecycle callbacks and functions for connecting to or
- *        disconnecting from Particle Abilities.
- *
- * As the fundamental unit of OpenHarmony applications, abilities are classified into Feature Abilities and Particle
- * Abilities. Feature Abilities support the Page template, and Particle Abilities support the Service template.
- * An ability using the Page template is called Page ability for short and that using the Service template
- * is called Service ability.
- *
- * @since 1.0
- * @version 1.0
- */
 #ifndef OHOS_ABILITY_H
 #define OHOS_ABILITY_H
 
 #include <string>
-#include <components/root_view.h>
+
+#include "components/root_view.h"
 
 typedef struct {
     /**
@@ -51,18 +23,6 @@ typedef struct {
 
 namespace OHOS {
 
-/**
- * @brief Declares ability-related functions, including ability lifecycle callbacks and functions for connecting to or
- *        disconnecting from Particle Abilities.
- *
- * As the fundamental unit of OpenHarmony applications, abilities are classified into Feature Abilities and Particle
- * Abilities. Feature Abilities support the Page template, and Particle Abilities support the Service template.
- * An ability using the Page template is called Page ability for short and that using the Service template
- * is called Service ability.
- *
- * @since 1.0
- * @version 1.0
- */
 class Ability {
 public:
     Ability() = default;
@@ -151,24 +111,6 @@ public:
     virtual void Dump(const std::string &extra);
 
     int TerminateAbility();
-
-private:
-    typedef enum {
-        START,
-        INACTIVE,
-        ACTIVE,
-        BACKGROUND,
-        STOP,
-    } Action;
-
-    void Init(uint64_t token, int abilityType, bool isNativeApp);
-    int GetState() const;
-    std::string GetDumpInfo() const;
-
-    int abilityState_ { 0 };
-    int abilityType_ { 0 };
-    uint64_t token_ { 0 };
-    static const int MAX_OBJECTS = 6;
 };
 } // namespace OHOS
 #endif // OHOS_ABILITY_H

@@ -10,48 +10,23 @@ shared_library("ability_shared") {
 
   sources = [
     "src/ability.cpp",
-#  "src/ability_context.cpp",
     "src/ability_env.cpp",
     "src/ability_env_impl.cpp",
     "src/ability_event_handler.cpp",
     "src/ability_loader.cpp",
-    "src/ability_scheduler.cpp",
-    "src/ability_thread.cpp",
   ]
 
   public_deps = [
     "//utils/native/lite/hilog:hilog_shared",
-#"//foundation/appexecfwk/frameworks/bundle_lite:bundle",
-#   "//foundation/communication/frameworks/ipc_lite:liteipc_adapter",
-#   "//foundation/aafwk/frameworks/abilitymgr_lite:abilitymanager",
   ]
 
-    include_dirs = [
-        "//foundation/aafwk/frameworks/abilitymgr_lite/include",
-        "//foundation/aafwk/frameworks/want_lite/include",
-        "//foundation/aafwk/interfaces/innerkits/abilitymgr_lite",
-        "//foundation/aafwk/interfaces/kits/want_lite",
-        "//foundation/aafwk/interfaces/kits/ability_lite",
-        "//foundation/appexecfwk/utils/bundle_lite",
-        "//foundation/appexecfwk/interfaces/kits/bundle_lite",
-        "//foundation/appexecfwk/frameworks/bundle_lite/include",
-        "//foundation/graphic/lite/interfaces/kits/surface",
-        "//foundation/graphic/lite/interfaces/kits/ui",
-        "//foundation/graphic/lite/interfaces/kits/utils",
-        "//foundation/graphic/lite/interfaces/kits/config",
-        "//foundation/graphic/lite/interfaces/innerkits/ui",
-        "//foundation/graphic/lite/hals/include",
-        "//foundation/distributedschedule/interfaces/kits/samgr_lite/registry",
-        "//foundation/distributedschedule/interfaces/kits/samgr_lite/samgr",
-        "//kernel/liteos_a/kernel/include",
-        "//kernel/liteos_a/kernel/common",
-        "//third_party/bounds_checking_function/include",
-        "//third_party/freetype/include",
-        "//utils/native/lite/hilog",
-        "//utils/native/lite/include",
-        "//utils/native/lite/kv_store/innerkits",
-        "//utils/native/lite/memory",
-        "include",
-        ".",
-    ]
+  include_dirs = [
+    "//foundation/aafwk/interfaces/kits/ability_lite",
+    "//foundation/appexecfwk/utils/bundle_lite",
+    "//foundation/graphic/lite/interfaces/kits/config",
+    "//foundation/graphic/lite/interfaces/kits/ui",
+    "//foundation/graphic/lite/interfaces/kits/utils",
+    "//utils/native/lite/hilog",
+    "include",
+  ]
 }
