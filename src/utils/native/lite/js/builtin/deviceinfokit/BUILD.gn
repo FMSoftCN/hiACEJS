@@ -8,7 +8,6 @@ shared_library("ace_kit_deviceinfo") {
   ldflags = [ "-lstdc++" ]
 
   include_dirs = [
-    "//base/startup/interfaces/kits/syspara_lite",
     "//foundation/ace/interfaces/innerkits/builtin",
     "//foundation/ace/interfaces/innerkits/builtin/async",
     "//foundation/ace/interfaces/innerkits/builtin/base",
@@ -17,5 +16,8 @@ shared_library("ace_kit_deviceinfo") {
     "//foundation/graphic/lite/interfaces/kits/utils",
     "//utils/native/lite/js/builtin/common/include",
     "include",
+  ]
+  deps = [
+    "//foundation/graphic/lite/frameworks/ui:ui_shared",
   ]
 }
