@@ -1441,7 +1441,7 @@ static char g_logLevelInfo[HILOG_LEVEL_MAX] = {
 #ifdef LOSCFG_BASE_CORE_HILOG
 extern int HiLogWriteInternal(const char *buffer, size_t bufLen);
 #else
-static int g_hilogFd = -1;
+static int g_hilogFd = STDOUT_FILENO;
 #endif
 
 int HiLogPrintArgs(LogType bufID, LogLevel prio, unsigned int domain, const char *tag, const char *fmt, va_list ap)
