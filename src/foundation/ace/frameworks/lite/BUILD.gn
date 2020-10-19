@@ -26,8 +26,6 @@ config("ace_lite_config") {
     "//foundation/aafwk/interfaces/kits/ability_lite",
     "//foundation/aafwk/interfaces/kits/want_lite",
     "//foundation/aafwk/interfaces/innerkits/abilitymgr_lite",
-    "//foundation/appexecfwk/interfaces/kits/bundle_lite",
-    "//foundation/appexecfwk/utils/bundle_lite",
     "//foundation/ace/lite/tools/simulator/config",
   ]
 
@@ -169,7 +167,6 @@ shared_library("ace_lite") {
 
   public_deps = [
     "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
-#"//foundation/aafwk/frameworks/ability_lite:ability_shared",
     "//third_party/bounds_checking_function:libsec_shared",
     "//third_party/cJSON:cjson_shared",
     "//third_party/jerryscript/jerry-core:jerry-core_shared",
