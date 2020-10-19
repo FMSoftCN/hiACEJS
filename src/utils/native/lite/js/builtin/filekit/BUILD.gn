@@ -4,8 +4,8 @@
 
 shared_library("ace_kit_file") {
   sources = [
-    "src/nativeapi_fs_impl.c",
     "src/nativeapi_fs.cpp",
+    "src/nativeapi_fs_impl.c",
   ]
   cflags = ["-Wall"]
   cflags_cc = cflags
@@ -13,8 +13,8 @@ shared_library("ace_kit_file") {
   include_dirs = [
     "//foundation/aafwk/interfaces/kits/ability_lite",
     "//foundation/ace/interfaces/innerkits/builtin",
-    "//foundation/ace/interfaces/innerkits/builtin/base",
     "//foundation/ace/interfaces/innerkits/builtin/async",
+    "//foundation/ace/interfaces/innerkits/builtin/base",
     "//third_party/bounds_checking_function/include",
     "//utils/native/lite/js/builtin/common/include",
     "include",
