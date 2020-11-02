@@ -26,8 +26,6 @@ config("ace_lite_config") {
     "//foundation/aafwk/interfaces/kits/ability_lite",
     "//foundation/aafwk/interfaces/kits/want_lite",
     "//foundation/aafwk/interfaces/innerkits/abilitymgr_lite",
-    "//foundation/appexecfwk/interfaces/kits/bundle_lite",
-    "//foundation/appexecfwk/utils/bundle_lite",
     "//foundation/ace/lite/tools/simulator/config",
   ]
 
@@ -52,8 +50,6 @@ config("ace_lite_config") {
     "src/core/stylemgr",
     "src/core/wrapper",
     "targets",
-    "//kernel/liteos_a/kernel/include/",
-    "//kernel/liteos_a/kernel/common",
     "//third_party/jerryscript/jerry-core/include",
     "//third_party/jerryscript/jerry-ext/include/jerryscript-ext",
     "///third_party/jerryscript/jerry-port/default/include",
@@ -67,7 +63,10 @@ config("ace_lite_config") {
     ]
   }
 
-  ldflags = [ "-lpthread" ]
+  ldflags = [
+    "-lpthread",
+    "-lstdc++",
+  ]
 }
 
 shared_library("ace_lite") {
@@ -76,6 +75,7 @@ shared_library("ace_lite") {
     "-Wall",
     "-Wno-format",
     "-Wno-format-extra-args",
+    "-Wno-narrowing",
   ]
   cflags_cc = [ "-std=c++14" ]
   cflags_cc += cflags
@@ -161,20 +161,21 @@ shared_library("ace_lite") {
     "src/core/stylemgr/app_style_manager.cpp",
     "src/core/stylemgr/app_style_sheet.cpp",
     "src/core/wrapper/js.cpp",
+    "targets/hybridos/hi_ace_js.cpp",
     "targets/platform_adapter.cpp",
   ]
 
   public_deps = [
-    "//third_party/cJSON:cjson_shared",
+    "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
     "//third_party/bounds_checking_function:libsec_shared",
+    "//third_party/cJSON:cjson_shared",
     "//third_party/jerryscript/jerry-core:jerry-core_shared",
     "//third_party/jerryscript/jerry-ext:jerry-ext_shared",
     "//third_party/jerryscript/jerry-libm:jerry-libm_shared",
     "//third_party/jerryscript/jerry-port/default:jerry-port-default_shared",
-    "//base/security/frameworks/crypto_lite/js/builtin:ace_kit_cipher",
+    "//utils/native/lite/hilog:hilog_shared",
     "//utils/native/lite/js/builtin:ace_utils_kits",
     "//utils/native/lite/timer_task:ace_kit_timer",
-    "//foundation/graphic/lite/frameworks/surface:surface",
   ]
 
   defines = []

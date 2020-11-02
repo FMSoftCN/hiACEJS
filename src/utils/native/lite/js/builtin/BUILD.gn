@@ -2,10 +2,10 @@
 
 group("ace_utils_kits") {
   deps = [
+    "//utils/native/lite/timer_task:ace_kit_timer",
     "common:ace_kit_common",
     "deviceinfokit:ace_kit_deviceinfo",
     "filekit:ace_kit_file",
     "kvstorekit:ace_kit_kvstore",
-    "//utils/native/lite/timer_task:ace_kit_timer"
   ]
 }

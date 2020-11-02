@@ -28,7 +28,9 @@
 #if ENABLE_WINDOW
 #include "client/iwindows_manager.h"
 #if ENABLE_HARDWARE_ACCELERATION
+#if 0 // Commented by checkywho@gmail.com
 #include "gfx_engines.h"
+#endif
 #endif
 #endif
 
@@ -80,7 +82,9 @@ void GraphicStartUp::Init()
 #if ENABLE_WINDOW
     IWindowsManager::GetInstance()->Init();
 #if ENABLE_HARDWARE_ACCELERATION
+#if 0 // Commented by checkywho@gmail.com
     GfxEngines::GetInstance()->InitDriver();
+#endif
 #endif
 #endif
 }

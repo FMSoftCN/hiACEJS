@@ -22,7 +22,9 @@
 #include "securec.h"
 
 #if ENABLE_WINDOW && ENABLE_HARDWARE_ACCELERATION
+#if 0 // Commented by checkywho@gmail.com
 #include "gfx_engines.h"
+#endif
 #endif
 
 namespace OHOS {
@@ -429,6 +431,7 @@ bool DrawUtils::FillAreaWithDMA2D(const Rect& fillArea, ScreenBufferType* mem, c
 #if ENABLE_WINDOW && ENABLE_HARDWARE_ACCELERATION
 bool DrawUtils::FillAreaWithHardware(const Rect& fillArea, const ColorType& color, const OpacityType& opa) const
 {
+#if 0 // Commented by checkywho@gmail.com
     if (opa != OPA_OPAQUE && fillArea.GetSize() >= HARDWARE_ACC_SIZE_LIMIT) {
         AllocationInfo gfxAlloc = ScreenDeviceProxy::GetInstance()->GetAllocationInfo();
         LiteSurfaceData data;
@@ -441,6 +444,7 @@ bool DrawUtils::FillAreaWithHardware(const Rect& fillArea, const ColorType& colo
             return true;
         }
     }
+#endif
     return false;
 }
 #endif
