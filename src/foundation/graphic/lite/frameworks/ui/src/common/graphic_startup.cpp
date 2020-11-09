@@ -79,10 +79,10 @@ void GraphicStartUp::Init()
     InputDeviceManager::GetInstance()->Add(input);
 #endif
 
+#if 0 // Commented by checkywho@gmail.com
 #if ENABLE_WINDOW
     IWindowsManager::GetInstance()->Init();
 #if ENABLE_HARDWARE_ACCELERATION
-#if 0 // Commented by checkywho@gmail.com
     GfxEngines::GetInstance()->InitDriver();
 #endif
 #endif
