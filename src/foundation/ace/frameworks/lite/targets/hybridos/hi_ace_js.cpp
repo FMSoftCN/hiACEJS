@@ -19,12 +19,12 @@
 
 constexpr static char FONT_PATH[] = "/storage/data/";
 constexpr static int UI_TASK_HANDLER_PERIOD = 10 * 1000; // UI task sleep period is 10ms
-constexpr static char UI_TASK_THREAD_NAME[] = "UITaskFunc";
+constexpr static char UI_TASK_THREAD_NAME[] = "UIJobFunc";
 
 static uint32_t g_fontPsramBaseAddr[OHOS::MIN_FONT_PSRAM_LENGTH / 4];
 static OHOS::AbilityEventHandler* g_eventHandler = nullptr;
 
-void* UITaskFunc(void* arg)
+void* UIJobFunc(void* arg)
 {
     prctl(PR_SET_NAME, UI_TASK_THREAD_NAME);
 
@@ -36,12 +36,12 @@ void* UITaskFunc(void* arg)
 
     int ret = pthread_detach(pthread_self());
     if (ret != 0) {
-        HILOG_WARN(HILOG_MODULE_ACE, "UITaskFunc detach failed: %{public}d", ret);
+        HILOG_WARN(HILOG_MODULE_ACE, "UIJobFunc detach failed: %{public}d", ret);
     }
 
     while (true) {
         handler->PostTask([] {
-            OHOS::TaskManager::GetInstance()->TaskHandler();
+            OHOS::JobManager::GetInstance()->JobHandler();
         });
         usleep(UI_TASK_HANDLER_PERIOD);
     }
@@ -60,7 +60,7 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
 
     g_eventHandler = new OHOS::AbilityEventHandler();
     pthread_t tid;
-    int ret = pthread_create(&tid, nullptr, UITaskFunc, g_eventHandler);
+    int ret = pthread_create(&tid, nullptr, UIJobFunc, g_eventHandler);
     if (ret != 0) {
         return false;
     }

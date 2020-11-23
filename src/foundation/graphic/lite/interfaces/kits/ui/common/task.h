@@ -29,7 +29,7 @@
 /**
  * @file task.h
  *
- * @brief Declares the <b>Task</b> class of the graphics module, which provides functions for setting the running period
+ * @brief Declares the <b>Job</b> class of the graphics module, which provides functions for setting the running period
  * and time of a task.
  *
  * @since 1.0
@@ -45,29 +45,29 @@
 
 namespace OHOS {
 /**
- * @brief Represents the <b>Task</b> class of the graphics module.
+ * @brief Represents the <b>Job</b> class of the graphics module.
  *        This class provides functions for setting the running period and time of a task.
  *
  * @since 1.0
  * @version 1.0
  */
-class Task : public HeapBase {
+class Job : public HeapBase {
 public:
     /**
-     * @brief A constructor used to create a <b>Task</b> instance.
+     * @brief A constructor used to create a <b>Job</b> instance.
      */
-    Task() : period_(DEFAULT_TASK_PERIOD), lastRun_(0) {}
+    Job() : period_(DEFAULT_TASK_PERIOD), lastRun_(0) {}
 
     /**
-     * @brief A constructor used to create a <b>Task</b> instance with the specified running period.
+     * @brief A constructor used to create a <b>Job</b> instance with the specified running period.
      * @param period Indicates the running period of this task.
      */
-    Task(uint32_t period) : period_(period), lastRun_(0) {}
+    Job(uint32_t period) : period_(period), lastRun_(0) {}
 
     /**
-     * @brief A destructor used to delete the <b>Task</b> instance.
+     * @brief A destructor used to delete the <b>Job</b> instance.
      */
-    virtual ~Task() {}
+    virtual ~Job() {}
 
     /**
      * @brief Sets the running period for this task.
@@ -108,7 +108,7 @@ public:
     /**
      * @brief Executes this task.
      */
-    void TaskExecute();
+    void JobExecute();
 
     /**
      * @brief Called when this task is executed.

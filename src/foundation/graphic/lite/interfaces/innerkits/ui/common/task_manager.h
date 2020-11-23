@@ -22,67 +22,67 @@
 #include "common/task.h"
 
 namespace OHOS {
-class TaskManager : public HeapBase {
+class JobManager : public HeapBase {
 public:
     /**
-     * @brief return TaskManager's singleton
-     * @return TaskManager*
+     * @brief return JobManager's singleton
+     * @return JobManager*
      */
-    static TaskManager* GetInstance()
+    static JobManager* GetInstance()
     {
-        static TaskManager taskManager;
-        return &taskManager;
+        static JobManager jobManager;
+        return &jobManager;
     }
 
     /**
-     * @brief add task to task manager
-     * @param [in] task task pointer
+     * @brief add job to job manager
+     * @param [in] job job pointer
      */
-    void Add(Task* task);
+    void Add(Job* job);
 
     /**
-     * @brief del task from task manager
-     * @param [in] task task pointer
+     * @brief del job from job manager
+     * @param [in] job job pointer
      */
-    void Remove(Task* task);
+    void Remove(Job* job);
 
     /**
-     * @brief set task run
-     * @param [in] enable task run
+     * @brief set job run
+     * @param [in] enable job run
      */
-    void SetTaskRun(bool enable)
+    void SetJobRun(bool enable)
     {
-        canTaskRun_ = enable;
+        canJobRun_ = enable;
     }
 
     /**
-     * @brief get task run
-     * @return enable task run
+     * @brief get job run
+     * @return enable job run
      */
-    bool GetTaskRun() const
+    bool GetJobRun() const
     {
-        return canTaskRun_;
+        return canJobRun_;
     }
 
     /**
-     * @brief run all task
+     * @brief run all job
      */
-    void TaskHandler();
+    void JobHandler();
 
     /**
-     * @brief reset the mutex of task handler, must be used carefully
+     * @brief reset the mutex of job handler, must be used carefully
      */
-    void ResetTaskHandlerMutex();
+    void ResetJobHandlerMutex();
 
 protected:
-    List<Task*> list_; /* the task list */
-    bool canTaskRun_;
+    List<Job*> list_; /* the job list */
+    bool canJobRun_;
     bool isHandlerRunning_;
     uint8_t idleLast_;
 
 private:
-    TaskManager() : canTaskRun_(false), isHandlerRunning_(false), idleLast_(0) {}
-    ~TaskManager() {}
+    JobManager() : canJobRun_(false), isHandlerRunning_(false), idleLast_(0) {}
+    ~JobManager() {}
 
     static const uint16_t IDLE_MEAS_PERIOD = 500;
 };

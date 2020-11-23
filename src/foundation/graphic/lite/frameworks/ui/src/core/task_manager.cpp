@@ -18,23 +18,23 @@
 #include "hal_tick.h"
 
 namespace OHOS {
-void TaskManager::Add(Task* task)
+void JobManager::Add(Job* job)
 {
-    if (task == nullptr) {
+    if (job == nullptr) {
         return;
     }
 
-    list_.PushBack(task);
+    list_.PushBack(job);
 }
 
-void TaskManager::Remove(Task* task)
+void JobManager::Remove(Job* job)
 {
-    if (task == nullptr) {
+    if (job == nullptr) {
         return;
     }
-    ListNode<Task*>* pos = list_.Begin();
+    ListNode<Job*>* pos = list_.Begin();
     while (pos != list_.End()) {
-        if (pos->data_ == task) {
+        if (pos->data_ == job) {
             list_.Remove(pos);
             return;
         }
@@ -42,9 +42,9 @@ void TaskManager::Remove(Task* task)
     }
 }
 
-void TaskManager::TaskHandler()
+void JobManager::JobHandler()
 {
-    if (canTaskRun_ == false) {
+    if (canJobRun_ == false) {
         return;
     }
 
@@ -53,11 +53,11 @@ void TaskManager::TaskHandler()
     }
     isHandlerRunning_ = true;
 
-    ListNode<Task*>* node = list_.Begin();
+    ListNode<Job*>* node = list_.Begin();
 
     while (node != list_.End()) {
-        Task* currentTask = node->data_;
-        currentTask->TaskExecute();
+        Job* currentJob = node->data_;
+        currentJob->JobExecute();
 
         node = node->next_;
     }

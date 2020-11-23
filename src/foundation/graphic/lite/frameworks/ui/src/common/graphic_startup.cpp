@@ -62,7 +62,7 @@ void GraphicStartUp::InitFontEngine(uintptr_t psramAddr, uint32_t psramLen, cons
 
 void GraphicStartUp::Init()
 {
-    TaskManager::GetInstance()->SetTaskRun(true);
+    JobManager::GetInstance()->SetJobRun(true);
     FileInit();
 
     if (INDEV_READ_PERIOD > 0) {

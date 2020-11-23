@@ -62,7 +62,7 @@ void Animator::Run()
 
 void AnimatorManager::Init()
 {
-    Task::Init();
+    Job::Init();
 }
 
 void AnimatorManager::Add(Animator* animator)
@@ -89,7 +89,7 @@ void AnimatorManager::Remove(const Animator* animator)
     }
 }
 
-void AnimatorManager::AnimatorTask()
+void AnimatorManager::AnimatorJob()
 {
     ListNode<Animator*>* pos = list_.Begin();
     Animator* animator = nullptr;

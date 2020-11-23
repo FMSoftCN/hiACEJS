@@ -33,7 +33,7 @@ static constexpr int16_t SAMPLE_NUMBER = 100;
 
 static constexpr uint16_t MILLISECONDS_PER_SECOND = 1000;
 
-class RenderManager : public Task {
+class RenderManager : public Job {
 public:
     static RenderManager& GetInstance()
     {
@@ -59,7 +59,7 @@ public:
 
     virtual void Callback() override
     {
-        RenderTask();
+        RenderJob();
     }
 
     float GetFPS() const
@@ -86,7 +86,7 @@ private:
 
     ~RenderManager();
 
-    void RenderTask();
+    void RenderJob();
 
     static void RenderRect(const Rect& rect, RootView* rootView);
 

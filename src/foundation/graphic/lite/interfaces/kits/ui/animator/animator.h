@@ -290,11 +290,11 @@ protected:
  *
  * This is a singleton class used to manage <b>Animator</b> instances.
  *
- * @see Task
+ * @see Job
  * @since 1.0
  * @version 1.0
  */
-class AnimatorManager : public Task {
+class AnimatorManager : public Job {
 public:
     /**
      * @brief Obtains the <b>AnimatorManager</b> instance.
@@ -332,11 +332,11 @@ public:
      */
     void Remove(const Animator* animator);
 
-    void AnimatorTask();
+    void AnimatorJob();
 
     void Callback() override
     {
-        AnimatorTask();
+        AnimatorJob();
     }
 
 protected:

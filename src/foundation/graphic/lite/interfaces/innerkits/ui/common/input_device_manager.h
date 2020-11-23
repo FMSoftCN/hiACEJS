@@ -24,7 +24,7 @@ namespace OHOS {
 /**
  * @brief Manage all input devices.
  */
-class InputDeviceManager : public Task {
+class InputDeviceManager : public Job {
 public:
     /**
      * @brief Get instance of InputDeviceManager.

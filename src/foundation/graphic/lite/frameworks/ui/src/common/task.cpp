@@ -17,7 +17,7 @@
 #include "hal_tick.h"
 
 namespace OHOS {
-void Task::TaskExecute()
+void Job::JobExecute()
 {
     uint32_t elp = HALTick::GetInstance().GetElapseTime(lastRun_);
     if (elp >= period_) {
@@ -26,9 +26,9 @@ void Task::TaskExecute()
     }
 }
 
-void Task::Init()
+void Job::Init()
 {
     SetPeriod(period_);
-    TaskManager::GetInstance()->Add(this);
+    JobManager::GetInstance()->Add(this);
 }
 }

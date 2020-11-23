@@ -22,7 +22,7 @@ void InputDeviceManager::Init()
 {
     if (INDEV_READ_PERIOD > 0) {
         SetPeriod(INDEV_READ_PERIOD);
-        TaskManager::GetInstance()->Add(this);
+        JobManager::GetInstance()->Add(this);
     }
 }
 

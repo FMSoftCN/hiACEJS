@@ -32,10 +32,10 @@ RenderManager::~RenderManager() {}
 
 void RenderManager::Init()
 {
-    Task::Init();
+    Job::Init();
 }
 
-void RenderManager::RenderTask()
+void RenderManager::RenderJob()
 {
     MeasureManager::GetInstance().ReMeasureRect();
 #if ENABLE_WINDOW
