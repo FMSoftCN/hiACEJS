@@ -1,0 +1,147 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(ace_lite)
+
+
+set(ace_lite_INCLUDE_DIRECTORIES
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/innerkits/ui
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/innerkits/ui/dock
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/innerkits/ui/common
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/config
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/surface
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/animator
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/common
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/components
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/dfx
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/events
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/font
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/layout
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/ui/themes
+    ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/kits/utils
+    ${CMAKE_SOURCE_DIR}/src/foundation/aafwk/interfaces/kits/ability_lite
+    ${CMAKE_SOURCE_DIR}/src/foundation/aafwk/interfaces/kits/want_lite
+    ${CMAKE_SOURCE_DIR}/src/foundation/aafwk/interfaces/innerkits/abilitymgr_lite
+    ${CMAKE_SOURCE_DIR}/src/foundation/ace/lite/tools/simulator/config
+    ${CMAKE_SOURCE_DIR}/src/foundation/ace/interfaces/innerkits/builtin/async
+    ${CMAKE_SOURCE_DIR}/src/foundation/ace/interfaces/innerkits/builtin/base
+    ${CMAKE_SOURCE_DIR}/src/foundation/ace/interfaces/innerkits/builtin/jsi
+
+    ${CMAKE_SOURCE_DIR}/src/utils/native/lite/include
+    ${CMAKE_SOURCE_DIR}/src/utils/native/lite/timer_task/include
+    ${CMAKE_SOURCE_DIR}/src/utils/native/lite
+
+    ${CMAKE_SOURCE_DIR}/src/third_party/bounds_checking_function/include
+    ${CMAKE_SOURCE_DIR}/src/third_party/jerryscript/jerry-core/include
+    ${CMAKE_SOURCE_DIR}/src/third_party/jerryscript/jerry-ext/include/jerryscript-ext
+    ${CMAKE_SOURCE_DIR}/src/third_party/jerryscript/jerry-port/default/include
+    ${CMAKE_SOURCE_DIR}/src/third_party/cJSON
+    ${CMAKE_SOURCE_DIR}/src/third_party/freetype/include
+
+    include/context
+    include/base
+    include/modules
+    include/resource
+    src/core
+    src/core/animation
+    src/core/base
+    src/core/components
+    src/core/context
+    src/core/directive
+    src/core/router
+    src/core/jsi
+    src/core/modules
+    src/core/router
+    src/core/stylemgr
+    src/core/wrapper
+    targets
+    targets/hybridos
+)
+
+set(ace_lite_SOURCES
+    src/core/animation/transition_impl.cpp
+    src/core/async/js_async_work.cpp
+    src/core/async/message_queue_utils.cpp
+    src/core/base/ace_log.cpp
+    src/core/base/ace_mem_base.cpp
+    src/core/base/js_fwk_common.cpp
+    src/core/base/key_parser.cpp
+    src/core/base/time_util.cpp
+    src/core/base/js_debugger_config.cpp
+    src/core/base/memory_heap.cpp
+    src/core/components/video_view.cpp
+    src/core/components/analog_clock_component.cpp
+    src/core/components/camera_component.cpp
+    src/core/components/canvas_component.cpp
+    src/core/components/chart_component.cpp
+    src/core/components/clock_hand_component.cpp
+    src/core/components/component.cpp
+    src/core/components/component_utils.cpp
+    src/core/components/div_component.cpp
+    src/core/components/event_listener.cpp
+    src/core/components/image_animator_component.cpp
+    src/core/components/image_component.cpp
+    src/core/components/input_component.cpp
+    src/core/components/list_adapter.cpp
+    src/core/components/list_component.cpp
+    src/core/components/marquee_component.cpp
+    src/core/components/panel_view.cpp
+    src/core/components/picker_view_component.cpp
+    src/core/components/progress_component.cpp
+    src/core/components/scroll_layer.cpp
+    src/core/components/slider_component.cpp
+    src/core/components/swiper_component.cpp
+    src/core/components/switch_component.cpp
+    src/core/components/tab_bar_component.cpp
+    src/core/components/tab_content_component.cpp
+    src/core/components/tabs_component.cpp
+    src/core/components/text_component.cpp
+    src/core/components/video_component.cpp
+    src/core/context/ace_ability.cpp
+    src/core/context/ace_event_error_code.cpp
+    src/core/context/fatal_handler.cpp
+    src/core/context/js_ability.cpp
+    src/core/context/js_ability_impl.cpp
+    src/core/context/js_app_context.cpp
+    src/core/context/js_app_environment.cpp
+    src/core/context/js_framework_raw.cpp
+    src/core/context/js_profiler.cpp
+    src/core/context/js_timer_list.cpp
+    src/core/directive/descriptor_utils.cpp
+    src/core/directive/directive_watcher_callback.cpp
+    src/core/jsi/jsi.cpp
+    #src/core/modules/presets/jstest_module.cpp
+    src/core/modules/presets/timer_module.cpp
+    src/core/modules/app_module.cpp
+    src/core/modules/module_manager.cpp
+    src/core/modules/presets/cjson_parser.cpp
+    src/core/modules/presets/console_log_impl.cpp
+    src/core/modules/presets/console_module.cpp
+    src/core/modules/presets/localization_module.cpp
+    #src/core/modules/presets/feature_ability_module.cpp
+    src/core/modules/presets/preset_module.cpp
+    src/core/modules/presets/profiler_module.cpp
+    src/core/modules/presets/render_module.cpp
+    src/core/modules/presets/require_module.cpp
+    src/core/modules/presets/version_module.cpp
+    src/core/modules/router_module.cpp
+    src/core/modules/dfx_module.cpp
+    src/core/modules/sample_module.cpp
+    src/core/resource/video_play_image_res.cpp
+    src/core/resource/video_muted_image_res.cpp
+    src/core/router/js_page_state.cpp
+    src/core/router/js_page_state_machine.cpp
+    src/core/router/js_router.cpp
+    src/core/stylemgr/app_style.cpp
+    src/core/stylemgr/app_style_item.cpp
+    src/core/stylemgr/app_style_list.cpp
+    src/core/stylemgr/app_style_manager.cpp
+    src/core/stylemgr/app_style_sheet.cpp
+    src/core/wrapper/js.cpp
+    targets/hybridos/hi_ace_js.cpp
+    targets/platform_adapter.cpp
+)
+
+include_directories(${ace_lite_INCLUDE_DIRECTORIES})
+add_library(ace_lite SHARED ${ace_lite_SOURCES})
