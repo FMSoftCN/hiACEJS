@@ -1,5 +1,6 @@
 # Specific directories that shoud be ignored
 /src/out/
+lib*.so
 
 # CMake
 cmake-build-*/
