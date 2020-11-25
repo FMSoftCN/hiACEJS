@@ -64,5 +64,15 @@ list(APPEND ace_SOURCES
     utils/native/lite/js/builtin/filekit/src/nativeapi_fs_impl.c
 )
 
+# ace_kit_kvstore
+list(APPEND ace_INCLUDE_DIRECTORIES
+    utils/native/lite/js/builtin/kvstorekit/include
+)
+
+list(APPEND ace_SOURCES
+    utils/native/lite/js/builtin/kvstorekit/src/nativeapi_kv.cpp
+    utils/native/lite/js/builtin/kvstorekit/src/nativeapi_kv_impl.c
+)
+
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
