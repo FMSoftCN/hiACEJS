@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 project(ace_lite)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+add_definitions(-D__LINUX__)
 
 set(ace_lite_INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/src/foundation/graphic/lite/interfaces/innerkits/ui
