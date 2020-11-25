@@ -17,6 +17,10 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 
     foundation/aafwk/interfaces/kits/ability_lite
 
+    foundation/graphic/lite/interfaces/kits/config
+    foundation/graphic/lite/interfaces/kits/ui/common
+    foundation/graphic/lite/interfaces/kits/utils
+
     utils/native/lite/include
     utils/native/lite/kal/timer/include
     utils/native/lite/js/builtin/common/include
@@ -72,6 +76,15 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 list(APPEND ace_SOURCES
     utils/native/lite/js/builtin/kvstorekit/src/nativeapi_kv.cpp
     utils/native/lite/js/builtin/kvstorekit/src/nativeapi_kv_impl.c
+)
+
+# ace_kit_deviceinfo
+list(APPEND ace_INCLUDE_DIRECTORIES
+    utils/native/lite/js/builtin/deviceinfokit/include
+)
+
+list(APPEND ace_SOURCES
+    utils/native/lite/js/builtin/deviceinfokit/src/nativeapi_deviceinfo.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
