@@ -10,11 +10,16 @@ add_definitions(-D__LINUX__)
 
 
 list(APPEND ace_INCLUDE_DIRECTORIES
+    foundation/ace/interfaces/innerkits/builtin
     foundation/ace/interfaces/innerkits/builtin/jsi
     foundation/ace/interfaces/innerkits/builtin/base
+    foundation/ace/interfaces/innerkits/builtin/async
+
+    foundation/aafwk/interfaces/kits/ability_lite
 
     utils/native/lite/include
     utils/native/lite/kal/timer/include
+    utils/native/lite/js/builtin/common/include
 
     base/security/frameworks/crypto_lite/cipher/include
     base/security/frameworks/crypto_lite/js/builtin/include
@@ -47,6 +52,16 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 
 list(APPEND ace_SOURCES
     utils/native/lite/timer_task/src/nativeapi_timer_task.c
+)
+
+# ace_kit_file
+list(APPEND ace_INCLUDE_DIRECTORIES
+    utils/native/lite/js/builtin/filekit/include/
+)
+
+list(APPEND ace_SOURCES
+    utils/native/lite/js/builtin/filekit/src/nativeapi_fs.cpp
+    utils/native/lite/js/builtin/filekit/src/nativeapi_fs_impl.c
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
