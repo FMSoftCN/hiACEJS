@@ -35,6 +35,7 @@ list(APPEND ace_INCLUDE_DIRECTORIES
     utils/native/lite/include
     utils/native/lite/kal/timer/include
     utils/native/lite/js/builtin/common/include
+    utils/native/lite/appexecfwk
 
 
     base/security/frameworks/crypto_lite/cipher/include
@@ -247,6 +248,19 @@ list(APPEND ace_SOURCES
     foundation/graphic/lite/frameworks/ui/src/window/iwindows_manager.cpp
     foundation/graphic/lite/frameworks/ui/src/window/window.cpp
     foundation/graphic/lite/frameworks/ui/src/window/window_impl.cpp
+)
+
+# ability_shared
+list(APPEND ace_INCLUDE_DIRECTORIES
+    foundation/aafwk/frameworks/ability_lite/include/
+)
+
+list(APPEND ace_SOURCES
+    foundation/aafwk/frameworks/ability_lite/src/ability.cpp
+    foundation/aafwk/frameworks/ability_lite/src/ability_env.cpp
+    foundation/aafwk/frameworks/ability_lite/src/ability_env_impl.cpp
+    foundation/aafwk/frameworks/ability_lite/src/ability_event_handler.cpp
+    foundation/aafwk/frameworks/ability_lite/src/ability_loader.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
