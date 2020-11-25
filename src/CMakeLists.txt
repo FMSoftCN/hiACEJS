@@ -19,12 +19,21 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 
     foundation/graphic/lite/interfaces
     foundation/graphic/lite/interfaces/kits/config
-    foundation/graphic/lite/interfaces/kits/ui
-    foundation/graphic/lite/interfaces/kits/ui/common
-    foundation/graphic/lite/interfaces/kits/utils
     foundation/graphic/lite/interfaces/kits/surface
+    foundation/graphic/lite/interfaces/kits/ui
+    foundation/graphic/lite/interfaces/kits/ui/animator
+    foundation/graphic/lite/interfaces/kits/ui/common
+    foundation/graphic/lite/interfaces/kits/ui/components
+    foundation/graphic/lite/interfaces/kits/ui/dfx
+    foundation/graphic/lite/interfaces/kits/ui/events
+    foundation/graphic/lite/interfaces/kits/ui/font
+    foundation/graphic/lite/interfaces/kits/ui/layout
+    foundation/graphic/lite/interfaces/kits/ui/themes
+    foundation/graphic/lite/interfaces/kits/utils
 
     foundation/graphic/lite/interfaces/innerkits/ui
+    foundation/graphic/lite/interfaces/innerkits/ui/dock
+    foundation/graphic/lite/interfaces/innerkits/ui/common
     foundation/graphic/lite/interfaces/innerkits/wms
     foundation/graphic/lite/services/wms/include
     foundation/graphic/lite/services/ims/include
@@ -45,6 +54,9 @@ list(APPEND ace_INCLUDE_DIRECTORIES
     third_party/mbedtls/include/mbedtls
     third_party/cJSON
     third_party/freetype/include
+    third_party/jerryscript/jerry-core/include
+    third_party/jerryscript/jerry-ext/include/jerryscript-ext
+    third_party/jerryscript/jerry-port/default/include
 )
 
 # hilog_shared
@@ -261,6 +273,112 @@ list(APPEND ace_SOURCES
     foundation/aafwk/frameworks/ability_lite/src/ability_env_impl.cpp
     foundation/aafwk/frameworks/ability_lite/src/ability_event_handler.cpp
     foundation/aafwk/frameworks/ability_lite/src/ability_loader.cpp
+)
+
+# ace_lite
+list(APPEND ace_INCLUDE_DIRECTORIES
+    foundation/ace/frameworks/lite/include/context
+    foundation/ace/frameworks/lite/include/base
+    foundation/ace/frameworks/lite/include/modules
+    foundation/ace/frameworks/lite/include/resource
+    foundation/ace/frameworks/lite/src/core
+    foundation/ace/frameworks/lite/src/core/animation
+    foundation/ace/frameworks/lite/src/core/base
+    foundation/ace/frameworks/lite/src/core/components
+    foundation/ace/frameworks/lite/src/core/context
+    foundation/ace/frameworks/lite/src/core/directive
+    foundation/ace/frameworks/lite/src/core/router
+    foundation/ace/frameworks/lite/src/core/jsi
+    foundation/ace/frameworks/lite/src/core/modules
+    foundation/ace/frameworks/lite/src/core/router
+    foundation/ace/frameworks/lite/src/core/stylemgr
+    foundation/ace/frameworks/lite/src/core/wrapper
+    foundation/ace/frameworks/lite/targets
+    foundation/ace/frameworks/lite/targets/hybridos
+)
+
+list(APPEND ace_SOURCES
+    foundation/ace/frameworks/lite/src/core/animation/transition_impl.cpp
+    foundation/ace/frameworks/lite/src/core/async/js_async_work.cpp
+    foundation/ace/frameworks/lite/src/core/async/message_queue_utils.cpp
+    foundation/ace/frameworks/lite/src/core/base/ace_log.cpp
+    foundation/ace/frameworks/lite/src/core/base/ace_mem_base.cpp
+    foundation/ace/frameworks/lite/src/core/base/js_fwk_common.cpp
+    foundation/ace/frameworks/lite/src/core/base/key_parser.cpp
+    foundation/ace/frameworks/lite/src/core/base/time_util.cpp
+    foundation/ace/frameworks/lite/src/core/base/js_debugger_config.cpp
+    foundation/ace/frameworks/lite/src/core/base/memory_heap.cpp
+    foundation/ace/frameworks/lite/src/core/components/video_view.cpp
+    foundation/ace/frameworks/lite/src/core/components/analog_clock_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/camera_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/canvas_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/chart_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/clock_hand_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/component.cpp
+    foundation/ace/frameworks/lite/src/core/components/component_utils.cpp
+    foundation/ace/frameworks/lite/src/core/components/div_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/event_listener.cpp
+    foundation/ace/frameworks/lite/src/core/components/image_animator_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/image_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/input_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/list_adapter.cpp
+    foundation/ace/frameworks/lite/src/core/components/list_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/marquee_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/panel_view.cpp
+    foundation/ace/frameworks/lite/src/core/components/picker_view_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/progress_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/scroll_layer.cpp
+    foundation/ace/frameworks/lite/src/core/components/slider_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/swiper_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/switch_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/tab_bar_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/tab_content_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/tabs_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/text_component.cpp
+    foundation/ace/frameworks/lite/src/core/components/video_component.cpp
+    foundation/ace/frameworks/lite/src/core/context/ace_ability.cpp
+    foundation/ace/frameworks/lite/src/core/context/ace_event_error_code.cpp
+    foundation/ace/frameworks/lite/src/core/context/fatal_handler.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_ability.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_ability_impl.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_app_context.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_app_environment.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_framework_raw.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_profiler.cpp
+    foundation/ace/frameworks/lite/src/core/context/js_timer_list.cpp
+    foundation/ace/frameworks/lite/src/core/directive/descriptor_utils.cpp
+    foundation/ace/frameworks/lite/src/core/directive/directive_watcher_callback.cpp
+    foundation/ace/frameworks/lite/src/core/jsi/jsi.cpp
+    #foundation/ace/frameworks/lite/src/core/modules/presets/jstest_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/timer_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/app_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/module_manager.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/cjson_parser.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/console_log_impl.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/console_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/localization_module.cpp
+    #foundation/ace/frameworks/lite/src/core/modules/presets/feature_ability_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/preset_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/profiler_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/render_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/require_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/presets/version_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/router_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/dfx_module.cpp
+    foundation/ace/frameworks/lite/src/core/modules/sample_module.cpp
+    foundation/ace/frameworks/lite/src/core/resource/video_play_image_res.cpp
+    foundation/ace/frameworks/lite/src/core/resource/video_muted_image_res.cpp
+    foundation/ace/frameworks/lite/src/core/router/js_page_state.cpp
+    foundation/ace/frameworks/lite/src/core/router/js_page_state_machine.cpp
+    foundation/ace/frameworks/lite/src/core/router/js_router.cpp
+    foundation/ace/frameworks/lite/src/core/stylemgr/app_style.cpp
+    foundation/ace/frameworks/lite/src/core/stylemgr/app_style_item.cpp
+    foundation/ace/frameworks/lite/src/core/stylemgr/app_style_list.cpp
+    foundation/ace/frameworks/lite/src/core/stylemgr/app_style_manager.cpp
+    foundation/ace/frameworks/lite/src/core/stylemgr/app_style_sheet.cpp
+    foundation/ace/frameworks/lite/src/core/wrapper/js.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.cpp
+    foundation/ace/frameworks/lite/targets/platform_adapter.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
