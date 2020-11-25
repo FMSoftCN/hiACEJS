@@ -118,5 +118,31 @@ list(APPEND ace_SOURCES
     base/security/frameworks/crypto_lite/js/builtin/src/cipher_module.cpp
 )
 
+# graphic_hals
+list(APPEND ace_INCLUDE_DIRECTORIES
+    foundation/graphic/lite/hals/include/
+)
+
+list(APPEND ace_SOURCES
+    foundation/graphic/lite/hals/src/hal_tick.cpp
+)
+
+# graphic_utils
+list(APPEND ace_INCLUDE_DIRECTORIES
+    foundation/graphic/lite/utils/include
+)
+
+list(APPEND ace_SOURCES
+    foundation/graphic/lite/utils/src/color.cpp
+    foundation/graphic/lite/utils/src/file.c
+    foundation/graphic/lite/utils/src/geometry2d.cpp
+    foundation/graphic/lite/utils/src/graphic_math.cpp
+    foundation/graphic/lite/utils/src/linux_file.c
+    foundation/graphic/lite/utils/src/mem_api.cpp
+    foundation/graphic/lite/utils/src/style.cpp
+    foundation/graphic/lite/utils/src/transform.cpp
+    foundation/graphic/lite/utils/src/version.cpp
+)
+
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
