@@ -21,14 +21,17 @@ list(APPEND ace_INCLUDE_DIRECTORIES
     foundation/graphic/lite/interfaces/kits/ui/common
     foundation/graphic/lite/interfaces/kits/utils
 
+    utils/native/lite/
     utils/native/lite/include
     utils/native/lite/kal/timer/include
     utils/native/lite/js/builtin/common/include
+
 
     base/security/frameworks/crypto_lite/cipher/include
     base/security/frameworks/crypto_lite/js/builtin/include
 
     third_party/bounds_checking_function/include
+    third_party/mbedtls/include/mbedtls
 )
 
 # hilog_shared
@@ -94,6 +97,16 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 
 list(APPEND ace_SOURCES
     utils/native/lite/js/builtin/common/src/nativeapi_common.cpp
+)
+
+# cipher_shared
+list(APPEND ace_INCLUDE_DIRECTORIES
+    base/security/frameworks/crypto_lite/cipher/include/
+)
+
+list(APPEND ace_SOURCES
+    base/security/frameworks/crypto_lite/cipher/src/cipher_aes.c
+    base/security/frameworks/crypto_lite/cipher/src/cipher_rsa.c
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
