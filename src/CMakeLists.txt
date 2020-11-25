@@ -109,5 +109,14 @@ list(APPEND ace_SOURCES
     base/security/frameworks/crypto_lite/cipher/src/cipher_rsa.c
 )
 
+# ace_kit_cipher
+list(APPEND ace_INCLUDE_DIRECTORIES
+    base/security/frameworks/crypto_lite/js/builtin/include/
+)
+
+list(APPEND ace_SOURCES
+    base/security/frameworks/crypto_lite/js/builtin/src/cipher_module.cpp
+)
+
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
