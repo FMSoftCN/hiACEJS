@@ -87,5 +87,14 @@ list(APPEND ace_SOURCES
     utils/native/lite/js/builtin/deviceinfokit/src/nativeapi_deviceinfo.cpp
 )
 
+# ace_kit_common
+list(APPEND ace_INCLUDE_DIRECTORIES
+    utils/native/lite/js/builtin/common/src/include
+)
+
+list(APPEND ace_SOURCES
+    utils/native/lite/js/builtin/common/src/nativeapi_common.cpp
+)
+
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
