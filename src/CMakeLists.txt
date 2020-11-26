@@ -392,3 +392,4 @@ list(APPEND ace_SOURCES
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
 target_link_libraries(ace ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
+install(TARGETS ace DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
