@@ -54,9 +54,7 @@ list(APPEND ace_INCLUDE_DIRECTORIES
     ${FREETYPE_INCLUDE_DIRS}
     ${SECUREC_INCLUDE_DIRS}
 
-    third_party/jerryscript/jerry-core/include
-    third_party/jerryscript/jerry-ext/include/jerryscript-ext
-    third_party/jerryscript/jerry-port/default/include
+    ${JERRYSCRIPT_INCLUDE_DIRS}
 )
 
 # cJSON
@@ -393,4 +391,4 @@ list(APPEND ace_SOURCES
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
-target_link_libraries(ace ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES})
+target_link_libraries(ace ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})

@@ -11,6 +11,7 @@ find_package(Freetype 2.4.2 REQUIRED)
 
 find_package(MbedTLS REQUIRED)
 find_package(Securec REQUIRED)
+find_package(Jerryscript REQUIRED)
 find_package(MiniGUI 5.0.2 REQUIRED)
 
 set(MINIGUI_LIBRARIES ${MiniGUI_LIBRARIES})
