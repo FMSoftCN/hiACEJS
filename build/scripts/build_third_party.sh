@@ -13,7 +13,7 @@ pushd ${BASE_DIR}/../../src/third_party/jerryscript
 python tools/build.py --mem-heap=48 --snapshot-exec=ON --snapshot-save=ON \
         --profile=es5.1 --error-messages=ON --logging=ON --mem-stats=ON \
         --jerry-cmdline-snapshot=ON --compile-flag="-Wno-unused-function" \
-        --install=$ROOT_DIR/usr
+        --shared-libs=ON --install=$ROOT_DIR/usr
 
 popd
 
