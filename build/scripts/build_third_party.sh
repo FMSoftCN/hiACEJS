@@ -16,3 +16,14 @@ python tools/build.py --mem-heap=48 --snapshot-exec=ON --snapshot-save=ON \
         --install=$ROOT_DIR/usr
 
 popd
+
+
+
+# build bounds_checking_function
+pushd ${BASE_DIR}/../../src/third_party/bounds_checking_function
+
+cmake -DCMAKE_INSTALL_PREFIX=$ROOT_DIR/usr
+make -j16
+sudo make install
+
+popd
