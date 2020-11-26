@@ -16,3 +16,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+#output
+output
+
+
+#log
+*.log
