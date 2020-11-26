@@ -52,11 +52,20 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 
     third_party/bounds_checking_function/include
     third_party/mbedtls/include/mbedtls
-    third_party/cJSON
     third_party/freetype/include
     third_party/jerryscript/jerry-core/include
     third_party/jerryscript/jerry-ext/include/jerryscript-ext
     third_party/jerryscript/jerry-port/default/include
+)
+
+# cJSON
+list(APPEND ace_INCLUDE_DIRECTORIES
+    utils/cJSON/
+)
+
+list(APPEND ace_SOURCES
+    utils/cJSON/cJSON_Utils.c
+    utils/cJSON/cJSON.c
 )
 
 # hilog_shared
