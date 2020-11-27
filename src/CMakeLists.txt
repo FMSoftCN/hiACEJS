@@ -50,7 +50,7 @@ list(APPEND ace_INCLUDE_DIRECTORIES
     base/security/frameworks/crypto_lite/cipher/include
     base/security/frameworks/crypto_lite/js/builtin/include
 
-    ${MBEDTLS_INCLUDE_DIRS}/mbedtls
+    ${MBEDTLS_INCLUDE_DIRS}
     ${FREETYPE_INCLUDE_DIRS}
     ${SECUREC_INCLUDE_DIRS}
 
