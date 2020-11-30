@@ -396,6 +396,7 @@ list(APPEND ace_INCLUDE_DIRECTORIES
 list(APPEND ace_SOURCES
     foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_window.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_windows_manager.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
