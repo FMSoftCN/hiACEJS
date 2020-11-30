@@ -79,9 +79,9 @@ void GraphicStartUp::Init()
     InputDeviceManager::GetInstance()->Add(input);
 #endif
 
-#if 0 // Commented by checkywho@gmail.com
 #if ENABLE_WINDOW
     IWindowsManager::GetInstance()->Init();
+#if 0 // Commented by checkywho@gmail.com
 #if ENABLE_HARDWARE_ACCELERATION
     GfxEngines::GetInstance()->InitDriver();
 #endif
