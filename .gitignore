@@ -1,6 +1,7 @@
 # Specific directories that shoud be ignored
 /src/out/
 lib*.so
+hiacejs_test
 
 # CMake
 cmake-build-*/
