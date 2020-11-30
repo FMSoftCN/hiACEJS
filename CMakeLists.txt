@@ -19,3 +19,4 @@ set(MINIGUI_INCLUDE_DIRS ${MiniGUI_INCLUDE_DIRS})
 
 # sub-directory
 add_subdirectory(src)
+add_subdirectory(test)
