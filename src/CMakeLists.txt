@@ -385,8 +385,17 @@ list(APPEND ace_SOURCES
     foundation/ace/frameworks/lite/src/core/stylemgr/app_style_manager.cpp
     foundation/ace/frameworks/lite/src/core/stylemgr/app_style_sheet.cpp
     foundation/ace/frameworks/lite/src/core/wrapper/js.cpp
-    foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.cpp
     foundation/ace/frameworks/lite/targets/platform_adapter.cpp
+)
+
+# hybridos
+list(APPEND ace_INCLUDE_DIRECTORIES
+    foundation/ace/frameworks/lite/include/hybridos
+)
+
+list(APPEND ace_SOURCES
+    foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_window.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
