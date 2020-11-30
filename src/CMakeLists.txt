@@ -392,4 +392,6 @@ list(APPEND ace_SOURCES
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(ace SHARED ${ace_SOURCES})
 target_link_libraries(ace ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
+
+install(FILES "foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.h" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/)
 install(TARGETS ace DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
