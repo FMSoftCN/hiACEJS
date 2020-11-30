@@ -265,7 +265,6 @@ list(APPEND ace_SOURCES
     foundation/graphic/lite/frameworks/ui/src/layout/list_layout.cpp
     foundation/graphic/lite/frameworks/ui/src/themes/theme.cpp
     foundation/graphic/lite/frameworks/ui/src/themes/theme_manager.cpp
-    foundation/graphic/lite/frameworks/ui/src/window/iwindows_manager.cpp
     foundation/graphic/lite/frameworks/ui/src/window/window.cpp
     foundation/graphic/lite/frameworks/ui/src/window/window_impl.cpp
 )
@@ -397,6 +396,7 @@ list(APPEND ace_SOURCES
     foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_window.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_windows_manager.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hybridos_windows_manager.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
