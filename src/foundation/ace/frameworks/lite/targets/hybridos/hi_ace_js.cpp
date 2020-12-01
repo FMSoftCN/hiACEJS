@@ -6,6 +6,8 @@
 
 #include <memory>
 
+#include <common/screen_device_proxy.h>
+
 #include "pthread.h"
 #include "sys/prctl.h"
 #include "unistd.h"
@@ -57,6 +59,9 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     OHOS::GraphicStartUp::Init();
     OHOS::GraphicStartUp::InitFontEngine(reinterpret_cast<uintptr_t>(g_fontPsramBaseAddr), OHOS::MIN_FONT_PSRAM_LENGTH,
         const_cast<char *>(FONT_PATH), DEFAULT_VECTOR_FONT_FILENAME);
+
+    auto screenDevice = new OHOS::ScreenDevice();
+    OHOS::ScreenDeviceProxy::GetInstance()->SetDevice(screenDevice);
 
     g_eventHandler = new OHOS::AbilityEventHandler();
     pthread_t tid;
