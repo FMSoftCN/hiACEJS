@@ -1,4 +1,5 @@
 #include "hybridos_proxy_windows_manager.h"
+#include "hybridos_proxy_window.h"
 
 #include "color.h"
 #include "graphic_log.h"
@@ -14,12 +15,14 @@ int HybridosProxyWindowsManager::Init()
 IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
-    return nullptr;
+    return new HybridosProxyWindow();
 }
 
 void HybridosProxyWindowsManager::RemoveWindow(IWindow* window)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    window->Hide();
+    window->Destroy();
 }
 
 void HybridosProxyWindowsManager::GetEventData(DeviceData* data)
