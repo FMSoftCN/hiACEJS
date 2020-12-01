@@ -116,6 +116,7 @@ public:
 
 
     void Init(uint64_t token, int abilityType, bool isNativeApp);
+    int GetState() const { return abilityState_; }
 private:
     typedef enum {
         START,
