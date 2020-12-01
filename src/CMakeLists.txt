@@ -280,6 +280,7 @@ list(APPEND ace_SOURCES
     foundation/aafwk/frameworks/ability_lite/src/ability_env_impl.cpp
     foundation/aafwk/frameworks/ability_lite/src/ability_event_handler.cpp
     foundation/aafwk/frameworks/ability_lite/src/ability_loader.cpp
+    foundation/aafwk/frameworks/ability_lite/src/ability_window.cpp
 )
 
 # ace_lite

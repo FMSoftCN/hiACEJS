@@ -7,6 +7,8 @@
 #include <memory>
 
 #include <common/screen_device_proxy.h>
+#include <ability.h>
+#include "ability_loader.h"
 
 #include "pthread.h"
 #include "sys/prctl.h"
@@ -22,6 +24,7 @@
 constexpr static char FONT_PATH[] = "/storage/data/";
 constexpr static int UI_TASK_HANDLER_PERIOD = 10 * 1000; // UI task sleep period is 10ms
 constexpr static char UI_TASK_THREAD_NAME[] = "UIJobFunc";
+constexpr static char ACE_ABILITY_NAME[] = "AceAbility";
 
 static uint32_t g_fontPsramBaseAddr[OHOS::MIN_FONT_PSRAM_LENGTH / 4];
 static OHOS::AbilityEventHandler* g_eventHandler = nullptr;
@@ -56,12 +59,14 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
         return false;
     }
 
+    OHOS::Ability *ability = nullptr;
     OHOS::GraphicStartUp::Init();
     OHOS::GraphicStartUp::InitFontEngine(reinterpret_cast<uintptr_t>(g_fontPsramBaseAddr), OHOS::MIN_FONT_PSRAM_LENGTH,
         const_cast<char *>(FONT_PATH), DEFAULT_VECTOR_FONT_FILENAME);
 
     auto screenDevice = new OHOS::ScreenDevice();
     OHOS::ScreenDeviceProxy::GetInstance()->SetDevice(screenDevice);
+    ability = OHOS::AbilityLoader::GetInstance().GetAbilityByName(ACE_ABILITY_NAME);
 
     g_eventHandler = new OHOS::AbilityEventHandler();
     pthread_t tid;
@@ -69,6 +74,8 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     if (ret != 0) {
         return false;
     }
+
+    ability->Init(0, 0, true);
 
     auto js_ability = std::make_unique<OHOS::ACELite::JSAbility>();
     js_ability->Launch(const_cast<char*>(path), bundle, 0xff);

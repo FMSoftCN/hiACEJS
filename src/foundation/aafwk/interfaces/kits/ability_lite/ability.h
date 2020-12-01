@@ -23,6 +23,8 @@ typedef struct {
 
 namespace OHOS {
 
+class AbilityWindow;
+
 class Ability {
 public:
     Ability() = default;
@@ -111,6 +113,25 @@ public:
     virtual void Dump(const std::string &extra);
 
     int TerminateAbility();
+
+
+    void Init(uint64_t token, int abilityType, bool isNativeApp);
+private:
+    typedef enum {
+        START,
+        INACTIVE,
+        ACTIVE,
+        BACKGROUND,
+        STOP,
+    } Action;
+
+    void DispatchAbilityLifecycle(Action action, const Want *want = nullptr);
+
+    AbilityWindow *abilityWindow_ { nullptr };
+
+    int abilityState_ { 0 };
+    int abilityType_ { 0 };
+    uint64_t token_ { 0 };
 };
 } // namespace OHOS
 #endif // OHOS_ABILITY_H
