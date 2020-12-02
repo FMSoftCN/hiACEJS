@@ -10,6 +10,7 @@
 #include <ability.h>
 #include <ability_state.h>
 #include "ability_loader.h"
+#include "ability_env_impl.h"
 
 #include "pthread.h"
 #include "sys/prctl.h"
@@ -119,12 +120,18 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
 
     ability->Init(0, 0, true);
 
-    auto js_ability = std::make_unique<OHOS::ACELite::JSAbility>();
-    js_ability->Launch(const_cast<char*>(path), bundle, 0xff);
-    *hi_ace_js_out = reinterpret_cast<HiAceJs>(js_ability.release());
+    AppInfo appInfo = {};
+    appInfo.bundleName = bundle;
+    appInfo.srcPath = "./";
+    appInfo.isNativeApp = true;
+
+    OHOS::AbilityEnvImpl::GetInstance().SetAppInfo(appInfo);
+//    auto js_ability = std::make_unique<OHOS::ACELite::JSAbility>();
+//    js_ability->Launch(const_cast<char*>(path), bundle, 0xff);
+//    *hi_ace_js_out = reinterpret_cast<HiAceJs>(js_ability.release());
 
     Want want;
-    HandleLifecycleTransaction(*ability, want, STATE_INITIAL);
+    HandleLifecycleTransaction(*ability, want, STATE_UNINITIALIZED);
     return true;
 }
 
