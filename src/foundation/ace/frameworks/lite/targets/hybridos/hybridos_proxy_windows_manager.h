@@ -4,6 +4,12 @@
 #include "client/iwindows_manager.h"
 #include "client/isurface.h"
 
+#include <minigui/common.h>
+#include <minigui/minigui.h>
+#include <minigui/gdi.h>
+#include <minigui/window.h>
+#include <minigui/control.h>
+
 namespace OHOS {
 class HybridosProxyWindowsManager : public IWindowsManager {
 public:
@@ -16,6 +22,12 @@ public:
     void GetEventData(DeviceData* data) override;
     void Screenshot() override;
     void SetScreenshotListener(ScreenshotListener* listener) override;
+    void Run();
+
+private:
+    RECT m_ScreenRect;
+    HWND m_hMainWnd;
+
 };
 }
 #endif

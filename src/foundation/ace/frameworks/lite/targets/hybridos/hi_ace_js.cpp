@@ -23,6 +23,8 @@
 #include "task_manager.h"
 #include "ui_font_header.h"
 
+#include "hybridos_proxy_windows_manager.h"
+
 constexpr static char FONT_PATH[] = "/storage/data/";
 constexpr static int UI_TASK_HANDLER_PERIOD = 10 * 1000; // UI task sleep period is 10ms
 constexpr static char UI_TASK_THREAD_NAME[] = "UIJobFunc";
@@ -132,6 +134,8 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
 
     Want want;
     HandleLifecycleTransaction(*ability, want, STATE_UNINITIALIZED);
+
+    ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->Run();
     return true;
 }
 

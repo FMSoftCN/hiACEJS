@@ -1,0 +1,10 @@
+{
+    "appID": "com.example.hitest",
+    "appName": "HiTest",
+    "versionName": "1.0",
+    "versionCode": 1,
+    "minPlatformVersion": 3,
+    "pages": [
+        "pages/index/index"
+    ]
+}

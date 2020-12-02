@@ -13,5 +13,5 @@ list(APPEND hiacejs_test_SOURCES
 
 include_directories(${hiacejs_test_INCLUDE_DIRECTORIES})
 add_executable(hiacejs_test ${hiacejs_test_SOURCES})
-target_link_libraries(hiacejs_test ace ${JERRYSCRIPT_LIBRARIES})
+target_link_libraries(hiacejs_test ace ${JERRYSCRIPT_LIBRARIES} ${MINIGUI_LIBRARIES})
 install(TARGETS hiacejs_test DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)

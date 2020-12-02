@@ -4,8 +4,8 @@
 #include "ace_log.h"
 
 namespace OHOS {
-HybridosProxyWindow::HybridosProxyWindow()
-    : id_(INVALID_WINDOW_ID), surface_(nullptr)
+HybridosProxyWindow::HybridosProxyWindow(HWND hwnd)
+    : id_(INVALID_WINDOW_ID), surface_(nullptr), m_hwnd(hwnd)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
 }
@@ -33,6 +33,7 @@ void HybridosProxyWindow::Destroy()
 void HybridosProxyWindow::Show()
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    ShowWindow(m_hwnd, SW_SHOWNORMAL);
 }
 
 void HybridosProxyWindow::Hide()

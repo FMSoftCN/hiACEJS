@@ -2,11 +2,16 @@
 #define HYBRIDOS_PROXY_WINDOW_H
 
 #include "client/iwindow.h"
+#include <minigui/common.h>
+#include <minigui/minigui.h>
+#include <minigui/gdi.h>
+#include <minigui/window.h>
+#include <minigui/control.h>
 
 namespace OHOS {
 class HybridosProxyWindow : public IWindow {
 public:
-    HybridosProxyWindow();
+    HybridosProxyWindow(HWND hwnd);
     virtual ~HybridosProxyWindow();
 
     int Init() override;
@@ -24,6 +29,7 @@ public:
 private:
     int32_t id_;
     ISurface* surface_;
+    HWND m_hwnd;
 };
 }
 #endif
