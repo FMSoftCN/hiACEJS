@@ -14,6 +14,7 @@
  */
 
 #include "ability_event_handler.h"
+#include "hybridos_proxy_windows_manager.h"
 
 namespace OHOS {
 namespace {
@@ -49,6 +50,21 @@ void AbilityEventHandler::Run()
     }
 }
 
+void AbilityEventHandler::ProcessEvent()
+{
+    do {
+        (void) pthread_mutex_lock(&queueMutex_);
+        if (taskQueue_.empty()) {
+             (void) pthread_mutex_unlock(&queueMutex_);
+            break;
+        }
+        Task task = std::move(taskQueue_.front());
+        taskQueue_.pop();
+        (void) pthread_mutex_unlock(&queueMutex_);
+        task();
+    } while(1);
+}
+
 void AbilityEventHandler::PostTask(const Task& task)
 {
     (void) pthread_mutex_lock(&queueMutex_);
@@ -56,6 +72,8 @@ void AbilityEventHandler::PostTask(const Task& task)
     (void) pthread_mutex_unlock(&queueMutex_);
 
     (void) pthread_cond_signal(&pthreadCond_);
+
+    ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->ProcessAbilityEvent();
 }
 
 void AbilityEventHandler::PostQuit()

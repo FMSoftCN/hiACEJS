@@ -5,10 +5,18 @@
 #include "graphic_log.h"
 #include "ace_log.h"
 
+#include "ability_event_handler.h"
+
 namespace OHOS {
 
 static LRESULT MainProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    switch (message)
+    {
+        case MSG_PROCESS_ABILITY_EVENT:
+            AbilityEventHandler::GetCurrentHandler()->ProcessEvent();
+            break;
+    }
     return DefaultMainWinProc(hWnd, message, wParam, lParam);
 }
 
@@ -77,6 +85,12 @@ void HybridosProxyWindowsManager::Run()
         TranslateMessage(&Msg);
         DispatchMessage(&Msg);
     }
+}
+
+
+void HybridosProxyWindowsManager::ProcessAbilityEvent()
+{
+    SendMessage(m_hMainWnd, MSG_PROCESS_ABILITY_EVENT, 0, 0);
 }
 
 }

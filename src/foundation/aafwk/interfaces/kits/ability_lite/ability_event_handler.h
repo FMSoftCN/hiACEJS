@@ -65,6 +65,8 @@ public:
      */
     void Run();
 
+    void ProcessEvent();
+
     /**
      * @brief Posts a task to an asynchronous thread.
      *

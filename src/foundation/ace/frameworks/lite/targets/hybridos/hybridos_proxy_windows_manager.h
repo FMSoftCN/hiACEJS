@@ -10,6 +10,9 @@
 #include <minigui/window.h>
 #include <minigui/control.h>
 
+
+#define MSG_PROCESS_ABILITY_EVENT     (MSG_USER + 100 + 0)
+
 namespace OHOS {
 class HybridosProxyWindowsManager : public IWindowsManager {
 public:
@@ -23,6 +26,7 @@ public:
     void Screenshot() override;
     void SetScreenshotListener(ScreenshotListener* listener) override;
     void Run();
+    void ProcessAbilityEvent();
 
 private:
     RECT m_ScreenRect;

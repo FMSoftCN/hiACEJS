@@ -114,11 +114,6 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     ability = OHOS::AbilityLoader::GetInstance().GetAbilityByName(ACE_ABILITY_NAME);
 
     g_eventHandler = new OHOS::AbilityEventHandler();
-    pthread_t tid;
-    int ret = pthread_create(&tid, nullptr, UIJobFunc, g_eventHandler);
-    if (ret != 0) {
-        return false;
-    }
 
     ability->Init(0, 0, true);
 
@@ -128,9 +123,6 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     appInfo.isNativeApp = true;
 
     OHOS::AbilityEnvImpl::GetInstance().SetAppInfo(appInfo);
-//    auto js_ability = std::make_unique<OHOS::ACELite::JSAbility>();
-//    js_ability->Launch(const_cast<char*>(path), bundle, 0xff);
-//    *hi_ace_js_out = reinterpret_cast<HiAceJs>(js_ability.release());
 
     Want want;
     HandleLifecycleTransaction(*ability, want, STATE_UNINITIALIZED);
