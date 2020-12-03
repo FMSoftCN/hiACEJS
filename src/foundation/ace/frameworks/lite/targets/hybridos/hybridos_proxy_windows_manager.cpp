@@ -55,9 +55,12 @@ int HybridosProxyWindowsManager::Init()
 
 IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s x=%d|y=%d|width=%d|height=%d", __func__, config.rect.GetX(), config.rect.GetY(), config.rect.GetWidth(), config.rect.GetHeight());
 
-    m_ScreenRect = GetScreenRect();
+    m_ScreenRect.left = 0;
+    m_ScreenRect.top = 0;
+    m_ScreenRect.right = config.rect.GetWidth();
+    m_ScreenRect.bottom = config.rect.GetHeight();
 
 #ifdef _MGRM_PROCESSES
     JoinLayer(NAME_DEF_LAYER , "hiAceJS" , 0 , 0);
