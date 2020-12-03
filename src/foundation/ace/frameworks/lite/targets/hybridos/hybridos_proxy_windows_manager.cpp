@@ -14,6 +14,7 @@ static LRESULT MainProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
         case MSG_PROCESS_ABILITY_EVENT:
+            HILOG_DEBUG(HILOG_MODULE_ACE, "MSG_PROCESS_ABILITY_EVENT");
             AbilityEventHandler::GetCurrentHandler()->ProcessEvent();
             break;
     }
