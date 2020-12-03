@@ -125,7 +125,7 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     OHOS::AbilityEnvImpl::GetInstance().SetAppInfo(appInfo);
 
     Want want;
-    HandleLifecycleTransaction(*ability, want, STATE_UNINITIALIZED);
+    HandleLifecycleTransaction(*ability, want, STATE_ACTIVE);
 
     ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->Run();
     return true;
