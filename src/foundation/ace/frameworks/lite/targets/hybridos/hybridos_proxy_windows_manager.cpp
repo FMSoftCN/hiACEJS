@@ -27,13 +27,14 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             if (wParam == UI_TASK_TIMER_ID)
             {
                 RenderManager::GetInstance().JobExecute();
+                KillTimer(hWnd, UI_TASK_TIMER_ID);
             }
             break;
 
         case MSG_PAINT:
             {
                 HDC hdc = BeginPaint (hWnd);
-                BitBlt (m_memDc, 0, 0, RECTW(m_ScreenRect), RECTH(m_ScreenRect), hdc, 0, 0, 0);
+                BitBlt (m_memDC, 0, 0, RECTW(m_ScreenRect), RECTH(m_ScreenRect), hdc, 0, 0, 0);
                 EndPaint (hWnd, hdc);
             }
             break;
@@ -81,12 +82,12 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_hMainWnd = CreateMainWindow (&CreateInfo);
     SetWindowAdditionalData2(m_hMainWnd, (DWORD)this);
 
-    m_memDc = CreateMemDC (RECTW(m_ScreenRect), RECTH(m_ScreenRect),
+    m_memDC = CreateMemDC (RECTW(m_ScreenRect), RECTH(m_ScreenRect),
                         32, MEMDC_FLAG_HWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
-    return new HybridosProxyWindow(m_hMainWnd);
+    return new HybridosProxyWindow(m_hMainWnd, m_memDC);
 }
 
 void HybridosProxyWindowsManager::RemoveWindow(IWindow* window)

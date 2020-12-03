@@ -35,7 +35,7 @@ private:
 private:
     RECT m_ScreenRect;
     HWND m_hMainWnd;
-    HDC m_memDc;
+    HDC m_memDC;
 
 };
 }

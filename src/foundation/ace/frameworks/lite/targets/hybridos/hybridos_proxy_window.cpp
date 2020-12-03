@@ -1,11 +1,12 @@
 #include "hybridos_proxy_window.h"
+#include "hybridos_surface.h"
 #include "graphic_log.h"
 #include "surface.h"
 #include "ace_log.h"
 
 namespace OHOS {
-HybridosProxyWindow::HybridosProxyWindow(HWND hwnd)
-    : id_(INVALID_WINDOW_ID), surface_(nullptr), m_hwnd(hwnd)
+HybridosProxyWindow::HybridosProxyWindow(HWND hwnd, HDC hdc)
+    : id_(INVALID_WINDOW_ID), surface_(nullptr), m_hwnd(hwnd), m_memDC(hdc)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
 }
@@ -63,8 +64,11 @@ void HybridosProxyWindow::LowerToBottom()
 
 ISurface* HybridosProxyWindow::GetSurface()
 {
-//    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
-    return nullptr;
+    if (surface_ == nullptr) {
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
+        surface_ = new HybridosSurface(m_memDC);
+    }
+    return surface_;
 }
 
 int32_t HybridosProxyWindow::GetWindowId()
