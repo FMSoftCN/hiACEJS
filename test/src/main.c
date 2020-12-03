@@ -9,12 +9,9 @@
 
 #include "hi_ace_js.h"
 
-#define LOG(fmt, ...) fprintf(stderr, "%s:%d:%s"fmt, __FILE__, __LINE__, __func__, __VA_ARGS__)
-
 int MiniGUIMain (int argc, const char* argv[])
 {
     HiAceJs hi_ace_js;
-    HiAceJsRun("com.example.helloworld", "js/default", &hi_ace_js);
-    LOG("%s\n", "this is log");
+    HiAceJsRun("com.example.helloworld", "./", &hi_ace_js);
     return 0;
 }

@@ -119,7 +119,7 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
 
     AppInfo appInfo = {};
     appInfo.bundleName = bundle;
-    appInfo.srcPath = "./";
+    appInfo.srcPath = path;
     appInfo.isNativeApp = true;
 
     OHOS::AbilityEnvImpl::GetInstance().SetAppInfo(appInfo);
