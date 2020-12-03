@@ -29,8 +29,13 @@ public:
     void ProcessAbilityEvent();
 
 private:
+    static LRESULT WindowsManagerWndProc(HWND, UINT, WPARAM, LPARAM);
+    LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
+
+private:
     RECT m_ScreenRect;
     HWND m_hMainWnd;
+    HDC m_memDc;
 
 };
 }

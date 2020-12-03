@@ -6,13 +6,38 @@
 #include "ace_log.h"
 
 #include "ability_event_handler.h"
+#include "core/render_manager.h"
+
+#define UI_TASK_TIMER_ID 1001
 
 namespace OHOS {
 
-static LRESULT MainProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT HybridosProxyWindowsManager::WindowsManagerWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    if (HybridosProxyWindowsManager* wm = reinterpret_cast<HybridosProxyWindowsManager*>(GetWindowAdditionalData2(hWnd)))
+        return wm->WndProc(hWnd, message, wParam, lParam);
+    return DefaultMainWinProc(hWnd, message, wParam, lParam);
+}
+
+LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+        case MSG_TIMER:
+            if (wParam == UI_TASK_TIMER_ID)
+            {
+                RenderManager::GetInstance().JobExecute();
+            }
+            break;
+
+        case MSG_PAINT:
+            {
+                HDC hdc = BeginPaint (hWnd);
+                BitBlt (m_memDc, 0, 0, RECTW(m_ScreenRect), RECTH(m_ScreenRect), hdc, 0, 0, 0);
+                EndPaint (hWnd, hdc);
+            }
+            break;
+
         case MSG_PROCESS_ABILITY_EVENT:
             HILOG_DEBUG(HILOG_MODULE_ACE, "MSG_PROCESS_ABILITY_EVENT");
             AbilityEventHandler::GetCurrentHandler()->ProcessEvent();
@@ -44,7 +69,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     CreateInfo.hCursor = GetSystemCursor(0);
     CreateInfo.spCaption = "";
     CreateInfo.hIcon = 0;
-    CreateInfo.MainWindowProc = MainProc;
+    CreateInfo.MainWindowProc = HybridosProxyWindowsManager::WindowsManagerWndProc;
     CreateInfo.lx = m_ScreenRect.left;
     CreateInfo.ty = m_ScreenRect.top;
     CreateInfo.rx = m_ScreenRect.right;
@@ -54,6 +79,13 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     CreateInfo.hHosting = HWND_DESKTOP;
 
     m_hMainWnd = CreateMainWindow (&CreateInfo);
+    SetWindowAdditionalData2(m_hMainWnd, (DWORD)this);
+
+    m_memDc = CreateMemDC (RECTW(m_ScreenRect), RECTH(m_ScreenRect),
+                        32, MEMDC_FLAG_HWSURFACE,
+                        0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+
+    SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
     return new HybridosProxyWindow(m_hMainWnd);
 }
 

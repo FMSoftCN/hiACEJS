@@ -63,7 +63,7 @@ void HybridosProxyWindow::LowerToBottom()
 
 ISurface* HybridosProxyWindow::GetSurface()
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+//    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
     return nullptr;
 }
 
