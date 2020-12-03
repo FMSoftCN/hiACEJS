@@ -11,7 +11,7 @@
 namespace OHOS {
 class HybridosProxyWindow : public IWindow {
 public:
-    HybridosProxyWindow(HWND hwnd, HDC hdc);
+    HybridosProxyWindow(HWND hwnd, HDC hdc, RECT* rect);
     virtual ~HybridosProxyWindow();
 
     int Init() override;
@@ -31,6 +31,7 @@ private:
     ISurface* surface_;
     HWND m_hwnd;
     HDC m_memDC;
+    RECT* m_rect;
 };
 }
 #endif

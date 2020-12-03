@@ -5,8 +5,8 @@
 #include "ace_log.h"
 
 namespace OHOS {
-HybridosProxyWindow::HybridosProxyWindow(HWND hwnd, HDC hdc)
-    : id_(INVALID_WINDOW_ID), surface_(nullptr), m_hwnd(hwnd), m_memDC(hdc)
+HybridosProxyWindow::HybridosProxyWindow(HWND hwnd, HDC hdc, RECT* rect)
+    : id_(INVALID_WINDOW_ID), surface_(nullptr), m_hwnd(hwnd), m_memDC(hdc), m_rect(rect)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
 }
@@ -66,7 +66,7 @@ ISurface* HybridosProxyWindow::GetSurface()
 {
     if (surface_ == nullptr) {
         HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
-        surface_ = new HybridosSurface(m_memDC);
+        surface_ = new HybridosSurface(m_memDC, m_rect);
     }
     return surface_;
 }

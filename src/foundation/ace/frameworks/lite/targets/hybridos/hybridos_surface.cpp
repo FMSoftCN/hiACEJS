@@ -2,8 +2,8 @@
 #include "graphic_log.h"
 
 namespace OHOS {
-HybridosSurface::HybridosSurface(HDC hdc)
-    : m_hdc(hdc)
+HybridosSurface::HybridosSurface(HDC hdc, RECT* rect)
+    : m_hdc(hdc), m_rect(rect)
 {
 }
 

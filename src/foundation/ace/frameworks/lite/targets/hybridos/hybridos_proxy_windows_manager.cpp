@@ -87,7 +87,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
-    return new HybridosProxyWindow(m_hMainWnd, m_memDC);
+    return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_ScreenRect);
 }
 
 void HybridosProxyWindowsManager::RemoveWindow(IWindow* window)

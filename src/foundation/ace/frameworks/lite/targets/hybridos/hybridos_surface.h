@@ -11,7 +11,7 @@
 namespace OHOS {
 class HybridosSurface : public ISurface {
 public:
-    HybridosSurface(HDC hdc);
+    HybridosSurface(HDC hdc, RECT* rect);
     virtual ~HybridosSurface();
 
     virtual void Lock(void** buf, void** phyMem, uint32_t* strideLen) override;
@@ -19,6 +19,7 @@ public:
 
 private:
     HDC m_hdc;
+    RECT* m_rect;
 };
 }
 #endif
