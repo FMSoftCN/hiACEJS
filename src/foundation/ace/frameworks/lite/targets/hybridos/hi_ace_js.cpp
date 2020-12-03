@@ -57,7 +57,7 @@ void* UIJobFunc(void* arg)
     return nullptr;
 }
 
-void HandleLifecycleTransaction(OHOS::Ability &ability, const Want &want, int state)
+void HiAceJsHandleLifecycleTransaction(OHOS::Ability &ability, const Want &want, int state)
 {
     // Switch INITIAL state to INACTIVE state
     if (ability.GetState() == STATE_INITIAL) {
@@ -123,11 +123,11 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     appInfo.isNativeApp = true;
 
     OHOS::AbilityEnvImpl::GetInstance().SetAppInfo(appInfo);
-
     Want want;
-    HandleLifecycleTransaction(*ability, want, STATE_ACTIVE);
+    HiAceJsHandleLifecycleTransaction(*ability, want, STATE_ACTIVE);
 
     ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->Run();
+
     return true;
 }
 
