@@ -7,6 +7,7 @@
 
 #include "ability_event_handler.h"
 #include "core/render_manager.h"
+#include "animator/animator.h"
 
 #define UI_TASK_TIMER_ID 1001
 
@@ -27,12 +28,14 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             if (wParam == UI_TASK_TIMER_ID)
             {
                 RenderManager::GetInstance().JobExecute();
+                AnimatorManager::GetInstance()->JobExecute();
                 KillTimer(hWnd, UI_TASK_TIMER_ID);
             }
             break;
 
         case MSG_PAINT:
             {
+                HILOG_DEBUG(HILOG_MODULE_ACE, "paint");
                 HDC hdc = BeginPaint (hWnd);
                 BitBlt (m_memDC, 0, 0, RECTW(m_ScreenRect), RECTH(m_ScreenRect), hdc, 0, 0, 0);
                 EndPaint (hWnd, hdc);

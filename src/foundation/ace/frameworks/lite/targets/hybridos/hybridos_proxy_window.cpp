@@ -80,6 +80,7 @@ int32_t HybridosProxyWindow::GetWindowId()
 void HybridosProxyWindow::Update()
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    InvalidateRect(m_hwnd, NULL, TRUE);
 }
 }
 
