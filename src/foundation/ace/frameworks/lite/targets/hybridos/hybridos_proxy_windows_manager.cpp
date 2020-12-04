@@ -29,7 +29,6 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             {
                 RenderManager::GetInstance().JobExecute();
                 AnimatorManager::GetInstance()->JobExecute();
-                KillTimer(hWnd, UI_TASK_TIMER_ID);
             }
             break;
 
