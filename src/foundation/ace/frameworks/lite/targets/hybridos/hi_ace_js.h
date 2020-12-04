@@ -11,12 +11,7 @@
 extern "C" {
 #endif
 
-typedef struct _HiAceJs* HiAceJs;
-
-bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out);
-bool HiAceJsShow(HiAceJs hi_ace_js);
-bool HiAceJsHide(HiAceJs hi_ace_js);
-bool HiAceJsShutdown(HiAceJs hi_ace_js);
+bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontFileName);
 
 #ifdef __cplusplus
 }

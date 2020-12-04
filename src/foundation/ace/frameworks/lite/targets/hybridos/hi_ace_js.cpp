@@ -25,37 +25,13 @@
 
 #include "hybridos_proxy_windows_manager.h"
 
-constexpr static char FONT_PATH[] = "/storage/data/";
+constexpr static char FONT_PATH[] = "./assets/fonts/";
 constexpr static int UI_TASK_HANDLER_PERIOD = 10 * 1000; // UI task sleep period is 10ms
 constexpr static char UI_TASK_THREAD_NAME[] = "UIJobFunc";
 constexpr static char ACE_ABILITY_NAME[] = "AceAbility";
 
 static uint32_t g_fontPsramBaseAddr[OHOS::MIN_FONT_PSRAM_LENGTH / 4];
 static OHOS::AbilityEventHandler* g_eventHandler = nullptr;
-
-void* UIJobFunc(void* arg)
-{
-    prctl(PR_SET_NAME, UI_TASK_THREAD_NAME);
-
-    auto handler = static_cast<OHOS::AbilityEventHandler*>(arg);
-    if (handler == nullptr) {
-        HILOG_ERROR(HILOG_MODULE_ACE, "EventHandler is nullptr, fail to start loop");
-        return nullptr;
-    }
-
-    int ret = pthread_detach(pthread_self());
-    if (ret != 0) {
-        HILOG_WARN(HILOG_MODULE_ACE, "UIJobFunc detach failed: %{public}d", ret);
-    }
-
-    while (true) {
-        handler->PostTask([] {
-            OHOS::JobManager::GetInstance()->JobHandler();
-        });
-        usleep(UI_TASK_HANDLER_PERIOD);
-    }
-    return nullptr;
-}
 
 void HiAceJsHandleLifecycleTransaction(OHOS::Ability &ability, const Want &want, int state)
 {
@@ -98,16 +74,28 @@ void HiAceJsHandleLifecycleTransaction(OHOS::Ability &ability, const Want &want,
     }
 }
 
-bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
+bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontFileName)
 {
-    if (hi_ace_js_out == nullptr) {
+    if (appPath == nullptr || bundle == nullptr || fontFileName == nullptr)
+    {
+        HILOG_ERROR(HILOG_MODULE_APP, "invalid param!(appPath=%s|bundle=%s|fontFileName=%s)", appPath, bundle, fontFileName);
         return false;
     }
+
+    char srcPath[PATH_MAX] = {0};
+    char fontPath[PATH_MAX] = {0};
+    sprintf(srcPath, "%s/%s", appPath, bundle);
+    sprintf(fontPath, "%s/assets/fonts/", srcPath);
+
+    HILOG_INFO(HILOG_MODULE_APP, "src path=%s", srcPath);
+    HILOG_INFO(HILOG_MODULE_APP, "bundle=%s", bundle);
+    HILOG_INFO(HILOG_MODULE_APP, "font path=%s", fontPath);
+    HILOG_INFO(HILOG_MODULE_APP, "font file=%s", fontFileName);
 
     OHOS::Ability *ability = nullptr;
     OHOS::GraphicStartUp::Init();
     OHOS::GraphicStartUp::InitFontEngine(reinterpret_cast<uintptr_t>(g_fontPsramBaseAddr), OHOS::MIN_FONT_PSRAM_LENGTH,
-        const_cast<char *>(FONT_PATH), DEFAULT_VECTOR_FONT_FILENAME);
+        const_cast<char *>(fontPath), fontFileName);
 
     auto screenDevice = new OHOS::ScreenDevice();
     OHOS::ScreenDeviceProxy::GetInstance()->SetDevice(screenDevice);
@@ -119,7 +107,7 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
 
     AppInfo appInfo = {};
     appInfo.bundleName = bundle;
-    appInfo.srcPath = path;
+    appInfo.srcPath = srcPath;
     appInfo.isNativeApp = true;
 
     OHOS::AbilityEnvImpl::GetInstance().SetAppInfo(appInfo);
@@ -129,34 +117,4 @@ bool HiAceJsRun(const char* bundle, const char* path, HiAceJs* hi_ace_js_out)
     ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->Run();
 
     return true;
-}
-
-bool HiAceJsShow(HiAceJs hi_ace_js)
-{
-    if (hi_ace_js != nullptr) {
-        auto js_ability = reinterpret_cast<OHOS::ACELite::JSAbility*>(hi_ace_js);
-        js_ability->Show();
-        return true;
-    }
-    return false;
-}
-
-bool HiAceJsHide(HiAceJs hi_ace_js)
-{
-    if (hi_ace_js != nullptr) {
-        auto js_ability = reinterpret_cast<OHOS::ACELite::JSAbility*>(hi_ace_js);
-        js_ability->Show();
-        return true;
-    }
-    return false;
-}
-
-bool HiAceJsShutdown(HiAceJs hi_ace_js)
-{
-    if (hi_ace_js != nullptr) {
-        auto js_ability = reinterpret_cast<OHOS::ACELite::JSAbility*>(hi_ace_js);
-        js_ability->TransferToDestroy();
-        delete js_ability;
-    }
-    return false;
 }

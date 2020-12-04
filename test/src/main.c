@@ -11,7 +11,6 @@
 
 int MiniGUIMain (int argc, const char* argv[])
 {
-    HiAceJs hi_ace_js;
-    HiAceJsRun("com.example.helloworld", "./", &hi_ace_js);
+    HiAceJsRun("./app", "com.example.helloworld", "SourceHanSansSC-Regular.otf");
     return 0;
 }
