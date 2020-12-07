@@ -16,7 +16,7 @@
 namespace OHOS {
 class HybridosProxyWindowsManager : public IWindowsManager {
 public:
-    HybridosProxyWindowsManager() {}
+    HybridosProxyWindowsManager();
     virtual ~HybridosProxyWindowsManager() {}
 
     int Init() override;
@@ -29,6 +29,10 @@ public:
     void ProcessAbilityEvent();
 
 private:
+    bool CheckWinIdIsAvailable();
+    int32_t GetUniqueWinId();
+    void RecycleWinId(int32_t id);
+
     static LRESULT WindowsManagerWndProc(HWND, UINT, WPARAM, LPARAM);
     LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -36,7 +40,9 @@ private:
     RECT m_ScreenRect;
     HWND m_hMainWnd;
     HDC m_memDC;
+    uint32_t m_mainWndId;
 
+    uint32_t m_winIdStorage;
 };
 }
 #endif
