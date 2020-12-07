@@ -93,6 +93,7 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
                 DeviceData data;
                 data.point.x = mouseX;
                 data.point.y = mouseY;
+                data.winId = m_mainWndId;
                 if (wParam & KS_LEFTBUTTON 
                         || wParam & KS_RIGHTBUTTON
                         || wParam & KS_MIDDLEBUTTON)
@@ -103,7 +104,6 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
                 {
                     data.state = InputDevice::STATE_RELEASE;
                 }
-                data.winId = m_mainWndId;
                 HybridosInputDevice::GetInstance()->Dispatch(data);
             }
             break;
