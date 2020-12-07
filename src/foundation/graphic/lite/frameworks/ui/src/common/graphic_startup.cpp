@@ -74,9 +74,12 @@ void GraphicStartUp::Init()
     RenderManager::GetInstance().Init();
 
     CacheManager::GetInstance().Init(IMG_CACHE_SIZE);
+
+#if 0
 #ifdef VERSION_STANDARD
     OHOSInputDevice* input = new OHOSInputDevice();
     InputDeviceManager::GetInstance()->Add(input);
+#endif
 #endif
 
 #if ENABLE_WINDOW
