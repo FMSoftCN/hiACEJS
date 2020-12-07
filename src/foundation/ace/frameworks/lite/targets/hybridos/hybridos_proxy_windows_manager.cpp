@@ -21,8 +21,8 @@ const uint32_t WINDOW_ID_FULL_STORAGE = 0xFFFFFFFF;
 HybridosProxyWindowsManager::HybridosProxyWindowsManager()
  : m_hMainWnd(HWND_INVALID)
  , m_memDC(HDC_INVALID)
- , m_winIdStorage(0) 
  , m_mainWndId(0)
+ , m_winIdStorage(0) 
 {
 }
 
@@ -49,7 +49,7 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             {
                 HILOG_DEBUG(HILOG_MODULE_ACE, "paint");
                 HDC hdc = BeginPaint (hWnd);
-                BitBlt (m_memDC, 0, 0, RECTW(m_ScreenRect), RECTH(m_ScreenRect), hdc, 0, 0, 0);
+                BitBlt (m_memDC, 0, 0, RECTW(m_windowRect), RECTH(m_windowRect), hdc, 0, 0, 0);
                 EndPaint (hWnd, hdc);
             }
             break;
@@ -127,10 +127,10 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s x=%d|y=%d|width=%d|height=%d", __func__, config.rect.GetX(), config.rect.GetY(), config.rect.GetWidth(), config.rect.GetHeight());
 
-    m_ScreenRect.left = 0;
-    m_ScreenRect.top = 0;
-    m_ScreenRect.right = config.rect.GetWidth();
-    m_ScreenRect.bottom = config.rect.GetHeight();
+    m_windowRect.left = 0;
+    m_windowRect.top = 0;
+    m_windowRect.right = config.rect.GetWidth();
+    m_windowRect.bottom = config.rect.GetHeight();
 
 #ifdef _MGRM_PROCESSES
     JoinLayer(NAME_DEF_LAYER , "hiAceJS" , 0 , 0);
@@ -144,10 +144,10 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     CreateInfo.spCaption = "";
     CreateInfo.hIcon = 0;
     CreateInfo.MainWindowProc = HybridosProxyWindowsManager::WindowsManagerWndProc;
-    CreateInfo.lx = m_ScreenRect.left;
-    CreateInfo.ty = m_ScreenRect.top;
-    CreateInfo.rx = m_ScreenRect.right;
-    CreateInfo.by = m_ScreenRect.bottom;
+    CreateInfo.lx = m_windowRect.left;
+    CreateInfo.ty = m_windowRect.top;
+    CreateInfo.rx = m_windowRect.right;
+    CreateInfo.by = m_windowRect.bottom;
     CreateInfo.iBkColor = COLOR_lightwhite;
     CreateInfo.dwAddData = 0;
     CreateInfo.hHosting = HWND_DESKTOP;
@@ -156,12 +156,12 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     SetWindowAdditionalData2(m_hMainWnd, (DWORD)this);
     m_mainWndId = GetUniqueWinId();
 
-    m_memDC = CreateMemDC (RECTW(m_ScreenRect), RECTH(m_ScreenRect),
+    m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
                         32, MEMDC_FLAG_HWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
-    return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_ScreenRect, m_mainWndId);
+    return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_windowRect, m_mainWndId);
 }
 
 void HybridosProxyWindowsManager::RemoveWindow(IWindow* window)

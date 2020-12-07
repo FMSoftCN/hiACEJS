@@ -37,7 +37,7 @@ private:
     LRESULT WndProc(HWND, UINT, WPARAM, LPARAM);
 
 private:
-    RECT m_ScreenRect;
+    RECT m_windowRect;
     HWND m_hMainWnd;
     HDC m_memDC;
     uint32_t m_mainWndId;
