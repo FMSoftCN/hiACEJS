@@ -47,7 +47,6 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
 
         case MSG_PAINT:
             {
-                HILOG_DEBUG(HILOG_MODULE_ACE, "paint");
                 HDC hdc = BeginPaint (hWnd);
                 BitBlt (m_memDC, 0, 0, RECTW(m_windowRect), RECTH(m_windowRect), hdc, 0, 0, 0);
                 EndPaint (hWnd, hdc);
@@ -119,7 +118,7 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
 
 int HybridosProxyWindowsManager::Init()
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
     return 0;
 }
 
@@ -170,7 +169,8 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
 
 void HybridosProxyWindowsManager::RemoveWindow(IWindow* window)
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
+    RecycleWinId(window->GetWindowId());
     window->Hide();
     window->Destroy();
 }
@@ -178,7 +178,7 @@ void HybridosProxyWindowsManager::RemoveWindow(IWindow* window)
 bool HybridosProxyWindowsManager::CheckWinIdIsAvailable()
 {
     if (m_winIdStorage == WINDOW_ID_FULL_STORAGE) {
-        GRAPHIC_LOGE("reach max window num!");
+        HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
         return false;
     }
     return true;
@@ -208,17 +208,17 @@ void HybridosProxyWindowsManager::RecycleWinId(int32_t id)
 
 void HybridosProxyWindowsManager::GetEventData(DeviceData* data)
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
 }
 
 void HybridosProxyWindowsManager::Screenshot()
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
 }
 
 void HybridosProxyWindowsManager::SetScreenshotListener(ScreenshotListener* listener)
 {
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s:%d:%s", __FILE__, __LINE__, __func__);
+    HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
 }
 
 void HybridosProxyWindowsManager::Run()
