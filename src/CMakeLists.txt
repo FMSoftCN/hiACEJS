@@ -399,6 +399,7 @@ list(APPEND ace_SOURCES
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_windows_manager.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_windows_manager.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_surface.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hybridos_input_device.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
