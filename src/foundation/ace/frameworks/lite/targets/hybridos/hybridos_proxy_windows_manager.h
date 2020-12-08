@@ -27,6 +27,7 @@ public:
     void SetScreenshotListener(ScreenshotListener* listener) override;
     void Run();
     void ProcessAbilityEvent();
+    void InvalidateRect(const Rect& invalidatedArea);
 
 private:
     bool CheckWinIdIsAvailable();

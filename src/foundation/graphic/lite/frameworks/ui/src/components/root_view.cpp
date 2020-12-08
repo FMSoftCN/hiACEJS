@@ -22,6 +22,7 @@
 #if ENABLE_WINDOW
 #include "window/window_impl.h"
 #endif
+#include "hybridos_proxy_windows_manager.h"
 
 namespace OHOS {
 RootView::RootView()
@@ -81,6 +82,7 @@ void RootView::Render()
             boundWindow_->Update();
         }
 #endif
+        ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->InvalidateRect(invalidRect_);
         ScreenDeviceProxy::GetInstance()->OnRenderFinish();
     }
 

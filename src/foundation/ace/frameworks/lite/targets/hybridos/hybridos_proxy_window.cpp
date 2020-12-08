@@ -77,7 +77,6 @@ int32_t HybridosProxyWindow::GetWindowId()
 
 void HybridosProxyWindow::Update()
 {
-    InvalidateRect(m_hwnd, NULL, TRUE);
 }
 }
 

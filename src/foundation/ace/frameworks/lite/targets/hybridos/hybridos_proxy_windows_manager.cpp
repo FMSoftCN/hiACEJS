@@ -116,6 +116,16 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
     return DefaultMainWinProc(hWnd, message, wParam, lParam);
 }
 
+void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
+{
+    RECT rect;
+    rect.left = invalidatedArea.GetX();
+    rect.top = invalidatedArea.GetY();
+    rect.right = rect.left + invalidatedArea.GetWidth();
+    rect.bottom = rect.top + invalidatedArea.GetHeight();
+    ::InvalidateRect(m_hMainWnd, &rect, FALSE);
+}
+
 int HybridosProxyWindowsManager::Init()
 {
     HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
