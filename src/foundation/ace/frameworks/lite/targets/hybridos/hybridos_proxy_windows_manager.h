@@ -28,6 +28,7 @@ public:
     void Run();
     void ProcessAbilityEvent();
     void InvalidateRect(const Rect& invalidatedArea);
+    void DispatchEvent();
 
 private:
     bool CheckWinIdIsAvailable();
@@ -44,6 +45,9 @@ private:
     uint32_t m_mainWndId;
 
     uint32_t m_winIdStorage;
+
+    int m_mouseX;
+    int m_mouseY;
 };
 }
 #endif

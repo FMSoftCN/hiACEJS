@@ -23,6 +23,8 @@ HybridosProxyWindowsManager::HybridosProxyWindowsManager()
  , m_memDC(HDC_INVALID)
  , m_mainWndId(0)
  , m_winIdStorage(0) 
+ , m_mouseX(0)
+ , m_mouseY(0)
 {
 }
 
@@ -42,6 +44,10 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             {
                 RenderManager::GetInstance().JobExecute();
                 AnimatorManager::GetInstance()->JobExecute();
+                if(GetCapture() == m_hMainWnd)
+                {
+                    DispatchEvent();
+                }
             }
             break;
 
@@ -54,57 +60,41 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             break;
 
         case MSG_LBUTTONDOWN:
-        case MSG_MBUTTONDOWN:
-        case MSG_RBUTTONDOWN:
-            {
+            if(GetCapture() == HWND_NULL) {
+                SetCapture(m_hMainWnd);
+
                 int mouseX = LOWORD(lParam);
                 int mouseY = HIWORD(lParam);
                 ScreenToClient (hWnd, &mouseX, &mouseY);
-                DeviceData data;
-                data.point.x = mouseX;
-                data.point.y = mouseY;
-                data.state = InputDevice::STATE_PRESS;
-                data.winId = m_mainWndId;
-                HybridosInputDevice::GetInstance()->Dispatch(data);
+                m_mouseX = mouseX;
+                m_mouseY = mouseY;
+                DispatchEvent();
             }
             break;
 
         case MSG_LBUTTONUP:
-        case MSG_MBUTTONUP:
-        case MSG_RBUTTONUP:
+            if(GetCapture() == m_hMainWnd)
             {
+                ReleaseCapture();
+
                 int mouseX = LOWORD(lParam);
                 int mouseY = HIWORD(lParam);
                 ScreenToClient (hWnd, &mouseX, &mouseY);
-                DeviceData data;
-                data.point.x = mouseX;
-                data.point.y = mouseY;
-                data.state = InputDevice::STATE_RELEASE;
-                data.winId = m_mainWndId;
-                HybridosInputDevice::GetInstance()->Dispatch(data);
+                m_mouseX = mouseX;
+                m_mouseY = mouseY;
+                DispatchEvent();
             }
             break;
 
         case MSG_MOUSEMOVE:
+            if(GetCapture() == m_hMainWnd)
             {
                 int mouseX = LOWORD(lParam);
                 int mouseY = HIWORD(lParam);
                 ScreenToClient (hWnd, &mouseX, &mouseY);
-                DeviceData data;
-                data.point.x = mouseX;
-                data.point.y = mouseY;
-                data.winId = m_mainWndId;
-                if (wParam & KS_LEFTBUTTON 
-                        || wParam & KS_RIGHTBUTTON
-                        || wParam & KS_MIDDLEBUTTON)
-                {
-                    data.state = InputDevice::STATE_PRESS;
-                }
-                else
-                {
-                    data.state = InputDevice::STATE_RELEASE;
-                }
-                HybridosInputDevice::GetInstance()->Dispatch(data);
+                m_mouseX = mouseX;
+                m_mouseY = mouseY;
+                DispatchEvent();
             }
             break;
 
@@ -124,6 +114,16 @@ void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
     rect.right = rect.left + invalidatedArea.GetWidth();
     rect.bottom = rect.top + invalidatedArea.GetHeight();
     ::InvalidateRect(m_hMainWnd, &rect, FALSE);
+}
+
+void HybridosProxyWindowsManager::DispatchEvent()
+{
+    DeviceData data;
+    data.point.x = m_mouseX;
+    data.point.y = m_mouseY;
+    data.state = GetKeyStatus(SCANCODE_LEFTBUTTON) ? InputDevice::STATE_PRESS :  InputDevice::STATE_RELEASE;
+    data.winId = m_mainWndId;
+    HybridosInputDevice::GetInstance()->Dispatch(data);
 }
 
 int HybridosProxyWindowsManager::Init()
