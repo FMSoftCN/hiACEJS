@@ -48,6 +48,7 @@ private:
 
     int m_mouseX;
     int m_mouseY;
+    BOOL m_lastMouseLeftButtonStatus;
 };
 }
 #endif
