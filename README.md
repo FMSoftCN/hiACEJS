@@ -12,11 +12,11 @@ $ ./build/scripts/build_third_party.sh
 $ ./build/scripts/build_ace.sh
 ```
 
-## run test app
+## run app
 
 ```
 $ source ./build/scripts/env.sh
-$ hiacejs_test app com.example.myapplication ./app/fonts/
+$ hiacejs_run app com.example.myapplication ./app/fonts/
 ```
 
 
