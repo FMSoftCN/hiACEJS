@@ -56,8 +56,34 @@
 
 #include "hi_ace_js.h"
 
+
+void usage (void)
+{
+    printf ("usage: hiacejs_test appPath bundleName [fontPath] [fontFileName]\n");
+}
+
 int MiniGUIMain (int argc, const char* argv[])
 {
-    HiAceJsRun("./app", "com.example.helloworld", "SourceHanSansSC-Regular.otf");
+    if (argc == 1 || argc < 3) {
+        usage ();
+        return -1;
+    }
+
+    const char* appPath = argv[1];
+    const char* bundleName = argv[2];
+
+    const char* fontPath = NULL;
+    if (argc >= 4)
+    {
+        fontPath = argv[3];
+    }
+
+    const char* fontFileName = NULL;
+    if (argc >=5)
+    {
+        fontFileName = argv[4];
+    }
+
+    HiAceJsRun(appPath, bundleName, fontPath, fontFileName);
     return 0;
 }
