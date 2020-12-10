@@ -47,7 +47,6 @@
 
 #include "hybridos_proxy_windows_manager.h"
 #include "hybridos_proxy_window.h"
-#include "hybridos_input_device.h"
 
 #include "color.h"
 #include "graphic_log.h"
@@ -57,6 +56,7 @@
 #include "core/render_manager.h"
 #include "animator/animator.h"
 #include "dock/input_device.h"
+#include "common/input_device_manager.h"
 
 #define UI_TASK_TIMER_ID 1001
 
@@ -90,9 +90,9 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
         case MSG_TIMER:
             if (wParam == UI_TASK_TIMER_ID)
             {
-                DispatchEvent();
-                RenderManager::GetInstance().JobExecute();
+                InputDeviceManager::GetInstance()->JobExecute();
                 AnimatorManager::GetInstance()->JobExecute();
+                RenderManager::GetInstance().JobExecute();
             }
             break;
 
@@ -156,21 +156,6 @@ void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
     rect.right = rect.left + invalidatedArea.GetWidth();
     rect.bottom = rect.top + invalidatedArea.GetHeight();
     ::InvalidateRect(m_hMainWnd, &rect, FALSE);
-}
-
-void HybridosProxyWindowsManager::DispatchEvent()
-{
-    BOOL leftButtonStatus = GetKeyStatus(SCANCODE_LEFTBUTTON);
-    if (leftButtonStatus || leftButtonStatus != m_lastMouseLeftButtonStatus)
-    {
-        m_lastMouseLeftButtonStatus = leftButtonStatus;
-        DeviceData data;
-        data.point.x = m_mouseX;
-        data.point.y = m_mouseY;
-        data.state = leftButtonStatus ? InputDevice::STATE_PRESS :  InputDevice::STATE_RELEASE;
-        data.winId = m_mainWndId;
-        HybridosInputDevice::GetInstance()->Dispatch(data);
-    }
 }
 
 int HybridosProxyWindowsManager::Init()
@@ -265,7 +250,16 @@ void HybridosProxyWindowsManager::RecycleWinId(int32_t id)
 
 void HybridosProxyWindowsManager::GetEventData(DeviceData* data)
 {
-    HILOG_ERROR(HILOG_MODULE_ACE, "%s", __func__);
+    data->winId = INVALID_WINDOW_ID;
+    BOOL leftButtonStatus = GetKeyStatus(SCANCODE_LEFTBUTTON);
+    if (leftButtonStatus || leftButtonStatus != m_lastMouseLeftButtonStatus)
+    {
+        m_lastMouseLeftButtonStatus = leftButtonStatus;
+        data->point.x = m_mouseX;
+        data->point.y = m_mouseY;
+        data->state = leftButtonStatus ? InputDevice::STATE_PRESS :  InputDevice::STATE_RELEASE;
+        data->winId = m_mainWndId;
+    }
 }
 
 void HybridosProxyWindowsManager::Screenshot()

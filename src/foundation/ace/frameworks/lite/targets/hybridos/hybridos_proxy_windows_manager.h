@@ -75,7 +75,6 @@ public:
     void Run();
     void ProcessAbilityEvent();
     void InvalidateRect(const Rect& invalidatedArea);
-    void DispatchEvent();
 
 private:
     bool CheckWinIdIsAvailable();
