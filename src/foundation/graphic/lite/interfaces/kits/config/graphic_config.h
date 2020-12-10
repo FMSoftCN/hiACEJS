@@ -182,7 +182,7 @@ namespace OHOS {
  * @brief Log function of a graphics subsystem, which is disabled by default
  */
 #define ENABLE_GRAPHIC_LOG                0
-/**
+/*1
  * @brief Function for receiving input events in screen-off mode, which is disabled by default.
  */
 #define ENABLE_AOD                        0

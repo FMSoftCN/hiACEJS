@@ -69,9 +69,7 @@
 
 #include "hybridos_proxy_windows_manager.h"
 
-constexpr static char FONT_PATH[] = "./assets/fonts/";
-constexpr static int UI_TASK_HANDLER_PERIOD = 10 * 1000; // UI task sleep period is 10ms
-constexpr static char UI_TASK_THREAD_NAME[] = "UIJobFunc";
+constexpr static char DEFAULT_FONT_PATH[] = "/usr/share/fonts/";
 constexpr static char ACE_ABILITY_NAME[] = "AceAbility";
 
 static uint32_t g_fontPsramBaseAddr[OHOS::MIN_FONT_PSRAM_LENGTH / 4];
@@ -118,28 +116,37 @@ void HiAceJsHandleLifecycleTransaction(OHOS::Ability &ability, const Want &want,
     }
 }
 
-bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontFileName)
+bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontPath, const char* fontName)
 {
-    if (appPath == nullptr || bundle == nullptr || fontFileName == nullptr)
+    if (appPath == nullptr || bundle == nullptr)
     {
-        HILOG_ERROR(HILOG_MODULE_APP, "invalid param!(appPath=%s|bundle=%s|fontFileName=%s)", appPath, bundle, fontFileName);
+        HILOG_ERROR(HILOG_MODULE_APP, "invalid param!(appPath=%s|bundle=%s)", appPath, bundle);
         return false;
     }
 
     char srcPath[PATH_MAX] = {0};
-    char fontPath[PATH_MAX] = {0};
     sprintf(srcPath, "%s/%s", appPath, bundle);
-    sprintf(fontPath, "%s/assets/fonts/", srcPath);
+
+
+    if (fontPath == nullptr)
+    {
+        fontPath = DEFAULT_FONT_PATH;
+    }
+
+    if (fontName == nullptr)
+    {
+        fontName = DEFAULT_VECTOR_FONT_FILENAME;
+    }
 
     HILOG_INFO(HILOG_MODULE_APP, "src path=%s", srcPath);
     HILOG_INFO(HILOG_MODULE_APP, "bundle=%s", bundle);
     HILOG_INFO(HILOG_MODULE_APP, "font path=%s", fontPath);
-    HILOG_INFO(HILOG_MODULE_APP, "font file=%s", fontFileName);
+    HILOG_INFO(HILOG_MODULE_APP, "font file=%s", fontName);
 
     OHOS::Ability *ability = nullptr;
     OHOS::GraphicStartUp::Init();
     OHOS::GraphicStartUp::InitFontEngine(reinterpret_cast<uintptr_t>(g_fontPsramBaseAddr), OHOS::MIN_FONT_PSRAM_LENGTH,
-        const_cast<char *>(fontPath), fontFileName);
+        const_cast<char *>(fontPath), fontName);
 
     auto screenDevice = new OHOS::ScreenDevice();
     OHOS::ScreenDeviceProxy::GetInstance()->SetDevice(screenDevice);

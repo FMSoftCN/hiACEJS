@@ -55,7 +55,7 @@
 extern "C" {
 #endif
 
-bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontFileName);
+bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontPath, const char* fontName);
 
 #ifdef __cplusplus
 }

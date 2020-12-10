@@ -41,11 +41,11 @@
 #define FEATURE_ACELITE_HI_LOG_PRINTF
 #endif
 
-#define DEFAULT_PROFILER_MSG_PATH "/home/checky/"
+#define DEFAULT_PROFILER_MSG_PATH "/opt/hiacejs/"
 
-#define PROFILER_ENABLE_FLAG_FILE "/home/checky/profiler_enable"
+#define PROFILER_ENABLE_FLAG_FILE "/opt/hiacejs/profiler_enable"
 
-#define RUNTIME_MODE_FILE_PATH "/home/checky/jsparser_enable"
+#define RUNTIME_MODE_FILE_PATH "/opt/hiacejs/jsparser_enable"
 
 #endif // OHOS_ACELITE_CONFIG_H
 

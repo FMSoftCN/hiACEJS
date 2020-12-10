@@ -82,6 +82,8 @@
 #endif
 #endif
 
+#include "ace_log.h"
+
 namespace OHOS {
 void GraphicStartUp::InitFontEngine(uintptr_t psramAddr, uint32_t psramLen, const char* dPath, const char* ttfName)
 {
@@ -99,10 +101,12 @@ void GraphicStartUp::InitFontEngine(uintptr_t psramAddr, uint32_t psramLen, cons
     ret = pFont->SetFontPath(const_cast<char*>(dPath));
     if (ret == INVALID_RET_VALUE) {
         GRAPHIC_LOGW("SetFontPath failed");
+        HILOG_ERROR(HILOG_MODULE_APP, "SetFontPath failed. [%s]", dPath);
     }
     if (ttfName != nullptr) {
         ret = pFont->RegisterFontInfo(ttfName);
         if (ret == INVALID_RET_VALUE) {
+            HILOG_ERROR(HILOG_MODULE_APP, "load font failed. [path=%s][file=%s]", dPath, ttfName);
             GRAPHIC_LOGW("SetTtfName failed");
         }
     }
