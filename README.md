@@ -35,7 +35,7 @@ $ ./build/scripts/build_ace.sh
 
 ```
 $ source ./build/scripts/env.sh
-$ hiacejs_run app com.example.myapplication ./app/fonts/
+$ hiacejs_run app com.example.helloworld app/fonts/
 ```
 
 

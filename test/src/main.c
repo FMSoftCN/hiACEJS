@@ -59,7 +59,7 @@
 
 void usage (void)
 {
-    printf ("usage: hiacejs_test appPath bundleName [fontPath] [fontFileName]\n");
+    printf ("usage: hiacejs_run appPath bundleName [fontPath] [fontFileName]\n");
 }
 
 int MiniGUIMain (int argc, const char* argv[])

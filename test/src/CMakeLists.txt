@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(hiacejs_test)
+project(hiacejs_run)
 
-# hiacejs_test
-list(APPEND hiacejs_test_INCLUDE_DIRECTORIES
+# hiacejs_run
+list(APPEND hiacejs_run_INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/src/foundation/ace/frameworks/lite/targets/hybridos
 )
 
-list(APPEND hiacejs_test_SOURCES
+list(APPEND hiacejs_run_SOURCES
     main.c
 )
 
-include_directories(${hiacejs_test_INCLUDE_DIRECTORIES})
-add_executable(hiacejs_test ${hiacejs_test_SOURCES})
-target_link_libraries(hiacejs_test ace ${JERRYSCRIPT_LIBRARIES} ${MINIGUI_LIBRARIES})
-install(TARGETS hiacejs_test DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
+include_directories(${hiacejs_run_INCLUDE_DIRECTORIES})
+add_executable(hiacejs_run ${hiacejs_run_SOURCES})
+target_link_libraries(hiacejs_run ace ${JERRYSCRIPT_LIBRARIES} ${MINIGUI_LIBRARIES})
+install(TARGETS hiacejs_run DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)

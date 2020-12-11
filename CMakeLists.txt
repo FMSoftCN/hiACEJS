@@ -62,6 +62,4 @@ set(MINIGUI_INCLUDE_DIRS ${MiniGUI_INCLUDE_DIRS})
 
 # sub-directory
 add_subdirectory(src)
-add_subdirectory(src/hiacejs_run)
-add_subdirectory(src/appagent)
-#add_subdirectory(test)
+add_subdirectory(test)

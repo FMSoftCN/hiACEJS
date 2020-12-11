@@ -19,6 +19,8 @@ _deps
 
 #output
 output
+hiacejs_test
+hiacejs_run
 
 
 #log
