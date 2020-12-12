@@ -43,7 +43,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-project(ace)
+project(hiacejs)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall -fno-strict-aliasing -fsigned-char -Werror -O1 -fno-lto -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wno-format -Wno-format-extra-args -Wno-narrowing -fexceptions -fPIC")
@@ -445,8 +445,10 @@ list(APPEND ace_SOURCES
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
-add_library(ace SHARED ${ace_SOURCES})
-target_link_libraries(ace ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
+add_library(hiacejs SHARED ${ace_SOURCES})
+target_link_libraries(hiacejs ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
 
-install(FILES "foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.h" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/)
-install(TARGETS ace DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+configure_file(hiacejs.pc.in hiacejs.pc @ONLY)
+install(FILES hiacejs.pc DESTINATION lib/pkgconfig)
+install(FILES "foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.h" DESTINATION include)
+install(TARGETS hiacejs DESTINATION lib)
