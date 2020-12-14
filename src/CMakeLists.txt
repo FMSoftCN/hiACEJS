@@ -449,6 +449,6 @@ add_library(hiacejs SHARED ${ace_SOURCES})
 target_link_libraries(hiacejs ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
 
 configure_file(hiacejs.pc.in hiacejs.pc @ONLY)
-install(FILES hiacejs.pc DESTINATION lib/pkgconfig)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/hiacejs.pc DESTINATION lib/pkgconfig)
 install(FILES "foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.h" DESTINATION include)
 install(TARGETS hiacejs DESTINATION lib)
