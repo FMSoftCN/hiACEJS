@@ -41,6 +41,12 @@
 #define FEATURE_ACELITE_HI_LOG_PRINTF
 #endif
 
+
+/**
+ * support storage API for JS
+ */
+#define FEATURE_MODULE_STORAGE
+
 #define DEFAULT_PROFILER_MSG_PATH "/opt/hiacejs/"
 
 #define PROFILER_ENABLE_FLAG_FILE "/opt/hiacejs/profiler_enable"
