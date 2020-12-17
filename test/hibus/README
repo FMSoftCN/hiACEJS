@@ -1,0 +1,9 @@
+It is a temporary directory to store the codes for hibus js bind.
+
+1. hiBus.js: hiBus implementation in js, import this file to your js code when use hibus.
+2. test.html: an example, how to use hibus;
+3. hibus.c: implementation of HiBusConn class, for jerryscript.
+4. HiBusConn.js: test file for hiBus.c.
+
+command for compiling hibus.c
+gcc hibus.c -o hibus -I../../src/third_party/jerryscript/jerry-core/include -I../../src/third_party/jerryscript/jerry-ext/include -I../../src/third_party/jerryscript/jerry-libm/include -I../../src/third_party/jerryscript/jerry-port/include -L../../src/third_party/jerryscript/build/lib -lhibus -ljerry-core -ljerry-libm -ljerry-ext -ljerry-port-default

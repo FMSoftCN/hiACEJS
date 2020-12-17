@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>hibus</title>
+    </head>
+    <body>
+        <button id="btnValue1" type="button">start</button>
+        <button id="btnValue2" type="button">subscribe</button>
+        <button id="btnValue3" type="button">unsubscribe</button>
+        <button id="btnValue4" type="button">callback sync</button>
+        <button id="btnValue5" type="button">callback async</button>
+        <button id="btnValue6" type="button">checkpacket</button>
+        
+        <script type="text/javascript">
+            document.write("<script language=javascript src='hiBus.js'><\/script>");
+
+            var hiBus;
+
+            function successFunc(result)
+            {
+                console.log("callback successfully, url is : " + result.url);
+            }
+
+            function errorFunc(retCode)
+            {
+                console.log("callback error. return code is : " + retCode);
+            }
+
+            function subscribeFunction(data)
+            {
+                console.log("callback of event, name is " + data.name);
+            }
+
+            function toStart()
+            {
+                if(typeof(hiBus) == "undefined")
+                    hiBus = new HiBus("cn.fmsoft.hybridos.appagent", "target0", "/var/tmp/hibus.sock");
+            }
+
+            function toSubscribe()
+            {
+                hiBus.subscribeEvent("cn.fmsoft.hybridos.appagent", "target0", "pingpang", subscribeFunction);
+            }
+
+            function toUnsubscribe()
+            {
+                hiBus.unsubscribeEvent("cn.fmsoft.hybridos.appagent", "target0", "pingpang");
+            }
+
+            function toCallbackSync()
+            {
+                hiBus.callProcedure("@localhost/cn.fmsoft.hybridos.appagent/target0", "getUrl", {"param0":"hello", "param1":1}, 10, {"type":HiBus.SYNCREMOTECALL, "success":successFunc, "error":errorFunc});
+            }
+
+            function toCallbackAsync()
+            {
+                hiBus.callProcedure("@localhost/cn.fmsoft.hybridos.appagent/target0", "getUrl", {"param0":"hello", "param1":1}, 10, {"type":HiBus.ASYNCREMOTECALL, "success":successFunc, "error":errorFunc});
+            }
+
+            function toCheckPacket()
+            {
+                hiBus.checkPackets();
+            }
+
+            document.getElementById("btnValue1").onclick = toStart;
+            document.getElementById("btnValue2").onclick = toSubscribe;
+            document.getElementById("btnValue3").onclick = toUnsubscribe;
+            document.getElementById("btnValue4").onclick = toCallbackSync;
+            document.getElementById("btnValue5").onclick = toCallbackAsync;
+            document.getElementById("btnValue6").onclick = toCheckPacket;
+
+        </script>
+    </body>
+</html>
