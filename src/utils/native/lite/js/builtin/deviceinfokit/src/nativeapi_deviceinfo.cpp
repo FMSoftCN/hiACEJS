@@ -128,6 +128,7 @@ void ExecuteGetInfo(void* data)
     Screen &screen = Screen::GetInstance();
     JSI::SetNumberProperty(result, "windowWidth", (double)screen.GetWidth());
     JSI::SetNumberProperty(result, "windowHeight", (double)screen.GetHeight());
+    JSI::SetBooleanProperty(result, "hiacejs", true);
     free(brand);
     free(manufacture);
     free(model);
