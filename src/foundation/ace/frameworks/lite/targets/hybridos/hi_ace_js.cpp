@@ -165,6 +165,7 @@ bool HiAceJsRun(const char* appPath, const char* bundle, const char* fontPath, c
     Want want;
     HiAceJsHandleLifecycleTransaction(*ability, want, STATE_ACTIVE);
 
+    ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->ProcessAbilityEvent();
     ((OHOS::HybridosProxyWindowsManager*)OHOS::IWindowsManager::GetInstance())->Run();
 
     return true;
