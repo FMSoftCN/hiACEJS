@@ -434,6 +434,8 @@ list(APPEND ace_SOURCES
 # hybridos
 list(APPEND ace_INCLUDE_DIRECTORIES
     foundation/ace/frameworks/lite/include/hybridos
+    base/startup/hals/syspara_lite
+    base/startup/interfaces/kits/syspara_lite
 )
 
 list(APPEND ace_SOURCES
@@ -442,6 +444,9 @@ list(APPEND ace_SOURCES
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_windows_manager.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_windows_manager.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_surface.cpp
+
+    base/startup/frameworks/syspara_lite/parameter/src/parameter_common.c
+    vendor/fmsoft/default/hals/utils/sys_param/hal_sys_param.c
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
