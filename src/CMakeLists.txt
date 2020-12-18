@@ -436,6 +436,8 @@ list(APPEND ace_INCLUDE_DIRECTORIES
     foundation/ace/frameworks/lite/include/hybridos
     base/startup/hals/syspara_lite
     base/startup/interfaces/kits/syspara_lite
+
+    utils/native/lite/js/builtin/hibus/include
 )
 
 list(APPEND ace_SOURCES
@@ -447,6 +449,8 @@ list(APPEND ace_SOURCES
 
     base/startup/frameworks/syspara_lite/parameter/src/parameter_common.c
     vendor/fmsoft/default/hals/utils/sys_param/hal_sys_param.c
+
+    utils/native/lite/js/builtin/hibus/src/nativeapi_hibus.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
