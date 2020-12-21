@@ -43,7 +43,7 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-project(ace)
+project(hiacejs)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall -fno-strict-aliasing -fsigned-char -Werror -O1 -fno-lto -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wno-format -Wno-format-extra-args -Wno-narrowing -fexceptions -fPIC")
@@ -434,6 +434,10 @@ list(APPEND ace_SOURCES
 # hybridos
 list(APPEND ace_INCLUDE_DIRECTORIES
     foundation/ace/frameworks/lite/include/hybridos
+    base/startup/hals/syspara_lite
+    base/startup/interfaces/kits/syspara_lite
+
+    utils/native/lite/js/builtin/hibus/include
 )
 
 list(APPEND ace_SOURCES
@@ -442,11 +446,18 @@ list(APPEND ace_SOURCES
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_proxy_windows_manager.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_windows_manager.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hybridos_surface.cpp
+
+    base/startup/frameworks/syspara_lite/parameter/src/parameter_common.c
+    vendor/fmsoft/default/hals/utils/sys_param/hal_sys_param.c
+
+    utils/native/lite/js/builtin/hibus/src/nativeapi_hibus.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
-add_library(ace SHARED ${ace_SOURCES})
-target_link_libraries(ace ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
+add_library(hiacejs SHARED ${ace_SOURCES})
+target_link_libraries(hiacejs ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
 
-install(FILES "foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.h" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/)
-install(TARGETS ace DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+configure_file(hiacejs.pc.in hiacejs.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/hiacejs.pc DESTINATION lib/pkgconfig)
+install(FILES "foundation/ace/frameworks/lite/targets/hybridos/hi_ace_js.h" DESTINATION include)
+install(TARGETS hiacejs DESTINATION lib)

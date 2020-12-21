@@ -43,6 +43,10 @@ extern void InitNativeApiKv(JSIValue exports);
 extern void InitDeviceModule(JSIValue exports);
 #endif
 
+#ifdef FEATURE_MODULE_HIBUS
+extern void InitHiBusModule(JSIValue exports);
+#endif
+
 // Config information for built-in JS modules of OHOS platform
 const Module OHOS_MODULES[] = {
 #ifdef ENABLE_MODULE_REQUIRE_TEST
@@ -64,6 +68,9 @@ const Module OHOS_MODULES[] = {
 #endif
 #ifdef FEATURE_MODULE_DEVICE
     {"device", InitDeviceModule},
+#endif
+#ifdef FEATURE_MODULE_HIBUS
+    {"hibus", InitHiBusModule},
 #endif
 };
 } // namespace ACELite

@@ -94,6 +94,8 @@ list(APPEND sec_config_SOURCES
 include_directories(${sec_config_INCLUDE_DIRECTORIES})
 add_library(sec_config SHARED ${sec_config_SOURCES})
 
-install(FILES "include/securec.h" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/)
-install(FILES "include/securectype.h" DESTINATION ${CMAKE_INSTALL_PREFIX}/include/)
-install(TARGETS sec_config DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/)
+configure_file(libsec_config.pc.in libsec_config.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libsec_config.pc DESTINATION lib/pkgconfig)
+install(FILES "include/securec.h" DESTINATION include)
+install(FILES "include/securectype.h" DESTINATION include)
+install(TARGETS sec_config DESTINATION lib)

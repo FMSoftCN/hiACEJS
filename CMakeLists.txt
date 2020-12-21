@@ -44,8 +44,6 @@
 cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-set(CMAKE_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/output/root/usr/include")
-set(CMAKE_LIBRARY_PATH "${CMAKE_SOURCE_DIR}/output/root/usr/lib")
 
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)

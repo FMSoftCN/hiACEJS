@@ -46,55 +46,20 @@
  */
 
 
-#ifndef OHOS_ACELITE_CONFIG_H
-#define OHOS_ACELITE_CONFIG_H
+#ifndef JS_NATIVE_API_HI_BUS_H
+#define JS_NATIVE_API_HI_BUS_H
 
-/**
- * ================================================================================================
- *                 hi3516_linux config for hmf
- * ================================================================================================
- */
-#define OHOS_ACELITE_LINUX // NOTE: DO NOT use this macro directly
+#include "jsi/jsi.h"
 
-/**
- * Compile all test entry for hmf
- */
-#ifdef FEATURE_TEST_IMPLEMENTATION
-#error "must keep the global configuration unique"
-#else
-#define FEATURE_TEST_IMPLEMENTATION
-#endif
+namespace OHOS {
+namespace ACELite {
+class NativeapiHiBus {
+public:
+    NativeapiHiBus() {}
+    ~NativeapiHiBus() {}
 
-/**
- * use hi log interface to trace out
- */
-#ifdef FEATURE_ACELITE_HI_LOG_PRINTF
-#error "must keep the global configuration unique"
-#else
-#define FEATURE_ACELITE_HI_LOG_PRINTF
-#endif
-
-
-/**
- * support storage API for JS
- */
-#define FEATURE_MODULE_STORAGE
-
-/**
- * support device API for JS
- */
-#define FEATURE_MODULE_DEVICE
-
-/**
- * support hibus API for JS
- */
-#define FEATURE_MODULE_HIBUS
-
-#define DEFAULT_PROFILER_MSG_PATH "/opt/hiacejs/"
-
-#define PROFILER_ENABLE_FLAG_FILE "/opt/hiacejs/profiler_enable"
-
-#define RUNTIME_MODE_FILE_PATH "/opt/hiacejs/jsparser_enable"
-
-#endif // OHOS_ACELITE_CONFIG_H
-
+    static JSIValue printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
+};
+} // ACELite
+} // OHOS
+#endif /* JS_NATIVE_API_HI_BUS_H */

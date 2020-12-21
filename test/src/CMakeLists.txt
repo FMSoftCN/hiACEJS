@@ -13,5 +13,5 @@ list(APPEND hiacejs_run_SOURCES
 
 include_directories(${hiacejs_run_INCLUDE_DIRECTORIES})
 add_executable(hiacejs_run ${hiacejs_run_SOURCES})
-target_link_libraries(hiacejs_run ace ${JERRYSCRIPT_LIBRARIES} ${MINIGUI_LIBRARIES})
-install(TARGETS hiacejs_run DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
+target_link_libraries(hiacejs_run hiacejs ${JERRYSCRIPT_LIBRARIES} ${MINIGUI_LIBRARIES})
+install(TARGETS hiacejs_run DESTINATION bin)
