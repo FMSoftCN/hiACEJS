@@ -190,7 +190,7 @@ elseif((NOT CYGWIN) AND (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows") AND (USING_GC
 endif()
 
 if(USING_GCC OR USING_CLANG)
-  jerry_add_compile_flags(-std=c99 -pedantic)
+    #  jerry_add_compile_flags(-std=c99 -pedantic)
   # Turn off stack protector
   jerry_add_compile_flags(-fno-builtin -fno-stack-protector)
   jerry_add_compile_warnings(all extra format-nonliteral init-self conversion sign-conversion format-security missing-declarations shadow strict-prototypes undef old-style-definition)
