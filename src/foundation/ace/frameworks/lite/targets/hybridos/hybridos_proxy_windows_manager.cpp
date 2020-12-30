@@ -252,6 +252,11 @@ void HybridosProxyWindowsManager::GetEventData(DeviceData* data)
 {
     data->winId = INVALID_WINDOW_ID;
     BOOL leftButtonStatus = GetKeyStatus(SCANCODE_LEFTBUTTON);
+    if(GetCapture() != m_hMainWnd && leftButtonStatus)
+    {
+        return;
+    }
+
     if (leftButtonStatus || leftButtonStatus != m_lastMouseLeftButtonStatus)
     {
         m_lastMouseLeftButtonStatus = leftButtonStatus;
