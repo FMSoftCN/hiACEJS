@@ -1,12 +1,12 @@
 # hiACEJS
 
-hiACEJS is a runtime for the HybridOS.
+hiACEJS is a light-weight app engine for HybridOS Device Side.
 
 - [Introduction](#introduction)
 - [How to Build](#how-to-build)
+- [Current Status](#current-status)
+- [TODO List](#todo-list)
 - [Copying](#copying)
-   + [For the Server and the Command Line](#for-the-server-and-the-command-line)
-   + [For the Library](#for-the-library)
    + [Commercial License](#commercial-license)
    + [Special Statement](#special-statement)
 
@@ -42,6 +42,14 @@ $ source ./build/scripts/env.sh
 $ hiacejs_run app com.example.helloworld app/fonts/
 ```
 
+## Current Status
+
+- Dec. 2020: First release (version 0.9).
+
+## TODO List
+
+- Support for hiBus.
+- Support for audio and video.
 
 ## Copying
 
