@@ -1,6 +1,6 @@
-# hiAceJS
+# hiACEJS
 
-hiAceJS is a runtime for the HybridOS.
+hiACEJS is a runtime for the HybridOS.
 
 - [Introduction](#introduction)
 - [How to Build](#how-to-build)
@@ -12,10 +12,14 @@ hiAceJS is a runtime for the HybridOS.
 
 ## Introduction
 
-The hiAceJS is a derivative from the OpenHarmony ACE JS.
-In HybridOS, hiAce is one of the runtimes, and the
-other runtime is webkit.
+hiACEJS is a derivative of OpenHarmony ACELite for HybridOS.
+hiACEJS provides a light-weight app engine in JavaScript for HybridOS.
 
+By using hiACEJS, you can use Huawei's EcoDev Studio to develope your app in
+JavaScript, and run it directly on HybridOS.
+
+Note that if you want a fully compatibility of Web technologies,
+you should use [hiWebKit](https://hybridos.fmsoft.cn/download).
 
 ## How to Build
 
