@@ -90,6 +90,16 @@
  */
 #define FEATURE_MODULE_HIBUS
 
+/**
+ * timer module
+ */
+#define FEATURE_TIMER_MODULE
+
+/**
+ * enable Canvas component Feature API
+ */
+#define FEATURE_COMPONENT_CANVAS
+
 #define DEFAULT_PROFILER_MSG_PATH "/opt/hiacejs/"
 
 #define PROFILER_ENABLE_FLAG_FILE "/opt/hiacejs/profiler_enable"
