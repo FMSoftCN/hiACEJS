@@ -19,6 +19,12 @@ other runtime is webkit.
 
 ## How to Build
 
+- set env
+
+```
+$ source build/scripts/env.sh
+```
+
 - build thirdpart
 
 ```
@@ -34,7 +40,6 @@ $ ./build/scripts/build_ace.sh
 - run app
 
 ```
-$ source ./build/scripts/env.sh
 $ hiacejs_run app com.example.helloworld app/fonts/
 ```
 
