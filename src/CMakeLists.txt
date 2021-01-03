@@ -455,7 +455,7 @@ list(APPEND ace_SOURCES
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
 add_library(hiacejs SHARED ${ace_SOURCES})
-target_link_libraries(hiacejs ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
+target_link_libraries(hiacejs hibus ${MINIGUI_LIBRARIES} ${MBEDTLS_LIBRARIES} ${SECUREC_LIBRARIES} ${JERRYSCRIPT_LIBRARIES})
 
 configure_file(hiacejs.pc.in hiacejs.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/hiacejs.pc DESTINATION lib/pkgconfig)
