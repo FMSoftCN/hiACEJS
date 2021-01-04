@@ -82,17 +82,6 @@ public:
     // only for test
     static JSIValue printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
 
-
-    // int hibus_connect_via_unix_socket (const char* path_to_socket, const char* app_name, const char* runner_name, hibus_conn** conn);
-    // int hibus_disconnect (hibus_conn* conn);
-    //
-    // typedef void (*hibus_event_handler)(hibus_conn* conn, const char* from_endpoint, const char* bubble_name, const char* bubble_data);
-    // int hibus_subscribe_event (hibus_conn* conn, const char* endpoint, const char* bubble_name, hibus_event_handler event_handler);
-    // int hibus_unsubscribe_event (hibus_conn* conn, const char* endpoint, const char* bubble_name);
-    //
-    // typedef void (*hibus_result_handler)(hibus_conn* conn, const char* from_endpoint, const char* method_name, int ret_code, const char* ret_value);
-    // int hibus_call_procedure (hibus_conn* conn, const char* endpoint, const char* method_name, const char* method_praram, time_t ret_time_expected, hibus_result_handler result_handler);
-
 };
 } // ACELite
 } // OHOS

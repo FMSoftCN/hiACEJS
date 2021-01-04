@@ -60,63 +60,17 @@
 #include "internal/jsi_internal.h"
 #include "js_fwk_common.h"
 
+#include "hibus_wrapper.h"
+
 
 namespace OHOS {
 namespace ACELite {
 
 const char HIBUS_POINTER_NAME[] = "HiBusPointer";
 
-typedef struct
-{
-    char appName[128];
-    char runnerName[64];
-    char pathSocket[PATH_MAX];
-    int fdSocket;
-    hibus_conn * context;
-} hibus_object_t;
-
 void InitHiBusModule(JSIValue exports)
 {
     JSI::SetModuleAPI(exports, "printInfo", NativeapiHiBus::printInfo);
-}
-
-void SetHiBusPointer(JSIValue object, hibus_object_t* hibusPointer)
-{
-    if (!JSI::ValueIsObject(object) || (hibusPointer == nullptr)) {
-        HILOG_ERROR(HILOG_MODULE_ACE, "SetHiBusPointer failed!");
-        return;
-    }
-
-#if defined(ENABLE_JERRY)
-    JSIValue hibusObj = JSI::CreateObject();
-    void *nativePtr = reinterpret_cast<void *>(hibusPointer);
-    jerry_set_object_native_pointer(AS_JERRY_VALUE(hibusObj), nativePtr, nullptr);
-    JSI::SetNamedProperty(object, HIBUS_POINTER_NAME, hibusObj);
-    JSI::ReleaseValue(hibusObj);
-#else
-    HILOG_ERROR(HILOG_MODULE_ACE, "SetHiBusPointer has not been implemented in this js engine!");
-#endif
-}
-
-hibus_object_t* GetHiBusPointer(JSIValue object)
-{
-    if (!JSI::ValueIsObject(object)) {
-        HILOG_ERROR(HILOG_MODULE_ACE, "GetHiBusPointer failed!");
-        return nullptr;
-    }
-
-#if defined(ENABLE_JERRY)
-    void *nativePointer = nullptr;
-    bool exist = jerry_get_object_native_pointer(AS_JERRY_VALUE(object), &nativePointer, nullptr);
-    if (!exist || (nativePointer == nullptr)) {
-        HILOG_ERROR(HILOG_MODULE_ACE, "GetHiBusPointer get function pointer failed!");
-        return nullptr;
-    }
-    return reinterpret_cast<hibus_object_t *>(nativePointer);
-#else
-    HILOG_ERROR(HILOG_MODULE_ACE, "SetHiBusPointer has not been implemented in this js engine!");
-    return nullptr;
-#endif
 }
 
 void NativeapiHiBus::RegistPropertyAppName(JSIValue exports)
@@ -130,19 +84,9 @@ void NativeapiHiBus::RegistPropertyAppName(JSIValue exports)
 
 JSIValue NativeapiHiBus::GetterAppName(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
-    JSIValue undefValue = JSI::CreateUndefined();
-    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
-    }
-
-    hibus_object_t* hibus = GetHiBusPointer(args[0]);
-    if (hibus == nullptr)
-    {
-        return undefValue;
-    }
-
-    const char* appName = hibus_conn_app_name(hibus->context);
-    return JSI::CreateString(appName);
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    const char* value = hibus->GetAppName();
+    return value ? JSI::CreateString(value) : JSI::CreateUndefined();
 }
 
 void NativeapiHiBus::RegistPropertyRunnerName(JSIValue exports)
@@ -156,19 +100,9 @@ void NativeapiHiBus::RegistPropertyRunnerName(JSIValue exports)
 
 JSIValue NativeapiHiBus::GetterRunnerName(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
-    JSIValue undefValue = JSI::CreateUndefined();
-    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
-    }
-
-    hibus_object_t* hibus = GetHiBusPointer(args[0]);
-    if (hibus == nullptr)
-    {
-        return undefValue;
-    }
-
-    const char* runnerName = hibus_conn_runner_name(hibus->context);
-    return JSI::CreateString(runnerName);
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    const char* value = hibus->GetRunnerName();
+    return value ? JSI::CreateString(value) : JSI::CreateUndefined();
 }
 
 void NativeapiHiBus::RegistPropertyPathSocket(JSIValue exports)
@@ -182,18 +116,9 @@ void NativeapiHiBus::RegistPropertyPathSocket(JSIValue exports)
 
 JSIValue NativeapiHiBus::GetterPathSocket(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
-    JSIValue undefValue = JSI::CreateUndefined();
-    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
-    }
-
-    hibus_object_t* hibus = GetHiBusPointer(args[0]);
-    if (hibus == nullptr)
-    {
-        return undefValue;
-    }
-
-    return JSI::CreateString(hibus->pathSocket);
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    const char* value = hibus->GetPathToSocket();
+    return value ? JSI::CreateString(value) : JSI::CreateUndefined();
 }
 
 JSIValue NativeapiHiBus::Connect(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
@@ -203,44 +128,29 @@ JSIValue NativeapiHiBus::Connect(const JSIValue thisVal, const JSIValue *args, u
         return undefValue;
     }
 
-    hibus_object_t* hibusObject = (hibus_object_t*)malloc(sizeof(hibus_object_t));
-    if(hibusObject == NULL)
-    {
-        return undefValue;
-    }
-
-    memset(hibusObject, 0, sizeof(hibus_object_t));
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    char appName[APP_NAME_LEN + 1] = {0};
+    char runnerName[RUNNER_NAME_LEN + 1] = {0};
+    char pathToSocket[PATH_MAX] = {0};
 
     switch(argsNum)
     {
         case 0:
         case 1:
         case 2:
-            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[0]), (jerry_char_t*)hibusObject->appName, 127);
-            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[1]), (jerry_char_t*)hibusObject->runnerName, 63);
-            sprintf(hibusObject->pathSocket, "/var/tmp/hibus.sock");
+            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[0]), (jerry_char_t*)appName, APP_NAME_LEN);
+            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[1]), (jerry_char_t*)runnerName, RUNNER_NAME_LEN);
+            sprintf(pathToSocket, "/var/tmp/hibus.sock");
             break;
         default:
-            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[0]), (jerry_char_t*)hibusObject->appName, 127);
-            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[1]), (jerry_char_t*)hibusObject->runnerName, 63);
-            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[2]), (jerry_char_t*)hibusObject->pathSocket, PATH_MAX - 1);
+            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[0]), (jerry_char_t*)appName, APP_NAME_LEN);
+            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[1]), (jerry_char_t*)runnerName, RUNNER_NAME_LEN);
+            jerry_string_to_char_buffer(AS_JERRY_VALUE(args[2]), (jerry_char_t*)pathToSocket, PATH_MAX - 1);
             break;
     }
 
-    hibusObject->fdSocket = hibus_connect_via_unix_socket (hibusObject->pathSocket, \
-            hibusObject->appName, hibusObject->runnerName, &(hibusObject->context));
-    fprintf(stderr, "create object: app_name = %s, runner_name = %s, path_socket = %s, fd = %d, conn = %p\n", \
-            hibusObject->appName, hibusObject->runnerName, hibusObject->pathSocket, hibusObject->fdSocket, hibusObject->context);
-
-    if (((hibus_object_t *)hibusObject)->fdSocket >= 0)
-    {
-        JSIValue jsiHiBus = JSI::CreateObject();
-        SetHiBusPointer(jsiHiBus, hibusObject);
-        return jsiHiBus;
-    }
-
-    free(hibusObject);
-    return undefValue;
+    bool result = hibus->ConnectViaUnixSocket(pathToSocket, appName, runnerName);
+    return JSI::CreateBoolean(result);
 }
 
 JSIValue NativeapiHiBus::Disconnect(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
@@ -250,13 +160,8 @@ JSIValue NativeapiHiBus::Disconnect(const JSIValue thisVal, const JSIValue *args
         return undefValue;
     }
 
-    hibus_object_t* hibus = GetHiBusPointer(args[0]);
-    if (hibus == nullptr)
-    {
-        return undefValue;
-    }
-
-    return JSI::CreateNumber(hibus_disconnect(hibus->context));
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    return JSI::CreateBoolean(hibus->Disconnect());
 }
 
 JSIValue NativeapiHiBus::Send(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
@@ -267,22 +172,14 @@ JSIValue NativeapiHiBus::Send(const JSIValue thisVal, const JSIValue *args, uint
         return undefValue;
     }
 
-    hibus_object_t* hibus = GetHiBusPointer(args[0]);
-    if (hibus == nullptr)
-    {
-        return undefValue;
-    }
-
-    char *content = JSI::ValueToString(args[1]);
+    char *content = JSI::ValueToString(args[0]);
     if (content == nullptr)
     {
         return undefValue;
     }
 
-    if (hibus->fdSocket >= 0 && hibus->context)
-    {
-        length = hibus_send_text_packet (hibus->context, content, strlen(content));
-    }
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    length = hibus->SendTextPacket(content, strlen(content));
     return  JSI::CreateNumber (length);
 }
 
@@ -293,8 +190,8 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
         return undefValue;
     }
 
-    hibus_object_t* hibus = GetHiBusPointer(args[0]);
-    if (hibus == nullptr)
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    if (!hibus->IsConnected())
     {
         return undefValue;
     }
@@ -305,7 +202,8 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
     timeout = JSI::ValueToNumber(args[1]);
     memset(content, 0, 4096);
 
-    if (hibus->fdSocket >= 0 && hibus->context)
+    int fdSocket = hibus->GetSocketFd();
+    if (fdSocket >= 0)
     {
         fd_set rfds;
         struct timeval tv;
@@ -313,8 +211,8 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
         int maxfd = 0;
 
         FD_ZERO(&rfds);
-        FD_SET(hibus->fdSocket, &rfds);
-        maxfd = hibus->fdSocket + 1;
+        FD_SET(fdSocket, &rfds);
+        maxfd = fdSocket + 1;
 
         tv.tv_sec = timeout / 1000;
         tv.tv_usec = (timeout % 1000) * 1000;
@@ -322,7 +220,7 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
         result = select(maxfd, &rfds, NULL, NULL, &tv);
         if(result > 0)
         {
-            length = hibus_read_packet (hibus->context, (void *) content, &length);
+            length = hibus->ReadPacket(content, &length);
         }
     }
 
