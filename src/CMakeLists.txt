@@ -451,6 +451,7 @@ list(APPEND ace_SOURCES
     vendor/fmsoft/default/hals/utils/sys_param/hal_sys_param.c
 
     utils/native/lite/js/builtin/hibus/src/nativeapi_hibus.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hibus_wrapper.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
