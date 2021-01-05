@@ -71,6 +71,8 @@ const char HIBUS_POINTER_NAME[] = "HiBusPointer";
 void InitHiBusModule(JSIValue exports)
 {
     JSI::SetModuleAPI(exports, "printInfo", NativeapiHiBus::printInfo);
+    JSI::SetModuleAPI(exports, "connect", NativeapiHiBus::Connect);
+    JSI::SetModuleAPI(exports, "disconnect", NativeapiHiBus::Disconnect);
 }
 
 void NativeapiHiBus::RegistPropertyAppName(JSIValue exports)
@@ -155,11 +157,6 @@ JSIValue NativeapiHiBus::Connect(const JSIValue thisVal, const JSIValue *args, u
 
 JSIValue NativeapiHiBus::Disconnect(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
-    JSIValue undefValue = JSI::CreateUndefined();
-    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
-    }
-
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
     return JSI::CreateBoolean(hibus->Disconnect());
 }
