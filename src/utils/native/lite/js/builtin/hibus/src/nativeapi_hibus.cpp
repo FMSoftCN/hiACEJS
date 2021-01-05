@@ -73,6 +73,8 @@ void InitHiBusModule(JSIValue exports)
     JSI::SetModuleAPI(exports, "printInfo", NativeapiHiBus::printInfo);
     JSI::SetModuleAPI(exports, "connect", NativeapiHiBus::Connect);
     JSI::SetModuleAPI(exports, "disconnect", NativeapiHiBus::Disconnect);
+    JSI::SetModuleAPI(exports, "send", NativeapiHiBus::Send);
+    JSI::SetModuleAPI(exports, "read", NativeapiHiBus::Read);
 }
 
 void NativeapiHiBus::RegistPropertyAppName(JSIValue exports)
@@ -163,9 +165,8 @@ JSIValue NativeapiHiBus::Disconnect(const JSIValue thisVal, const JSIValue *args
 
 JSIValue NativeapiHiBus::Send(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
-    int length = -1;
     JSIValue undefValue = JSI::CreateUndefined();
-    if ((args == nullptr) || (argsNum < 2) || JSI::ValueIsUndefined(args[0])) {
+    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
         return undefValue;
     }
 
@@ -176,14 +177,14 @@ JSIValue NativeapiHiBus::Send(const JSIValue thisVal, const JSIValue *args, uint
     }
 
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
-    length = hibus->SendTextPacket(content, strlen(content));
-    return  JSI::CreateNumber (length);
+    int ret = hibus->SendTextPacket(content, strlen(content));
+    return  JSI::CreateNumber (ret);
 }
 
 JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
     JSIValue undefValue = JSI::CreateUndefined();
-    if ((args == nullptr) || (argsNum < 2) || JSI::ValueIsUndefined(args[0])) {
+    if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
         return undefValue;
     }
 
@@ -196,7 +197,7 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
     unsigned int length = 4096;
     char content[4096] = {0};
     int timeout = 0;
-    timeout = JSI::ValueToNumber(args[1]);
+    timeout = JSI::ValueToNumber(args[0]);
     memset(content, 0, 4096);
 
     int fdSocket = hibus->GetSocketFd();
@@ -217,13 +218,11 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
         result = select(maxfd, &rfds, NULL, NULL, &tv);
         if(result > 0)
         {
-            length = hibus->ReadPacket(content, &length);
+            int ret = hibus->ReadPacket(content, &length);
+            if (ret == 0)
+                return JSI::CreateString (content);
         }
     }
-
-    if(length)
-        return JSI::CreateString (content);
-
     return undefValue;
 }
 
