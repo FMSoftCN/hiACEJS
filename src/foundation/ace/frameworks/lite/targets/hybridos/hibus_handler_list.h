@@ -56,6 +56,7 @@
 #include <jerryscript.h>
 #include "memory_heap.h"
 #include "non_copyable.h"
+#include "jsi.h"
 
 typedef void *hibusHandlerHandle_t;
 
@@ -71,10 +72,10 @@ public:
 
     // the struct of hibusHandler task arguments
     struct Arguments {
-        jerry_length_t argsNum = 0;
-        jerry_value_t func;
-        jerry_value_t context;
-        jerry_value_t *args = nullptr;
+        ACELite::JSIValue func;
+        ACELite::JSIValue context;
+        ACELite::JSIValue *argv;
+        uint8_t argc;
     };
 
     // the struct of hibusHandler

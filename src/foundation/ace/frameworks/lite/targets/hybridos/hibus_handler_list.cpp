@@ -124,13 +124,13 @@ void HiBusHandlerList::ReleaseHiBusHandler(HiBusHandlerNode *&current)
 void HiBusHandlerList::ReleaseArguments(Arguments *&argument)
 {
     if (argument) {
-        jerry_release_value(argument->func);
-        if ((argument->argsNum > 0) && (argument->args != nullptr)) {
-            for (uint32_t i = 0; i < argument->argsNum; i++) {
-                jerry_release_value((argument->args)[i]);
+        ACELite::JSI::ReleaseValue(argument->func);
+        if ((argument->argc > 0) && (argument->argv != nullptr)) {
+            for (uint32_t i = 0; i < argument->argc; i++) {
+                ACELite::JSI::ReleaseValue((argument->argv)[i]);
             }
         }
-        free(argument->args);
+        ACELite::JSI::ReleaseValue(argument->context);
         delete argument;
         argument = nullptr;
     }
