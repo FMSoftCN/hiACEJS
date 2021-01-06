@@ -452,6 +452,7 @@ list(APPEND ace_SOURCES
 
     utils/native/lite/js/builtin/hibus/src/nativeapi_hibus.cpp
     foundation/ace/frameworks/lite/targets/hybridos/hibus_wrapper.cpp
+    foundation/ace/frameworks/lite/targets/hybridos/hibus_handler_list.cpp
 )
 
 include_directories(${ace_INCLUDE_DIRECTORIES})
