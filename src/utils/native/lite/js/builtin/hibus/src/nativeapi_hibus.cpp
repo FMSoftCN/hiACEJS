@@ -75,6 +75,7 @@ void InitHiBusModule(JSIValue exports)
     JSI::SetModuleAPI(exports, "disconnect", NativeapiHiBus::Disconnect);
     JSI::SetModuleAPI(exports, "send", NativeapiHiBus::Send);
     JSI::SetModuleAPI(exports, "read", NativeapiHiBus::Read);
+    JSI::SetModuleAPI(exports, "subscribeEvent", NativeapiHiBus::SubscribeEvent);
 }
 
 void NativeapiHiBus::RegistPropertyAppName(JSIValue exports)
@@ -224,6 +225,32 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
         }
     }
     return undefValue;
+}
+
+JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    JSIValue undefValue = JSI::CreateUndefined();
+    if ((args == nullptr) || (argsNum < 3)
+            || JSI::ValueIsUndefined(args[0])
+            || JSI::ValueIsUndefined(args[1])
+            || JSI::ValueIsUndefined(args[2])) {
+        return undefValue;
+    }
+    char* endpoint = JSI::ValueToString(args[0]);
+    char* bubbleName = JSI::ValueToString(args[1]);
+
+    fprintf(stderr, "SubscribeEvent|endpoint=%s|bubbleName=%s\n", endpoint, bubbleName);
+    JSIValue retEndpoint = JSI::CreateString(endpoint);
+    JSIValue retBubbleName = JSI::CreateString(bubbleName);
+    JSIValue retBubbleData = JSI::CreateString("{\"bubbleDataKey\":\"bubbleDataValue\"}");
+
+    JSIValue argv[ARGC_THREE] = {retEndpoint, retBubbleName, retBubbleData};
+    JSI::CallFunction(args[2], thisVal, argv, ARGC_THREE);
+
+    JSI::ReleaseValueList(retEndpoint, retBubbleName, retBubbleData);
+    JSI::ReleaseString(endpoint);
+    JSI::ReleaseString(bubbleName);
+    return JSI::CreateUndefined();
 }
 
 JSIValue NativeapiHiBus::printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum)

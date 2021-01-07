@@ -79,6 +79,9 @@ public:
     // read function
     static JSIValue Read(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 
+    // SubscribeEvent
+    static JSIValue SubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
+
     // only for test
     static JSIValue printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
 
