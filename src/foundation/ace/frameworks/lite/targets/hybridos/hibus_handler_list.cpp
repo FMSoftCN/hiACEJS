@@ -53,7 +53,7 @@
 #include "hibus_handler_list.h"
 
 namespace OHOS {
-HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char* endpoint, const char* name, int type, Arguments *&arguments)
+HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char* endpoint, const char* name, int type, ACELite::JSIValue callback, ACELite::JSIValue context)
 {
     HiBusHandlerNode* hibusHandler = static_cast<HiBusHandlerNode *>(malloc(sizeof(HiBusHandlerNode)));
     if (hibusHandler == nullptr) {
@@ -62,8 +62,10 @@ HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char
     strcpy(hibusHandler->endpoint, endpoint);
     strcpy(hibusHandler->name, name);
     hibusHandler->type = type;
+    hibusHandler->callback = callback;
+    hibusHandler->context = context;
+
     hibusHandler->next = hibusHandlerListHead_;
-    hibusHandler->arguments = arguments;
     hibusHandlerListHead_ = hibusHandler;
     return hibusHandler;
 }
@@ -116,24 +118,9 @@ void HiBusHandlerList::ReleaseHiBusHandler(HiBusHandlerNode *&current)
     if (current == nullptr) {
         return;
     }
-    ReleaseArguments(current->arguments);
     free(current);
+    ACELite::JSI::ReleaseValueList(current->callback, current->context);
     current = nullptr;
-}
-
-void HiBusHandlerList::ReleaseArguments(Arguments *&argument)
-{
-    if (argument) {
-        ACELite::JSI::ReleaseValue(argument->func);
-        if ((argument->argc > 0) && (argument->argv != nullptr)) {
-            for (uint32_t i = 0; i < argument->argc; i++) {
-                ACELite::JSI::ReleaseValue((argument->argv)[i]);
-            }
-        }
-        ACELite::JSI::ReleaseValue(argument->context);
-        delete argument;
-        argument = nullptr;
-    }
 }
 
 } // namespace OHOS

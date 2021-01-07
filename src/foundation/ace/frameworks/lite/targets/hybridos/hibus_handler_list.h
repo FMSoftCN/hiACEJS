@@ -70,14 +70,6 @@ public:
 
     void ClearHiBusHandlerList();
 
-    // the struct of hibusHandler task arguments
-    struct Arguments {
-        ACELite::JSIValue func;
-        ACELite::JSIValue context;
-        ACELite::JSIValue *argv;
-        uint8_t argc;
-    };
-
     // the struct of hibusHandler
     struct HiBusHandlerNode {
         char endpoint[512] = {0};
@@ -85,18 +77,18 @@ public:
         char name[128] = {0};
         // 0 method, 1 bubble
         int type;
-        hibusHandlerHandle_t hibusHandlerId;
-        Arguments *arguments;
+        // callback
+        ACELite::JSIValue callback;
+        ACELite::JSIValue context;
+
         struct HiBusHandlerNode *next;
     };
 
-    HiBusHandlerNode* AddHiBusHandler(const char* endpoint, const char* name, int type, Arguments *&arguments);
+    HiBusHandlerNode* AddHiBusHandler(const char* endpoint, const char* name, int type, ACELite::JSIValue callback, ACELite::JSIValue context);
 
     HiBusHandlerNode* GetHiBusHandler(const char* endpoint, const char* name, int type);
 
     void DeleteHiBusHandler(HiBusHandlerNode* hibusHandler);
-
-    void ReleaseArguments(Arguments *&argument);
 
 private:
     void ReleaseHiBusHandler(HiBusHandlerNode *&current);
