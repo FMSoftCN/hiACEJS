@@ -59,8 +59,8 @@
 #include "hibus.h"
 #include "internal/jsi_internal.h"
 #include "js_fwk_common.h"
-
 #include "hibus_wrapper.h"
+
 
 
 namespace OHOS {
@@ -77,6 +77,8 @@ void InitHiBusModule(JSIValue exports)
     JSI::SetModuleAPI(exports, "read", NativeapiHiBus::Read);
     JSI::SetModuleAPI(exports, "subscribeEvent", NativeapiHiBus::SubscribeEvent);
 }
+
+HiBusHandlerList NativeapiHiBus::hibusHandlerList;
 
 void NativeapiHiBus::RegistPropertyAppName(JSIValue exports)
 {
@@ -227,6 +229,28 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
     return undefValue;
 }
 
+
+void NativeapiHiBus::hibusEventHandler(hibus_conn* conn, const char* endpoint, const char* bubbleName, const char* bubbleData) 
+{
+    fprintf(stderr, "hibusEventHandler|endpoint=%s|bubbleName=%s|bubbleData=%d\n", endpoint, bubbleName, bubbleData);
+
+    int type = 1; // 0 method, 1 bubble
+    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, bubbleName, type);
+    if (node == nullptr)
+    {
+        return;
+    }
+
+    JSIValue retEndpoint = JSI::CreateString(endpoint);
+    JSIValue retBubbleName = JSI::CreateString(bubbleName);
+    JSIValue retBubbleData = JSI::CreateString(bubbleData);
+
+    JSIValue argv[ARGC_THREE] = {retEndpoint, retBubbleName, retBubbleData};
+    JSI::CallFunction(node->callback, node->context, argv, ARGC_THREE);
+
+    JSI::ReleaseValueList(retEndpoint, retBubbleName, retBubbleData);
+}
+
 JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
     JSIValue undefValue = JSI::CreateUndefined();
@@ -240,17 +264,18 @@ JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *
     char* bubbleName = JSI::ValueToString(args[1]);
 
     fprintf(stderr, "SubscribeEvent|endpoint=%s|bubbleName=%s\n", endpoint, bubbleName);
-    JSIValue retEndpoint = JSI::CreateString(endpoint);
-    JSIValue retBubbleName = JSI::CreateString(bubbleName);
-    JSIValue retBubbleData = JSI::CreateString("{\"bubbleDataKey\":\"bubbleDataValue\"}");
 
-    JSIValue argv[ARGC_THREE] = {retEndpoint, retBubbleName, retBubbleData};
-    JSI::CallFunction(args[2], thisVal, argv, ARGC_THREE);
+    // add to hibusHandlerList
+    int type = 1; // 0 method, 1 bubble
+    hibusHandlerList.AddHiBusHandler(endpoint, bubbleName, type, args[2], thisVal);
 
-    JSI::ReleaseValueList(retEndpoint, retBubbleName, retBubbleData);
+    // SubscribeEvent
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
+    hibus->SubscribeEvent(endpoint, bubbleName, hibusEventHandler);
+
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(bubbleName);
-    return JSI::CreateUndefined();
+    return JSI::CreateBoolean(true);
 }
 
 JSIValue NativeapiHiBus::printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum)

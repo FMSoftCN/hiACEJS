@@ -50,6 +50,8 @@
 #define JS_NATIVE_API_HI_BUS_H
 
 #include "jsi/jsi.h"
+#include "hibus.h"
+#include "hibus_handler_list.h"
 
 namespace OHOS {
 namespace ACELite {
@@ -80,11 +82,14 @@ public:
     static JSIValue Read(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 
     // SubscribeEvent
+    static void hibusEventHandler(hibus_conn* conn, const char* endpoint, const char* bubbleName, const char* bubbleData);
     static JSIValue SubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 
     // only for test
     static JSIValue printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
 
+private:
+    static HiBusHandlerList hibusHandlerList;
 };
 } // ACELite
 } // OHOS
