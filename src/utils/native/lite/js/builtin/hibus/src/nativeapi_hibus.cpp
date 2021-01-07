@@ -77,6 +77,7 @@ void InitHiBusModule(JSIValue exports)
     JSI::SetModuleAPI(exports, "read", NativeapiHiBus::Read);
     JSI::SetModuleAPI(exports, "subscribeEvent", NativeapiHiBus::SubscribeEvent);
     JSI::SetModuleAPI(exports, "unsubscribeEvent", NativeapiHiBus::UnsubscribeEvent);
+    JSI::SetModuleAPI(exports, "callProcedure", NativeapiHiBus::CallProcedure);
 }
 
 HiBusHandlerList NativeapiHiBus::hibusHandlerList;
@@ -306,6 +307,60 @@ JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue
 
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(bubbleName);
+    return JSI::CreateBoolean(true);
+}
+
+int NativeapiHiBus::hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, int retCode, const char* retValue)
+{
+    fprintf(stderr, "hibusProcedureHandler|endpoint=%s|methodName=%s|retCode=%d|retValue=%s\n", endpoint, methodName, retCode, retValue);
+
+    int type = 0; // 0 method, 1 bubble
+    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, methodName, type);
+    if (node == nullptr)
+    {
+        return 0;
+    }
+
+    JSIValue retEndpoint = JSI::CreateString(endpoint);
+    JSIValue retMethodName = JSI::CreateString(methodName);
+    JSIValue retMethodCode = JSI::CreateNumber(retCode);
+    JSIValue retMethodValue = JSI::CreateString(retValue);
+
+    JSIValue argv[4] = {retEndpoint, retMethodName, retMethodCode, retMethodValue};
+    JSI::CallFunction(node->callback, node->context, argv, 4);
+
+    hibusHandlerList.DeleteHiBusHandler(node);
+    JSI::ReleaseValueList(retEndpoint, retMethodName, retMethodCode, retMethodValue);
+    return 0;
+}
+
+JSIValue NativeapiHiBus::CallProcedure(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    if ((args == nullptr) || (argsNum < 4)
+            || JSI::ValueIsUndefined(args[0])
+            || JSI::ValueIsUndefined(args[1])
+            || JSI::ValueIsUndefined(args[2])
+            || JSI::ValueIsUndefined(args[3])) {
+        return JSI::CreateBoolean(false);
+    }
+    char* endpoint = JSI::ValueToString(args[0]);
+    char* methodName = JSI::ValueToString(args[1]);
+    char* methodParam = JSI::ValueToString(args[2]);
+    int timeExpected = JSI::ValueToNumber(args[3]);
+
+    fprintf(stderr, "SubscribeEvent|endpoint=%s|methodName=%s|methodParam=%s|timeExpected=%d\n", endpoint, methodName, methodParam, timeExpected);
+
+    // add to hibusHandlerList
+    int type = 0; // 0 method, 1 bubble
+    hibusHandlerList.AddHiBusHandler(endpoint, methodName, type, args[4], thisVal);
+
+    // SubscribeEvent
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance();
+    hibus->CallProcedure (endpoint, methodName, methodParam, timeExpected, hibusProcedureHandler);
+
+    JSI::ReleaseString(endpoint);
+    JSI::ReleaseString(methodName);
+    JSI::ReleaseString(methodParam);
     return JSI::CreateBoolean(true);
 }
 
