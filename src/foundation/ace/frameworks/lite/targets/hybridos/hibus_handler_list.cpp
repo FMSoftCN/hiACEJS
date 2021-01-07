@@ -118,8 +118,8 @@ void HiBusHandlerList::ReleaseHiBusHandler(HiBusHandlerNode *&current)
     if (current == nullptr) {
         return;
     }
-    free(current);
     ACELite::JSI::ReleaseValueList(current->callback, current->context);
+    free(current);
     current = nullptr;
 }
 

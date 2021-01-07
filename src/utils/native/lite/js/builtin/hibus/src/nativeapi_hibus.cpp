@@ -76,6 +76,7 @@ void InitHiBusModule(JSIValue exports)
     JSI::SetModuleAPI(exports, "send", NativeapiHiBus::Send);
     JSI::SetModuleAPI(exports, "read", NativeapiHiBus::Read);
     JSI::SetModuleAPI(exports, "subscribeEvent", NativeapiHiBus::SubscribeEvent);
+    JSI::SetModuleAPI(exports, "unsubscribeEvent", NativeapiHiBus::UnsubscribeEvent);
 }
 
 HiBusHandlerList NativeapiHiBus::hibusHandlerList;
@@ -253,12 +254,11 @@ void NativeapiHiBus::hibusEventHandler(hibus_conn* conn, const char* endpoint, c
 
 JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
-    JSIValue undefValue = JSI::CreateUndefined();
     if ((args == nullptr) || (argsNum < 3)
             || JSI::ValueIsUndefined(args[0])
             || JSI::ValueIsUndefined(args[1])
             || JSI::ValueIsUndefined(args[2])) {
-        return undefValue;
+        return JSI::CreateBoolean(false);
     }
     char* endpoint = JSI::ValueToString(args[0]);
     char* bubbleName = JSI::ValueToString(args[1]);
@@ -272,6 +272,37 @@ JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *
     // SubscribeEvent
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
     hibus->SubscribeEvent(endpoint, bubbleName, hibusEventHandler);
+
+    JSI::ReleaseString(endpoint);
+    JSI::ReleaseString(bubbleName);
+    return JSI::CreateBoolean(true);
+}
+
+JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
+{
+    if ((args == nullptr) || (argsNum < 2)
+            || JSI::ValueIsUndefined(args[0])
+            || JSI::ValueIsUndefined(args[1])) {
+        return JSI::CreateBoolean(false);
+    }
+    char* endpoint = JSI::ValueToString(args[0]);
+    char* bubbleName = JSI::ValueToString(args[1]);
+
+    fprintf(stderr, "unSubscribeEvent|endpoint=%s|bubbleName=%s\n", endpoint, bubbleName);
+
+    int type = 1; // 0 method, 1 bubble
+    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, bubbleName, type);
+    if (node == nullptr)
+    {
+        fprintf(stderr, "unSubscribeEvent|endpoint=%s|bubbleName=%s|not found\n", endpoint, bubbleName);
+        return JSI::CreateBoolean(true);
+    }
+    fprintf(stderr, "unSubscribeEvent|endpoint=%s|bubbleName=%s|clear\n", endpoint, bubbleName);
+    hibusHandlerList.DeleteHiBusHandler(node);
+
+    // SubscribeEvent
+    HiBusWrapper* hibus = HiBusWrapper::GetInstance();
+    hibus->UnsubscribeEvent(endpoint, bubbleName);
 
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(bubbleName);

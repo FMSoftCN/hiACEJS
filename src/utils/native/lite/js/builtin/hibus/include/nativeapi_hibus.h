@@ -84,6 +84,7 @@ public:
     // SubscribeEvent
     static void hibusEventHandler(hibus_conn* conn, const char* endpoint, const char* bubbleName, const char* bubbleData);
     static JSIValue SubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
+    static JSIValue UnsubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 
     // only for test
     static JSIValue printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum);
