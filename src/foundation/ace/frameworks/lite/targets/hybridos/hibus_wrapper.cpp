@@ -176,5 +176,9 @@ int HiBusWrapper::CallProcedureAndWait (const char* endpoint, const char* method
     return m_hiBusConn ? hibus_call_procedure_and_wait (m_hiBusConn, endpoint, methodName, methodParam, timeExpected, retCode, retValue) : -1;
 }
 
+int HiBusWrapper::WaitAndDispatchPacket(int timeoutMs)
+{
+    return m_hiBusConn ? hibus_wait_and_dispatch_packet (m_hiBusConn, timeoutMs) : -1;
+}
 
 }

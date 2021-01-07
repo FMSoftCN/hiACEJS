@@ -119,6 +119,9 @@ public:
     int CallProcedureAndWait(const char* endpoint, const char* methodName, const char* methodParam, int timeExpected, int *retCode, char** retValue);
 
     const char* GetPathToSocket() { return m_hiBusConn ? m_pathToSocket : nullptr; }
+
+    // int hibus_wait_and_dispatch_packet (hibus_conn* conn, int timeout_ms);
+    int WaitAndDispatchPacket(int timeoutMs);
 private:
     HiBusWrapper();
 

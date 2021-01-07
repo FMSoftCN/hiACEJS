@@ -74,7 +74,7 @@ HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::GetHiBusHandler(const char
 {
     HiBusHandlerNode *current = hibusHandlerListHead_;
     while (current != nullptr) {
-        if (current->type == type && strcmp(current->endpoint, endpoint) == 0 && strcmp(current->name, name) == 0)
+        if (current->type == type && strcasecmp(current->endpoint, endpoint) == 0 && strcasecmp(current->name, name) == 0)
         {
             break;
         }

@@ -348,7 +348,7 @@ JSIValue NativeapiHiBus::CallProcedure(const JSIValue thisVal, const JSIValue *a
     char* methodParam = JSI::ValueToString(args[2]);
     int timeExpected = JSI::ValueToNumber(args[3]);
 
-    fprintf(stderr, "SubscribeEvent|endpoint=%s|methodName=%s|methodParam=%s|timeExpected=%d\n", endpoint, methodName, methodParam, timeExpected);
+    fprintf(stderr, "CallProcedure|endpoint=%s|methodName=%s|methodParam=%s|timeExpected=%d\n", endpoint, methodName, methodParam, timeExpected);
 
     // add to hibusHandlerList
     int type = 0; // 0 method, 1 bubble

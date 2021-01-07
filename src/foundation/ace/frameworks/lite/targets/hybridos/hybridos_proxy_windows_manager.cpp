@@ -58,6 +58,8 @@
 #include "dock/input_device.h"
 #include "common/input_device_manager.h"
 
+#include "hibus_wrapper.h"
+
 #define UI_TASK_TIMER_ID 1001
 
 namespace OHOS {
@@ -93,6 +95,7 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
                 InputDeviceManager::GetInstance()->JobExecute();
                 AnimatorManager::GetInstance()->JobExecute();
                 RenderManager::GetInstance().JobExecute();
+                HiBusWrapper::GetInstance()->WaitAndDispatchPacket(5);
             }
             break;
 
