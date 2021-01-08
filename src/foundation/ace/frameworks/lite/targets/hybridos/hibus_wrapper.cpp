@@ -46,6 +46,7 @@
  */
 
 #include "hibus_wrapper.h"
+#include "ace_log.h"
 
 namespace OHOS {
 HiBusWrapper::HiBusWrapper()
@@ -65,6 +66,23 @@ HiBusWrapper::~HiBusWrapper()
 
 int HiBusWrapper::ConnectViaUnixSocket(const char* pathToSocket, const char* appName, const char* runnerName)
 {
+    if (IsConnected())
+    {
+        if (strcmp(pathToSocket, m_pathToSocket) == 0
+                && strcmp(appName, m_appName) == 0
+                && strcmp(runnerName, m_runnerName) == 0 )
+        {
+            HILOG_DEBUG(HILOG_MODULE_ACE, "%s|pathToSocket=%s|appName=%s|runnerName=%s|not change, nothing to do.", __func__, pathToSocket, appName, runnerName);
+            return m_hiBusFd;
+        }
+        else
+        {
+            HILOG_DEBUG(HILOG_MODULE_ACE, "%s|pathToSocket=%s|appName=%s|runnerName=%s|changed, disconnect old socket", __func__, pathToSocket, appName, runnerName);
+            Disconnect();
+        }
+    }
+
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s|pathToSocket=%s|appName=%s|runnerName=%s|new connect", __func__, pathToSocket, appName, runnerName);
     int ret =  hibus_connect_via_unix_socket(pathToSocket, appName, runnerName, &m_hiBusConn);
     if (ret >= 0)
     {
