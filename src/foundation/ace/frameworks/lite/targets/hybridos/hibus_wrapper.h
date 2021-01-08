@@ -78,11 +78,11 @@ public:
     bool IsConnected() { return m_hiBusConn != nullptr; }
 
     // int hibus_connect_via_unix_socket (const char* path_to_socket, const char* app_name, const char* runner_name, hibus_conn** conn);
-    bool ConnectViaUnixSocket(const char* pathToSocket, const char* appName, const char* runnerName);
+    int ConnectViaUnixSocket(const char* pathToSocket, const char* appName, const char* runnerName);
     // int hibus_connect_via_web_socket (const char* host_name, int port, const char* app_name, const char* runner_name, hibus_conn** conn);
-    bool ConnectViaWebSocket(const char* hostName, int port, const char* appName, const char* runnerName);
+    int ConnectViaWebSocket(const char* hostName, int port, const char* appName, const char* runnerName);
     // int hibus_disconnect (hibus_conn* conn);
-    bool Disconnect();
+    int Disconnect();
 
     // const char* hibus_conn_srv_host_name (hibus_conn* conn);
     const char* GetSrvHostName();

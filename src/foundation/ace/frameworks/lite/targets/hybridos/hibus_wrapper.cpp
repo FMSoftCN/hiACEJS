@@ -63,38 +63,44 @@ HiBusWrapper::~HiBusWrapper()
 {
 }
 
-bool HiBusWrapper::ConnectViaUnixSocket(const char* pathToSocket, const char* appName, const char* runnerName)
+int HiBusWrapper::ConnectViaUnixSocket(const char* pathToSocket, const char* appName, const char* runnerName)
 {
-    m_hiBusFd =  hibus_connect_via_unix_socket(pathToSocket, appName, runnerName, &m_hiBusConn);
-    if (m_hiBusFd >= 0)
+    int ret =  hibus_connect_via_unix_socket(pathToSocket, appName, runnerName, &m_hiBusConn);
+    if (ret >= 0)
     {
         strcpy(m_pathToSocket, pathToSocket);
         strcpy(m_appName, appName);
         strcpy(m_runnerName, runnerName);
-        return true;
+        m_hiBusFd = ret;
     }
-    m_hiBusConn = nullptr;
-    m_hiBusFd = -1;
-    return false;
+    else
+    {
+        m_hiBusConn = nullptr;
+        m_hiBusFd = -1;
+    }
+    return ret;
 }
 
-bool HiBusWrapper::ConnectViaWebSocket(const char* hostName, int port, const char* appName, const char* runnerName)
+int HiBusWrapper::ConnectViaWebSocket(const char* hostName, int port, const char* appName, const char* runnerName)
 {
-    m_hiBusFd = hibus_connect_via_web_socket(hostName, port, appName, runnerName, &m_hiBusConn);
-    if (m_hiBusFd >= 0)
+    int ret = hibus_connect_via_web_socket(hostName, port, appName, runnerName, &m_hiBusConn);
+    if (ret >= 0)
     {
         strcpy(m_hostName, hostName);
         m_port = port;
         strcpy(m_appName, appName);
         strcpy(m_runnerName, runnerName);
-        return true;
+        m_hiBusFd = ret;
     }
-    m_hiBusConn = nullptr;
-    m_hiBusFd = -1;
-    return false;
+    else
+    {
+        m_hiBusConn = nullptr;
+        m_hiBusFd = -1;
+    }
+    return ret;
 }
 
-bool HiBusWrapper::Disconnect()
+int HiBusWrapper::Disconnect()
 {
     if (m_hiBusConn)
     {
@@ -108,7 +114,7 @@ bool HiBusWrapper::Disconnect()
     m_port = 0;
     m_hiBusConn = nullptr;
     m_hiBusFd = -1;
-    return true;
+    return 0;
 }
 
 const char* HiBusWrapper::GetSrvHostName()

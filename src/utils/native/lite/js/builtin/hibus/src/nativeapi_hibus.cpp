@@ -133,9 +133,9 @@ JSIValue NativeapiHiBus::GetterPathSocket(const JSIValue thisVal, const JSIValue
 JSIValue NativeapiHiBus::Connect(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
-    JSIValue undefValue = JSI::CreateUndefined();
     if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
 
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
@@ -159,30 +159,31 @@ JSIValue NativeapiHiBus::Connect(const JSIValue thisVal, const JSIValue *args, u
             break;
     }
 
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s|appName=%s|runnerName=%s|pathToSocket=%s", __func__, appName, runnerName, pathToSocket);
-    bool result = hibus->ConnectViaUnixSocket(pathToSocket, appName, runnerName);
-    return JSI::CreateBoolean(result);
+    int ret = hibus->ConnectViaUnixSocket(pathToSocket, appName, runnerName);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s|appName=%s|runnerName=%s|pathToSocket=%s|ret=%d", __func__, appName, runnerName, pathToSocket, ret);
+    return JSI::CreateNumber(ret);
 }
 
 JSIValue NativeapiHiBus::Disconnect(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
-    return JSI::CreateBoolean(hibus->Disconnect());
+    return JSI::CreateNumber(hibus->Disconnect());
 }
 
 JSIValue NativeapiHiBus::Send(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
-    JSIValue undefValue = JSI::CreateUndefined();
     if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
 
     char *content = JSI::ValueToString(args[0]);
     if (content == nullptr)
     {
-        return undefValue;
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
 
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
@@ -193,15 +194,16 @@ JSIValue NativeapiHiBus::Send(const JSIValue thisVal, const JSIValue *args, uint
 JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
-    JSIValue undefValue = JSI::CreateUndefined();
     if ((args == nullptr) || (argsNum == 0) || JSI::ValueIsUndefined(args[0])) {
-        return undefValue;
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
 
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
     if (!hibus->IsConnected())
     {
-        return undefValue;
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|not connected", __func__);
+        return JSI::CreateNumber(HIBUS_EC_BAD_CONNECTION);
     }
 
     unsigned int length = 4096;
@@ -232,8 +234,13 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
             if (ret == 0)
                 return JSI::CreateString (content);
         }
+        return JSI::CreateString("");
     }
-    return undefValue;
+    else 
+    {
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|invalid fd", __func__);
+        return JSI::CreateNumber(HIBUS_EC_BAD_CONNECTION);
+    }
 }
 
 
@@ -265,7 +272,8 @@ JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *
             || JSI::ValueIsUndefined(args[0])
             || JSI::ValueIsUndefined(args[1])
             || JSI::ValueIsUndefined(args[2])) {
-        return JSI::CreateBoolean(false);
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
     char* endpoint = JSI::ValueToString(args[0]);
     char* bubbleName = JSI::ValueToString(args[1]);
@@ -277,11 +285,11 @@ JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *
 
     // SubscribeEvent
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
-    hibus->SubscribeEvent(endpoint, bubbleName, hibusEventHandler);
+    int ret = hibus->SubscribeEvent(endpoint, bubbleName, hibusEventHandler);
 
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(bubbleName);
-    return JSI::CreateBoolean(true);
+    return JSI::CreateNumber(ret);
 }
 
 JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum)
@@ -290,7 +298,8 @@ JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue
     if ((args == nullptr) || (argsNum < 2)
             || JSI::ValueIsUndefined(args[0])
             || JSI::ValueIsUndefined(args[1])) {
-        return JSI::CreateBoolean(false);
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
     char* endpoint = JSI::ValueToString(args[0]);
     char* bubbleName = JSI::ValueToString(args[1]);
@@ -310,7 +319,7 @@ JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue
 
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(bubbleName);
-    return JSI::CreateBoolean(true);
+    return JSI::CreateNumber(ret);
 }
 
 int NativeapiHiBus::hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, int retCode, const char* retValue)
@@ -344,7 +353,8 @@ JSIValue NativeapiHiBus::CallProcedure(const JSIValue thisVal, const JSIValue *a
             || JSI::ValueIsUndefined(args[1])
             || JSI::ValueIsUndefined(args[2])
             || JSI::ValueIsUndefined(args[3])) {
-        return JSI::CreateBoolean(false);
+        HILOG_DEBUG(HILOG_MODULE_ACE, "%s|param error", __func__);
+        return JSI::CreateNumber(HIBUS_EC_UNEXPECTED);
     }
     char* endpoint = JSI::ValueToString(args[0]);
     char* methodName = JSI::ValueToString(args[1]);
@@ -358,12 +368,12 @@ JSIValue NativeapiHiBus::CallProcedure(const JSIValue thisVal, const JSIValue *a
 
     // SubscribeEvent
     HiBusWrapper* hibus = HiBusWrapper::GetInstance();
-    hibus->CallProcedure (endpoint, methodName, methodParam, timeExpected, hibusProcedureHandler);
+    int ret = hibus->CallProcedure (endpoint, methodName, methodParam, timeExpected, hibusProcedureHandler);
 
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(methodName);
     JSI::ReleaseString(methodParam);
-    return JSI::CreateBoolean(true);
+    return JSI::CreateNumber(ret);
 }
 
 JSIValue NativeapiHiBus::printInfo(const JSIValue thisVal, const JSIValue* args, uint8_t argsNum)
