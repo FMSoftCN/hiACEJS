@@ -53,7 +53,7 @@
 #include "hibus_handler_list.h"
 
 namespace OHOS {
-HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char* endpoint, const char* name, int type, ACELite::JSIValue callback, ACELite::JSIValue context)
+HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char* endpoint, const char* name, HiBusHandlerType type, ACELite::JSIValue callback, ACELite::JSIValue context)
 {
     HiBusHandlerNode* hibusHandler = static_cast<HiBusHandlerNode *>(malloc(sizeof(HiBusHandlerNode)));
     if (hibusHandler == nullptr) {
@@ -70,7 +70,7 @@ HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char
     return hibusHandler;
 }
 
-HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::GetHiBusHandler(const char* endpoint, const char* name, int type)
+HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::GetHiBusHandler(const char* endpoint, const char* name, HiBusHandlerType type)
 {
     HiBusHandlerNode *current = hibusHandlerListHead_;
     while (current != nullptr) {

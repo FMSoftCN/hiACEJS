@@ -62,6 +62,11 @@ typedef void *hibusHandlerHandle_t;
 
 namespace OHOS {
 
+typedef enum {
+    HIBUS_HANDLER_TYPE_METHOD = 0,
+    HIBUS_HANDLER_TYPE_BUBBLE = 1
+} HiBusHandlerType;
+
 class HiBusHandlerList {
 public:
     HiBusHandlerList() : hibusHandlerListHead_(nullptr) {}
@@ -75,8 +80,8 @@ public:
         char endpoint[512] = {0};
         // method_name, bubble_name
         char name[128] = {0};
-        // 0 method, 1 bubble
-        int type;
+        // HIBUS_HANDLER_TYPE_METHOD, HIBUS_HANDLER_TYPE_BUBBLE
+        HiBusHandlerType type;
         // callback
         ACELite::JSIValue callback;
         ACELite::JSIValue context;
@@ -84,9 +89,9 @@ public:
         struct HiBusHandlerNode *next;
     };
 
-    HiBusHandlerNode* AddHiBusHandler(const char* endpoint, const char* name, int type, ACELite::JSIValue callback, ACELite::JSIValue context);
+    HiBusHandlerNode* AddHiBusHandler(const char* endpoint, const char* name, HiBusHandlerType type, ACELite::JSIValue callback, ACELite::JSIValue context);
 
-    HiBusHandlerNode* GetHiBusHandler(const char* endpoint, const char* name, int type);
+    HiBusHandlerNode* GetHiBusHandler(const char* endpoint, const char* name, HiBusHandlerType type);
 
     void DeleteHiBusHandler(HiBusHandlerNode* hibusHandler);
 

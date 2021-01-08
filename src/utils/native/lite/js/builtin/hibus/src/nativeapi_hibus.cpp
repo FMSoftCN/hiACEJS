@@ -247,8 +247,7 @@ JSIValue NativeapiHiBus::Read(const JSIValue thisVal, const JSIValue *args, uint
 void NativeapiHiBus::hibusEventHandler(hibus_conn* conn, const char* endpoint, const char* bubbleName, const char* bubbleData) 
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
-    int type = 1; // 0 method, 1 bubble
-    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, bubbleName, type);
+    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, bubbleName, HIBUS_HANDLER_TYPE_BUBBLE);
     if (node == nullptr)
     {
         return;
@@ -280,8 +279,7 @@ JSIValue NativeapiHiBus::SubscribeEvent(const JSIValue thisVal, const JSIValue *
 
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s|endpoint=%s|bubbleName=%s", __func__, endpoint, bubbleName);
     // add to hibusHandlerList
-    int type = 1; // 0 method, 1 bubble
-    hibusHandlerList.AddHiBusHandler(endpoint, bubbleName, type, args[2], thisVal);
+    hibusHandlerList.AddHiBusHandler(endpoint, bubbleName, HIBUS_HANDLER_TYPE_BUBBLE, args[2], thisVal);
 
     // SubscribeEvent
     HiBusWrapper* hibus = HiBusWrapper::GetInstance(); 
@@ -305,8 +303,7 @@ JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue
     char* bubbleName = JSI::ValueToString(args[1]);
 
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s|endpoint=%s|bubbleName=%s", __func__, endpoint, bubbleName);
-    int type = 1; // 0 method, 1 bubble
-    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, bubbleName, type);
+    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, bubbleName, HIBUS_HANDLER_TYPE_BUBBLE);
     if (node == nullptr)
     {
         return JSI::CreateBoolean(true);
@@ -325,8 +322,7 @@ JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue
 int NativeapiHiBus::hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, int retCode, const char* retValue)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
-    int type = 0; // 0 method, 1 bubble
-    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, methodName, type);
+    HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, methodName, HIBUS_HANDLER_TYPE_METHOD);
     if (node == nullptr)
     {
         return 0;
@@ -363,8 +359,7 @@ JSIValue NativeapiHiBus::CallProcedure(const JSIValue thisVal, const JSIValue *a
 
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s|endpoint=%s|methodName=%s|methodParam=%s|timeExpected=%d", __func__, endpoint, methodName, methodParam, timeExpected);
     // add to hibusHandlerList
-    int type = 0; // 0 method, 1 bubble
-    hibusHandlerList.AddHiBusHandler(endpoint, methodName, type, args[4], thisVal);
+    hibusHandlerList.AddHiBusHandler(endpoint, methodName, HIBUS_HANDLER_TYPE_METHOD, args[4], thisVal);
 
     // SubscribeEvent
     HiBusWrapper* hibus = HiBusWrapper::GetInstance();
