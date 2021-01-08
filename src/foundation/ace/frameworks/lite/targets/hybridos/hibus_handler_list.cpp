@@ -62,8 +62,8 @@ HiBusHandlerList::HiBusHandlerNode* HiBusHandlerList::AddHiBusHandler(const char
     strcpy(hibusHandler->endpoint, endpoint);
     strcpy(hibusHandler->name, name);
     hibusHandler->type = type;
-    hibusHandler->callback = callback;
-    hibusHandler->context = context;
+    hibusHandler->callback = ACELite::JSI::AcquireValue(callback);
+    hibusHandler->context = ACELite::JSI::AcquireValue(context);
 
     hibusHandler->next = hibusHandlerListHead_;
     hibusHandlerListHead_ = hibusHandler;
