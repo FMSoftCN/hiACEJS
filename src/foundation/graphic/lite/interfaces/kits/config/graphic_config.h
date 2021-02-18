@@ -259,7 +259,7 @@ static constexpr uint8_t COMPONENT_NESTING_DEPTH = 64;
 /* Long-press event threshold. The default value is <b>1000</b> ms. */
 static constexpr uint16_t INDEV_LONG_PRESS_TIME = 1000;
 /* Delay for reporting a press event on a draggable object. The default value is <b>100</b> ms. */
-static constexpr uint16_t INDEV_PRESS_TIME_IN_DRAG = 100;
+static constexpr uint16_t INDEV_PRESS_TIME_IN_DRAG = 10;
 /* Maximum number of bytes in a text that can be continuously displayed. The default value is <b>4096</b> bytes. */
 static constexpr uint16_t MAX_TEXT_LENGTH = 4096;
 /* Maximum value of the graphic display range. The default value is <b>16383px</b>. */
