@@ -102,15 +102,13 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
         case MSG_PAINT:
             {
                 HDC hdc = BeginPaint (hWnd);
-                int sw = RECTW(m_windowRect);
-                int sh = RECTH(m_windowRect);
 
 #ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
-                int dw = RECTW(m_windowRect);
-                int dh = RECTH(m_windowRect);
-                StretchBlt(m_memDC, 0, 0, sw, sh, hdc, 0, 0, dw, dh, 0);
+                StretchBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
+                        hdc, m_displayRect.left, m_displayRect.top, RECTW(m_displayRect), RECTH(m_displayRect), 0);
 #else
-                BitBlt(m_memDC, 0, 0, sw, sh, hdc, 0, 0, 0);
+                BitBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
+                        hdc, m_displayRect.left, m_displayRect.top, 0);
 #endif
 
                 EndPaint (hWnd, hdc);
@@ -167,8 +165,8 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
 void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
 {
     RECT rect;
-    rect.left = invalidatedArea.GetX();
-    rect.top = invalidatedArea.GetY();
+    rect.left = m_displayRect.left + invalidatedArea.GetX();
+    rect.top = m_displayRect.top + invalidatedArea.GetY();
     rect.right = rect.left + invalidatedArea.GetWidth();
     rect.bottom = rect.top + invalidatedArea.GetHeight();
     ::InvalidateRect(m_hMainWnd, &rect, FALSE);
@@ -190,9 +188,19 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_windowRect.right = config.rect.GetWidth();
     m_windowRect.bottom = config.rect.GetHeight();
 
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s screen rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(screenRect), RECTH(screenRect));
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s hwnd   rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(m_hwndRect), RECTH(m_hwndRect));
-    HILOG_DEBUG(HILOG_MODULE_ACE, "%s window rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(m_windowRect), RECTH(m_windowRect));
+#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
+    m_displayRect.left = (RECTW(m_hwndRect) - RECTW(m_windowRect)) / 2;
+    m_displayRect.top = (RECTH(m_hwndRect) - RECTH(m_windowRect)) / 2;
+    m_displayRect.right = m_displayRect.left + RECTW(m_windowRect);
+    m_displayRect.bottom = m_displayRect.top + RECTH(m_windowRect);
+#else
+    m_displayRect = m_windowRect;
+#endif
+
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s screen  rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(screenRect), RECTH(screenRect));
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s hwnd    rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(m_hwndRect), RECTH(m_hwndRect));
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s window  rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(m_windowRect), RECTH(m_windowRect));
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s display rect(x=%d,y=%d,w=%d,h=%d)", __func__, m_displayRect.left, m_displayRect.top, RECTW(m_displayRect), RECTH(m_displayRect));
 
 #ifdef _MGRM_PROCESSES
     JoinLayer(NAME_DEF_LAYER , "hiAceJS" , 0 , 0);
@@ -223,6 +231,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
                         32, MEMDC_FLAG_SWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    SetMemDCColorKey (m_memDC, MEMDC_FLAG_SRCCOLORKEY, 0);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
     return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_windowRect, m_mainWndId);
