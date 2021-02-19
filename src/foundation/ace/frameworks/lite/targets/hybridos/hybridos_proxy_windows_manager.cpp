@@ -165,10 +165,17 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
 void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
 {
     RECT rect;
+#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
     rect.left = m_displayRect.left + invalidatedArea.GetX() / m_displayScale;
     rect.top = m_displayRect.top + invalidatedArea.GetY() / m_displayScale;
     rect.right = rect.left + invalidatedArea.GetWidth() / m_displayScale;
     rect.bottom = rect.top + invalidatedArea.GetHeight() / m_displayScale;
+#else
+    rect.left = m_displayRect.left + invalidatedArea.GetX();
+    rect.top = m_displayRect.top + invalidatedArea.GetY();
+    rect.right = rect.left + invalidatedArea.GetWidth();
+    rect.bottom = rect.top + invalidatedArea.GetHeight();
+#endif
     ::InvalidateRect(m_hMainWnd, &rect, FALSE);
 }
 
