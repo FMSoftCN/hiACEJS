@@ -91,7 +91,7 @@ void PointerInputDevice::DispatchPressEvent(UIViewGroup* rootView)
             if (tempView != touchableView_) {
                 DispatchCancelEvent();
             } else {
-                if (!pressSent_ && elapse > INDEV_PRESS_TIME_IN_DRAG) {
+                if (!pressSent_ && (elapse > INDEV_PRESS_TIME_IN_DRAG || elapse < 5)) {
                     touchableView_->OnPressEvent(curPos_);
                     pressSent_ = true;
                 }

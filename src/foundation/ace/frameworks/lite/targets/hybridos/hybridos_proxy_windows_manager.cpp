@@ -116,6 +116,8 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
                 ScreenToClient (hWnd, &mouseX, &mouseY);
                 m_mouseX = mouseX;
                 m_mouseY = mouseY;
+                InputDeviceManager::GetInstance()->Callback();
+                InputDeviceManager::GetInstance()->Callback();
             }
             break;
 
@@ -129,6 +131,7 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
                 ScreenToClient (hWnd, &mouseX, &mouseY);
                 m_mouseX = mouseX;
                 m_mouseY = mouseY;
+                InputDeviceManager::GetInstance()->Callback();
             }
             break;
 
