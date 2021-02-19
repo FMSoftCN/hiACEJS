@@ -165,10 +165,10 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
 void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
 {
     RECT rect;
-    rect.left = m_displayRect.left + invalidatedArea.GetX();
-    rect.top = m_displayRect.top + invalidatedArea.GetY();
-    rect.right = rect.left + invalidatedArea.GetWidth();
-    rect.bottom = rect.top + invalidatedArea.GetHeight();
+    rect.left = m_displayRect.left + invalidatedArea.GetX() / m_displayScale;
+    rect.top = m_displayRect.top + invalidatedArea.GetY() / m_displayScale;
+    rect.right = rect.left + invalidatedArea.GetWidth() / m_displayScale;
+    rect.bottom = rect.top + invalidatedArea.GetHeight() / m_displayScale;
     ::InvalidateRect(m_hMainWnd, &rect, FALSE);
 }
 
@@ -189,10 +189,37 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_windowRect.bottom = config.rect.GetHeight();
 
 #ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
-    m_displayRect.left = (RECTW(m_hwndRect) - RECTW(m_windowRect)) / 2;
-    m_displayRect.top = (RECTH(m_hwndRect) - RECTH(m_windowRect)) / 2;
-    m_displayRect.right = m_displayRect.left + RECTW(m_windowRect);
-    m_displayRect.bottom = m_displayRect.top + RECTH(m_windowRect);
+    int sw = RECTW(m_hwndRect);
+    int sh = RECTH(m_hwndRect);
+
+    int ww = RECTW(m_windowRect);
+    int wh = RECTH(m_windowRect);
+
+    float wf = (float)ww / sw;
+    float hf = (float)wh / sh;
+
+    m_displayScale = 0.0f;
+    if (wf <= 1.0f && hf <= 1.0f)
+    {
+        m_displayScale = 1.0f;
+    }
+    else
+    {
+        m_displayScale = std::max(wf, hf);
+    }
+    int displayW = ww / m_displayScale;
+    int displayH = wh / m_displayScale;
+
+    HILOG_DEBUG(HILOG_MODULE_ACE, "screen w=%d|h=%d", sw, sh);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "window w=%d|h=%d", ww, wh);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "window/screen w=%f|h=%f", wf, wf);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "display scale=%f", m_displayScale);
+    HILOG_DEBUG(HILOG_MODULE_ACE, "display w=%d|h=%d", displayW, displayH);
+
+    m_displayRect.left = (sw - displayW) / 2;
+    m_displayRect.top = (sh - displayH) / 2;
+    m_displayRect.right = m_displayRect.left + displayW;
+    m_displayRect.bottom = m_displayRect.top + displayH;
 #else
     m_displayRect = m_windowRect;
 #endif

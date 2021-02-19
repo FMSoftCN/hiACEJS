@@ -87,6 +87,7 @@ private:
 private:
     RECT m_windowRect;
     RECT m_displayRect;
+    float m_displayScale;
 
     RECT m_hwndRect;
     HWND m_hMainWnd;
