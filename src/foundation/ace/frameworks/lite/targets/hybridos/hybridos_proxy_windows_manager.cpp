@@ -317,8 +317,14 @@ void HybridosProxyWindowsManager::GetEventData(DeviceData* data)
     if (leftButtonStatus || leftButtonStatus != m_lastMouseLeftButtonStatus)
     {
         m_lastMouseLeftButtonStatus = leftButtonStatus;
+
+#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
+        data->point.x = (m_mouseX - m_displayRect.left) * m_displayScale;
+        data->point.y = (m_mouseY - m_displayRect.top) * m_displayScale;
+#else
         data->point.x = m_mouseX;
         data->point.y = m_mouseY;
+#endif
         data->state = leftButtonStatus ? InputDevice::STATE_PRESS :  InputDevice::STATE_RELEASE;
         data->winId = m_mainWndId;
     }
