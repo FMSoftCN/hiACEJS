@@ -183,6 +183,7 @@ int HybridosProxyWindowsManager::Init()
 IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
 {
     RECT screenRect = GetScreenRect();
+    m_hwndRect = screenRect;
 
     m_windowRect.left = 0;
     m_windowRect.top = 0;
@@ -190,8 +191,8 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_windowRect.bottom = config.rect.GetHeight();
 
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s screen rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(screenRect), RECTH(screenRect));
+    HILOG_DEBUG(HILOG_MODULE_ACE, "%s hwnd   rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(m_hwndRect), RECTH(m_hwndRect));
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s window rect(x=0,y=0,w=%d,h=%d)", __func__, RECTW(m_windowRect), RECTH(m_windowRect));
-
 
 #ifdef _MGRM_PROCESSES
     JoinLayer(NAME_DEF_LAYER , "hiAceJS" , 0 , 0);
@@ -205,10 +206,10 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     CreateInfo.spCaption = "";
     CreateInfo.hIcon = 0;
     CreateInfo.MainWindowProc = HybridosProxyWindowsManager::WindowsManagerWndProc;
-    CreateInfo.lx = m_windowRect.left;
-    CreateInfo.ty = m_windowRect.top;
-    CreateInfo.rx = m_windowRect.right;
-    CreateInfo.by = m_windowRect.bottom;
+    CreateInfo.lx = m_hwndRect.left;
+    CreateInfo.ty = m_hwndRect.top;
+    CreateInfo.rx = m_hwndRect.right;
+    CreateInfo.by = m_hwndRect.bottom;
     CreateInfo.iBkColor = COLOR_lightwhite;
     CreateInfo.dwAddData = 0;
     CreateInfo.hHosting = HWND_DESKTOP;

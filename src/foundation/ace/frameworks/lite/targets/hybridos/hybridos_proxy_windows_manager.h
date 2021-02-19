@@ -86,6 +86,7 @@ private:
 
 private:
     RECT m_windowRect;
+    RECT m_hwndRect;
     HWND m_hMainWnd;
     HDC m_memDC;
     uint32_t m_mainWndId;
