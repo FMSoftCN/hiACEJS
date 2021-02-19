@@ -102,7 +102,13 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
         case MSG_PAINT:
             {
                 HDC hdc = BeginPaint (hWnd);
-                BitBlt (m_memDC, 0, 0, RECTW(m_windowRect), RECTH(m_windowRect), hdc, 0, 0, 0);
+
+                int sw = RECTW(m_windowRect);
+                int sh = RECTH(m_windowRect);
+                int dw = RECTW(m_windowRect);
+                int dh = RECTH(m_windowRect);
+                StretchBlt(m_memDC, 0, 0, sw, sh, hdc, 0, 0, dw, dh, 0);
+
                 EndPaint (hWnd, hdc);
             }
             break;
@@ -203,12 +209,14 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     CreateInfo.dwAddData = 0;
     CreateInfo.hHosting = HWND_DESKTOP;
 
-    m_hMainWnd = CreateMainWindow (&CreateInfo);
+    m_hMainWnd = CreateMainWindowEx2 (&CreateInfo, 0L, NULL, NULL,
+            ST_PIXEL_ARGB8888, MakeRGBA(0xFF, 0xFF, 0xFF, 0xFF), 0, 0);
+
     SetWindowAdditionalData2(m_hMainWnd, (DWORD)this);
     m_mainWndId = GetUniqueWinId();
 
     m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
-                        32, MEMDC_FLAG_HWSURFACE,
+                        32, MEMDC_FLAG_SWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
