@@ -102,12 +102,16 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
         case MSG_PAINT:
             {
                 HDC hdc = BeginPaint (hWnd);
-
                 int sw = RECTW(m_windowRect);
                 int sh = RECTH(m_windowRect);
+
+#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
                 int dw = RECTW(m_windowRect);
                 int dh = RECTH(m_windowRect);
                 StretchBlt(m_memDC, 0, 0, sw, sh, hdc, 0, 0, dw, dh, 0);
+#else
+                BitBlt(m_memDC, 0, 0, sw, sh, hdc, 0, 0, 0);
+#endif
 
                 EndPaint (hWnd, hdc);
             }

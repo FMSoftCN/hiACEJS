@@ -58,6 +58,17 @@ find_package(MiniGUI 5.0.2 REQUIRED)
 set(MINIGUI_LIBRARIES ${MiniGUI_LIBRARIES})
 set(MINIGUI_INCLUDE_DIRS ${MiniGUI_INCLUDE_DIRS})
 
+
+OPTION(ENABLE_SIMPLE_ADAPTIVE_LAYOUT "enable simple adaptive layout which implement by StretchBlt" OFF)
+
+if(ENABLE_SIMPLE_ADAPTIVE_LAYOUT)
+  MESSAGE(STATUS "Enable simple adaptive layout")
+  ADD_DEFINITIONS(-DENABLE_SIMPLE_ADAPTIVE_LAYOUT)
+else()
+  message(STATUS "Disable simple adaptive layout")
+endif()
+
+
 # sub-directory
 add_subdirectory(src)
 add_subdirectory(test)

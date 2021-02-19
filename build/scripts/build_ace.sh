@@ -15,7 +15,7 @@ echo ""
 echo "ROOT_DIR=$ROOT_DIR"
 echo ""
 
-cmake -DCMAKE_INSTALL_PREFIX=$ROOT_DIR/usr
+cmake -DCMAKE_INSTALL_PREFIX=$ROOT_DIR/usr -DENABLE_SIMPLE_ADAPTIVE_LAYOUT=OFF
 make -j16
 sudo make install
 
