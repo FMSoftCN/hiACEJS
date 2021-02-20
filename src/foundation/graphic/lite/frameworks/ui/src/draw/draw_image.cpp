@@ -20,7 +20,7 @@
 #include "imgdecode/cache_manager.h"
 
 namespace OHOS {
-void DrawImage::DrawCommon(const Rect& coords, const Rect& mask,
+void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     const ImageInfo* img, const Style& style, uint8_t opaScale)
 {
     if (img == nullptr) {
@@ -29,12 +29,32 @@ void DrawImage::DrawCommon(const Rect& coords, const Rect& mask,
     OpacityType opa = (opaScale == OPA_OPAQUE) ? style.imageOpa_ :
         ((static_cast<uint16_t>(style.imageOpa_) * opaScale) >> SHIFT_8);
 
+    Rect coords = coordsIn;
+    Rect mask = maskIn;
+
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    coords.SetRect(
+            coordsIn.GetLeft() / displayScale,
+            coordsIn.GetTop() / displayScale,
+            coordsIn.GetRight() / displayScale,
+            coordsIn.GetBottom() / displayScale
+            );
+
+    mask.SetRect(
+            maskIn.GetLeft() / displayScale,
+            maskIn.GetTop() / displayScale,
+            maskIn.GetRight() / displayScale,
+            maskIn.GetBottom() / displayScale
+            );
+#endif
+
     /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
     uint8_t pxByteSize = DrawUtils::GetPxSizeByImageInfo(*img) >> 3;
     DrawUtils::GetInstance()->DrawImage(coords, mask, img->data, opa, pxByteSize);
 }
 
-void DrawImage::DrawCommon(const Rect& coords, const Rect& mask,
+void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     const char* path, const Style& style, uint8_t opaScale)
 {
     if (path == nullptr) {
@@ -47,6 +67,26 @@ void DrawImage::DrawCommon(const Rect& coords, const Rect& mask,
     if (CacheManager::GetInstance().Open(path, style, entry) != RetCode::OK) {
         return;
     }
+
+    Rect coords = coordsIn;
+    Rect mask = maskIn;
+
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    coords.SetRect(
+            coordsIn.GetLeft() / displayScale,
+            coordsIn.GetTop() / displayScale,
+            coordsIn.GetRight() / displayScale,
+            coordsIn.GetBottom() / displayScale
+            );
+
+    mask.SetRect(
+            maskIn.GetLeft() / displayScale,
+            maskIn.GetTop() / displayScale,
+            maskIn.GetRight() / displayScale,
+            maskIn.GetBottom() / displayScale
+            );
+#endif
 
     /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
     uint8_t pxByteSize = DrawUtils::GetPxSizeByImageInfo(entry.GetImageInfo()) >> 3;
