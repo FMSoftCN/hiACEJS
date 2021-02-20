@@ -103,7 +103,10 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             {
                 HDC hdc = BeginPaint (hWnd);
 
-#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
+#if defined(ENABLE_SIMPLE_ADAPTIVE_LAYOUT)
+                StretchBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
+                        hdc, m_displayRect.left, m_displayRect.top, RECTW(m_displayRect), RECTH(m_displayRect), 0);
+#elif defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
                 StretchBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
                         hdc, m_displayRect.left, m_displayRect.top, RECTW(m_displayRect), RECTH(m_displayRect), 0);
 #else
@@ -165,7 +168,7 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
 void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
 {
     RECT rect;
-#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
+#if defined(ENABLE_SIMPLE_ADAPTIVE_LAYOUT) || defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
     rect.left = m_displayRect.left + invalidatedArea.GetX() / m_displayScale;
     rect.top = m_displayRect.top + invalidatedArea.GetY() / m_displayScale;
     rect.right = rect.left + invalidatedArea.GetWidth() / m_displayScale;
@@ -195,7 +198,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_windowRect.right = config.rect.GetWidth();
     m_windowRect.bottom = config.rect.GetHeight();
 
-#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
+#if defined(ENABLE_SIMPLE_ADAPTIVE_LAYOUT) || defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
     int sw = RECTW(m_hwndRect);
     int sh = RECTH(m_hwndRect);
 
@@ -318,7 +321,7 @@ void HybridosProxyWindowsManager::GetEventData(DeviceData* data)
     {
         m_lastMouseLeftButtonStatus = leftButtonStatus;
 
-#ifdef ENABLE_SIMPLE_ADAPTIVE_LAYOUT
+#if defined(ENABLE_SIMPLE_ADAPTIVE_LAYOUT) || defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
         data->point.x = (m_mouseX - m_displayRect.left) * m_displayScale;
         data->point.y = (m_mouseY - m_displayRect.top) * m_displayScale;
 #else

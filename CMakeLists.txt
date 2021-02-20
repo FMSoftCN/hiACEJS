@@ -60,12 +60,20 @@ set(MINIGUI_INCLUDE_DIRS ${MiniGUI_INCLUDE_DIRS})
 
 
 OPTION(ENABLE_SIMPLE_ADAPTIVE_LAYOUT "enable simple adaptive layout which implement by StretchBlt" OFF)
+OPTION(ENABLE_FULL_ADAPTIVE_LAYOUT "enable full adaptive layout" OFF)
 
 if(ENABLE_SIMPLE_ADAPTIVE_LAYOUT)
   MESSAGE(STATUS "Enable simple adaptive layout")
   ADD_DEFINITIONS(-DENABLE_SIMPLE_ADAPTIVE_LAYOUT)
 else()
   message(STATUS "Disable simple adaptive layout")
+endif()
+
+if(ENABLE_FULL_ADAPTIVE_LAYOUT)
+  MESSAGE(STATUS "Enable full adaptive layout")
+  ADD_DEFINITIONS(-DENABLE_FULL_ADAPTIVE_LAYOUT)
+else()
+  message(STATUS "Disable full adaptive layout")
 endif()
 
 
