@@ -108,8 +108,8 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
                 StretchBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
                         hdc, m_displayRect.left, m_displayRect.top, RECTW(m_displayRect), RECTH(m_displayRect), 0);
 #elif defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-                StretchBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
-                        hdc, m_displayRect.left, m_displayRect.top, RECTW(m_displayRect), RECTH(m_displayRect), 0);
+                BitBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_displayRect), RECTH(m_displayRect),
+                        hdc, m_displayRect.left, m_displayRect.top, 0);
 #else
                 BitBlt(m_memDC, m_windowRect.left, m_windowRect.top, RECTW(m_windowRect), RECTH(m_windowRect),
                         hdc, m_displayRect.left, m_displayRect.top, 0);
@@ -268,10 +268,15 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     SetWindowAdditionalData2(m_hMainWnd, (DWORD)this);
     m_mainWndId = GetUniqueWinId();
 
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
     m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
                         32, MEMDC_FLAG_SWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-//    SetMemDCColorKey (m_memDC, MEMDC_FLAG_SRCCOLORKEY, 0);
+#else
+    m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
+                        32, MEMDC_FLAG_SWSURFACE,
+                        0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+#endif
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
     return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_windowRect, m_mainWndId);
