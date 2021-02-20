@@ -162,6 +162,11 @@ LRESULT HybridosProxyWindowsManager::WndProc(HWND hWnd, UINT message, WPARAM wPa
             HILOG_DEBUG(HILOG_MODULE_ACE, "MSG_PROCESS_ABILITY_EVENT");
             AbilityEventHandler::GetCurrentHandler()->ProcessEvent();
             break;
+
+        case MSG_CLOSE:
+            DestroyMainWindow(hWnd);
+            PostQuitMessage(hWnd);
+            break;
     }
     return DefaultMainWinProc(hWnd, message, wParam, lParam);
 }
