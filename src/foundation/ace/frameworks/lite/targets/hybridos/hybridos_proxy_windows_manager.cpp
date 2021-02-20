@@ -265,7 +265,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
                         32, MEMDC_FLAG_SWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-    SetMemDCColorKey (m_memDC, MEMDC_FLAG_SRCCOLORKEY, 0);
+//    SetMemDCColorKey (m_memDC, MEMDC_FLAG_SRCCOLORKEY, 0);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
     return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_windowRect, m_mainWndId);
