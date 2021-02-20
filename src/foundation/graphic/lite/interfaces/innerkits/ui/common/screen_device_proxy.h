@@ -111,6 +111,9 @@ public:
 #endif
     }
 
+    void SetDisplayScale(float scale) { displayScale_ = scale; }
+    float GetDisplayScale() { return displayScale_; }
+
 private:
     ScreenDeviceProxy() : device_(nullptr), flush_(false), width_(HORIZONTAL_RESOLUTION), height_(VERTICAL_RESOLUTION)
     {
@@ -145,6 +148,8 @@ private:
 #if ENABLE_WINDOW
     AllocationInfo gfxAlloc_;
 #endif
+
+    float displayScale_ = 1.0f;
 };
 } // namespace OHOS
 #endif // GRAPHIC_LITE_SCREEN_DEVICE_PROXY_H

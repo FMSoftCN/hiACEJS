@@ -57,6 +57,7 @@
 #include "animator/animator.h"
 #include "dock/input_device.h"
 #include "common/input_device_manager.h"
+#include <common/screen_device_proxy.h>
 
 #include "hibus_wrapper.h"
 
@@ -217,6 +218,8 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     {
         m_displayScale = std::max(wf, hf);
     }
+
+    OHOS::ScreenDeviceProxy::GetInstance()->SetDisplayScale(m_displayScale);
     int displayW = ww / m_displayScale;
     int displayH = wh / m_displayScale;
 
