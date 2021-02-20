@@ -19,14 +19,35 @@
 #include "graphic_log.h"
 #include "graphic_math.h"
 #include "style.h"
+#include <common/screen_device_proxy.h>
 
 namespace OHOS {
-void DrawRect::Draw(const Rect& rect, const Rect& dirtyRect, const Style& style)
+void DrawRect::Draw(const Rect& rectIn, const Rect& dirtyRectIn, const Style& style)
 {
-    if (rect.GetWidth() <= 0 || rect.GetHeight() <= 0) {
+    if (rectIn.GetWidth() <= 0 || rectIn.GetHeight() <= 0) {
         GRAPHIC_LOGD("DrawRect::Draw width or height is zero\n");
         return;
     }
+
+    Rect rect = rectIn;
+    Rect dirtyRect = dirtyRectIn;
+
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    rect.SetRect(
+            rectIn.GetLeft() / displayScale,
+            rectIn.GetTop() / displayScale,
+            rectIn.GetRight() / displayScale,
+            rectIn.GetBottom() / displayScale
+            );
+
+    dirtyRect.SetRect(
+            dirtyRectIn.GetLeft() / displayScale,
+            dirtyRectIn.GetTop() / displayScale,
+            dirtyRectIn.GetRight() / displayScale,
+            dirtyRectIn.GetBottom() / displayScale
+            );
+#endif
 
     /**
      * no border
