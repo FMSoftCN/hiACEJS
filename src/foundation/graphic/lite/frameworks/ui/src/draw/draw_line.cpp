@@ -20,9 +20,9 @@
 namespace OHOS {
 constexpr int16_t MAX_WIDTH = 100;
 
-void DrawLine::Draw(const Point& start,
-                    const Point& end,
-                    const Rect& mask,
+void DrawLine::Draw(const Point& startIn,
+                    const Point& endIn,
+                    const Rect& maskIn,
                     int16_t width,
                     const ColorType& color,
                     OpacityType opacity)
@@ -30,6 +30,23 @@ void DrawLine::Draw(const Point& start,
     if (width == 0 || opacity == OPA_TRANSPARENT) {
         return;
     }
+
+    Point start = startIn;
+    Point end = endIn;
+    Rect mask = maskIn;
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    start.x = startIn.x / displayScale;
+    start.y = startIn.y / displayScale;
+    end.x = endIn.x /displayScale;
+    end.y = endIn.y /displayScale;
+    mask.SetRect(
+            maskIn.GetLeft() / displayScale,
+            maskIn.GetTop() / displayScale,
+            maskIn.GetRight() / displayScale,
+            maskIn.GetBottom() / displayScale
+            );
+#endif
 
     int16_t yTop;
     int16_t yBottom;
