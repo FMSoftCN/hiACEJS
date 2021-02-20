@@ -257,7 +257,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     CreateInfo.hHosting = HWND_DESKTOP;
 
     m_hMainWnd = CreateMainWindowEx2 (&CreateInfo, 0L, NULL, NULL,
-            ST_PIXEL_ARGB8888, MakeRGBA(0xFF, 0xFF, 0xFF, 0xFF), 0, 0);
+            ST_PIXEL_ARGB8888, MakeRGBA(0x00, 0x00, 0x00, 0xFF), 0, 0);
 
     SetWindowAdditionalData2(m_hMainWnd, (DWORD)this);
     m_mainWndId = GetUniqueWinId();
