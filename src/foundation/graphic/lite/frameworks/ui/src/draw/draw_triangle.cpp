@@ -17,11 +17,34 @@
 #include "draw/draw_utils.h"
 
 namespace OHOS {
-void DrawTriangle::Draw(const Point* points, uint8_t count, const Rect& mask, const ColorType& color, OpacityType opa)
+void DrawTriangle::Draw(const Point* pointsIn, uint8_t count, const Rect& maskIn, const ColorType& color, OpacityType opa)
 {
-    if (points == nullptr || count != VERTEX_NUM) {
+    if (pointsIn == nullptr || count != VERTEX_NUM) {
         return;
     }
+
+    Rect mask = maskIn;
+    Point points[3];
+    points[0] = pointsIn[0];
+    points[1] = pointsIn[1];
+    points[2] = pointsIn[2];
+
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    mask.SetRect(
+            maskIn.GetLeft() / displayScale,
+            maskIn.GetTop() / displayScale,
+            maskIn.GetRight() / displayScale,
+            maskIn.GetBottom() / displayScale
+            );
+    points[0].x = points[0].x / displayScale;
+    points[0].y = points[0].y / displayScale;
+    points[1].x = points[1].x / displayScale;
+    points[1].y = points[1].y / displayScale;
+    points[2].x = points[2].x / displayScale;
+    points[2].y = points[2].y / displayScale;
+#endif
+
     // sort vertex according to y axis
     Point p1 = points[0];  // 0: point index
     Point p2 = points[1];  // 1: point index
