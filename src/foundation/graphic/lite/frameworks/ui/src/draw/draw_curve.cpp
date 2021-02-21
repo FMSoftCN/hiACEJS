@@ -16,14 +16,40 @@
 #include "draw/draw_curve.h"
 #include "animator/interpolation.h"
 #include "draw/draw_line.h"
+#include <common/screen_device_proxy.h>
 
 namespace OHOS {
-void DrawCurve::DrawCubicBezier(const Point& start, const Point& control1, const Point& control2, const Point& end,
-    const Rect& mask, int16_t width, const ColorType& color, OpacityType opacity)
+void DrawCurve::DrawCubicBezier(const Point& startIn, const Point& control1In, const Point& control2In, const Point& endIn,
+    const Rect& maskIn, int16_t widthIn, const ColorType& color, OpacityType opacity)
 {
-    if (width == 0 || opacity == OPA_TRANSPARENT) {
+    if (widthIn == 0 || opacity == OPA_TRANSPARENT) {
         return;
     }
+
+    Point start = startIn;
+    Point control1 = control1In;
+    Point control2 = control2In;
+    Point end = endIn;
+    Rect mask = maskIn;
+    int16_t width = widthIn;
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    start.x = startIn.x / displayScale;
+    start.y = startIn.y / displayScale;
+    control1.x = control1In.x /displayScale;
+    control1.y = control1In.y /displayScale;
+    control2.x = control2In.x /displayScale;
+    control2.y = control2In.y /displayScale;
+    end.x = endIn.x /displayScale;
+    end.y = endIn.y /displayScale;
+    mask.SetRect(
+            maskIn.GetLeft() / displayScale,
+            maskIn.GetTop() / displayScale,
+            maskIn.GetRight() / displayScale,
+            maskIn.GetBottom() / displayScale
+            );
+    width = widthIn / displayScale;
+#endif
 
     Point prePoint = start;
     for (int16_t t = 1; t <= INTERPOLATION_RANGE; t++) {
