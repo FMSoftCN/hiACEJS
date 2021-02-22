@@ -19,6 +19,8 @@
 #include "graphic_log.h"
 #include "imgdecode/cache_manager.h"
 
+#include <minigui/gdi.h>
+
 namespace OHOS {
 void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     const ImageInfo* img, const Style& style, uint8_t opaScale)
@@ -47,11 +49,49 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
             maskIn.GetRight() / displayScale,
             maskIn.GetBottom() / displayScale
             );
-#endif
 
+
+    BITMAP srcBitmap;
+    srcBitmap.bmType = BMP_TYPE_NORMAL;
+    srcBitmap.bmBitsPerPixel = 32;
+    srcBitmap.bmBytesPerPixel = 4;
+    srcBitmap.bmAlpha = 0;
+    srcBitmap.bmColorKey = 0;
+    srcBitmap.bmWidth = img->header.width;
+    srcBitmap.bmHeight = img->header.height;
+    srcBitmap.bmBits = (Uint8*)img->data;
+    srcBitmap.bmPitch = srcBitmap.bmWidth * srcBitmap.bmBytesPerPixel;
+
+    ImageInfo imgInfoScale = *img;
+    imgInfoScale.header.width =  imgInfoScale.header.width / displayScale;
+    imgInfoScale.header.height =  imgInfoScale.header.height / displayScale;
+    imgInfoScale.dataSize = imgInfoScale.header.height * imgInfoScale.header.width * 4;
+    imgInfoScale.data = static_cast<uint8_t*>(UIMalloc(imgInfoScale.dataSize));
+
+    BITMAP dstBitmap;
+    dstBitmap.bmType = BMP_TYPE_NORMAL;
+    dstBitmap.bmBitsPerPixel = 32;
+    dstBitmap.bmBytesPerPixel = 4;
+    dstBitmap.bmAlpha = 0;
+    dstBitmap.bmColorKey = 0;
+    dstBitmap.bmWidth = imgInfoScale.header.width;
+    dstBitmap.bmHeight = imgInfoScale.header.height;
+    dstBitmap.bmPitch = dstBitmap.bmWidth * dstBitmap.bmBytesPerPixel;
+    dstBitmap.bmBits = (Uint8*)imgInfoScale.data;
+
+    ScaleBitmap(&dstBitmap, &srcBitmap);
+
+    /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
+    uint8_t pxByteSize = DrawUtils::GetPxSizeByImageInfo(imgInfoScale) >> 3;
+    DrawUtils::GetInstance()->DrawImage(coords, mask, imgInfoScale.data, opa, pxByteSize);
+
+    UIFree((void*)imgInfoScale.data);
+#else
     /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
     uint8_t pxByteSize = DrawUtils::GetPxSizeByImageInfo(*img) >> 3;
     DrawUtils::GetInstance()->DrawImage(coords, mask, img->data, opa, pxByteSize);
+#endif
+
 }
 
 void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
