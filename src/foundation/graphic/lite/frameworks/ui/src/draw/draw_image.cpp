@@ -67,6 +67,7 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     imgInfoScale.header.height =  imgInfoScale.header.height / displayScale;
     imgInfoScale.dataSize = imgInfoScale.header.height * imgInfoScale.header.width * 4;
     imgInfoScale.data = static_cast<uint8_t*>(UIMalloc(imgInfoScale.dataSize));
+    memset((void*)imgInfoScale.data, 0, imgInfoScale.dataSize);
 
     BITMAP dstBitmap;
     dstBitmap.bmType = BMP_TYPE_NORMAL;
@@ -79,7 +80,15 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     dstBitmap.bmPitch = dstBitmap.bmWidth * dstBitmap.bmBytesPerPixel;
     dstBitmap.bmBits = (Uint8*)imgInfoScale.data;
 
+#if 0
+    fprintf(stderr, "\n...........src w=%d|h=%d\n", srcBitmap.bmWidth, srcBitmap.bmHeight);
+    fprintf(stderr, "...........dst w=%d|h=%d\n\n", dstBitmap.bmWidth, dstBitmap.bmHeight);
+    HDC hdc = OHOS::ScreenDeviceProxy::GetInstance()->GetHDC();
+    SetBitmapScalerType(hdc, BITMAP_SCALER_DDA);
+    ScaleBitmapEx(&dstBitmap, &srcBitmap, hdc);
+#else
     ScaleBitmap(&dstBitmap, &srcBitmap);
+#endif
 
     /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
     uint8_t pxByteSize = DrawUtils::GetPxSizeByImageInfo(imgInfoScale) >> 3;

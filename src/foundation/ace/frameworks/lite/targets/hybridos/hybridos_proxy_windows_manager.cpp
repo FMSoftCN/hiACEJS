@@ -282,6 +282,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
                         32, MEMDC_FLAG_SWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 #endif
+    OHOS::ScreenDeviceProxy::GetInstance()->SetHDC(m_memDC);
 
     SetTimer(m_hMainWnd, UI_TASK_TIMER_ID, 1);
     return new HybridosProxyWindow(m_hMainWnd, m_memDC, &m_windowRect, m_mainWndId);
