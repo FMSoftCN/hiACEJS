@@ -165,8 +165,7 @@ void Text::OnDraw(const Rect& invalidatedAreaIn, const Rect& viewOrigRectIn, con
     offsetX = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(offsetXIn);
     ellipsisIndex = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(ellipsisIndexIn);
 
-    //int fontSizeScale - 1;
-    int fontSizeScale = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(fontSize_);
+    int fontSizeScale = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(fontSize_) -1 ;
     UIFont::GetInstance()->SetCurrentFontId(fontId_, fontSizeScale);
 
     Point textSizeBack = textSize_;

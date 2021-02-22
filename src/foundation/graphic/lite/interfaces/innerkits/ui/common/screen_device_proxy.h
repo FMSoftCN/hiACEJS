@@ -121,6 +121,7 @@ public:
     HDC GetHDC() { return hdc_; }
 
     int calcScale(int param) { return round(param / displayScale_); }
+//    int calcScale(int param) { return param / displayScale_; }
     Rect calcRect(const Rect& rect) {
         return Rect(
                 calcScale(rect.GetLeft()),

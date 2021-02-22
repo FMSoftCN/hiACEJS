@@ -223,6 +223,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     {
         m_displayScale = std::max(wf, hf);
     }
+//    m_displayScale = 2.0f;
 
     OHOS::ScreenDeviceProxy::GetInstance()->SetDisplayScale(m_displayScale);
     int displayW = ww / m_displayScale;
