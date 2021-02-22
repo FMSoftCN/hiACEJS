@@ -121,7 +121,7 @@ public:
     HDC GetHDC() { return hdc_; }
 
     int calcScale(int param) { return round(param / displayScale_); }
-    Rect calcRectScale(Rect& rect) {
+    Rect calcRect(const Rect& rect) {
         return Rect(
                 calcScale(rect.GetLeft()),
                 calcScale(rect.GetTop()),
@@ -130,7 +130,7 @@ public:
                 );
     }
 
-    Point calcPoint(Point& point) {
+    Point calcPoint(const Point& point) {
         Point pt;
         pt.x = calcScale(point.x);
         pt.y = calcScale(point.y);
