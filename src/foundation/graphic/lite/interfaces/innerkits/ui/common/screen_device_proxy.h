@@ -25,6 +25,8 @@
 #include "surface.h"
 #endif
 
+#include <minigui/common.h>
+
 namespace OHOS {
 /** @brief A display device proxy */
 class ScreenDeviceProxy : public HeapBase {
@@ -114,6 +116,9 @@ public:
     void SetDisplayScale(float scale) { displayScale_ = scale; }
     float GetDisplayScale() { return displayScale_; }
 
+    void SetHDC(HDC hdc) { hdc_ = hdc; }
+    HDC GetHDC() { return hdc_; }
+
 private:
     ScreenDeviceProxy() : device_(nullptr), flush_(false), width_(HORIZONTAL_RESOLUTION), height_(VERTICAL_RESOLUTION)
     {
@@ -150,6 +155,7 @@ private:
 #endif
 
     float displayScale_ = 1.0f;
+    HDC hdc_;
 };
 } // namespace OHOS
 #endif // GRAPHIC_LITE_SCREEN_DEVICE_PROXY_H
