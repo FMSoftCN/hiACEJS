@@ -26,6 +26,7 @@
 #endif
 
 #include <minigui/common.h>
+#include <math.h>
 
 namespace OHOS {
 /** @brief A display device proxy */
@@ -118,6 +119,23 @@ public:
 
     void SetHDC(HDC hdc) { hdc_ = hdc; }
     HDC GetHDC() { return hdc_; }
+
+    int calcScale(int param) { return round(param / displayScale_); }
+    Rect calcRectScale(Rect& rect) {
+        return Rect(
+                calcScale(rect.GetLeft()),
+                calcScale(rect.GetTop()),
+                calcScale(rect.GetRight()),
+                calcScale(rect.GetBottom())
+                );
+    }
+
+    Point calcPoint(Point& point) {
+        Point pt;
+        pt.x = calcScale(point.x);
+        pt.y = calcScale(point.y);
+        return pt;
+    }
 
 private:
     ScreenDeviceProxy() : device_(nullptr), flush_(false), width_(HORIZONTAL_RESOLUTION), height_(VERTICAL_RESOLUTION)
