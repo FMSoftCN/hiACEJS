@@ -35,17 +35,9 @@ void DrawLine::Draw(const Point& startIn,
     Point end = endIn;
     Rect mask = maskIn;
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    start.x = startIn.x / displayScale;
-    start.y = startIn.y / displayScale;
-    end.x = endIn.x /displayScale;
-    end.y = endIn.y /displayScale;
-    mask.SetRect(
-            maskIn.GetLeft() / displayScale,
-            maskIn.GetTop() / displayScale,
-            maskIn.GetRight() / displayScale,
-            maskIn.GetBottom() / displayScale
-            );
+    start = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(startIn);
+    end = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(endIn);
+    mask = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(maskIn);
 #endif
 
     int16_t yTop;

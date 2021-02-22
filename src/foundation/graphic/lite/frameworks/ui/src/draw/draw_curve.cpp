@@ -32,23 +32,14 @@ void DrawCurve::DrawCubicBezier(const Point& startIn, const Point& control1In, c
     Point end = endIn;
     Rect mask = maskIn;
     int16_t width = widthIn;
+
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    start.x = startIn.x / displayScale;
-    start.y = startIn.y / displayScale;
-    control1.x = control1In.x /displayScale;
-    control1.y = control1In.y /displayScale;
-    control2.x = control2In.x /displayScale;
-    control2.y = control2In.y /displayScale;
-    end.x = endIn.x /displayScale;
-    end.y = endIn.y /displayScale;
-    mask.SetRect(
-            maskIn.GetLeft() / displayScale,
-            maskIn.GetTop() / displayScale,
-            maskIn.GetRight() / displayScale,
-            maskIn.GetBottom() / displayScale
-            );
-    width = widthIn / displayScale;
+    start = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(startIn);
+    control1 = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(control1In);
+    control2 = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(control2In);
+    end = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(endIn);
+    mask = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(maskIn);
+    width = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(widthIn);
 #endif
 
     Point prePoint = start;

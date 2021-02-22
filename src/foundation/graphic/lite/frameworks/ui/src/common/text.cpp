@@ -155,30 +155,18 @@ void Text::OnDraw(const Rect& invalidatedAreaIn, const Rect& viewOrigRectIn, con
     Style style = styleIn;
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
+    style.letterSpace_ = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(style.letterSpace_);
+    style.lineSpace_ = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(style.lineSpace_);
 
-    style.letterSpace_ = style.letterSpace_ / displayScale;
-    style.lineSpace_ = style.lineSpace_ /displayScale;
+    invalidatedArea = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(invalidatedAreaIn);
+    viewOrigRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(viewOrigRectIn);
+    textRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(textRectIn);
 
-    invalidatedArea.SetLeft(invalidatedAreaIn.GetLeft() / displayScale);
-    invalidatedArea.SetTop(invalidatedAreaIn.GetTop() / displayScale);
-    invalidatedArea.SetWidth(invalidatedAreaIn.GetWidth() / displayScale);
-    invalidatedArea.SetHeight(invalidatedAreaIn.GetHeight() / displayScale);
+    offsetX = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(offsetXIn);
+    ellipsisIndex = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(ellipsisIndexIn);
 
-    viewOrigRect.SetLeft(viewOrigRectIn.GetLeft() / displayScale);
-    viewOrigRect.SetTop(viewOrigRectIn.GetTop() / displayScale);
-    viewOrigRect.SetWidth(viewOrigRectIn.GetWidth() / displayScale);
-    viewOrigRect.SetHeight(viewOrigRectIn.GetHeight() / displayScale);
-
-    textRect.SetLeft(textRectIn.GetLeft() / displayScale);
-    textRect.SetTop(textRectIn.GetTop() / displayScale);
-    textRect.SetWidth(textRectIn.GetWidth() / displayScale);
-    textRect.SetHeight(textRectIn.GetHeight() / displayScale);
-
-    offsetX = offsetXIn / displayScale;
-    ellipsisIndex = ellipsisIndexIn / displayScale;
-
-    int fontSizeScale = fontSize_ / displayScale - 1;
+    //int fontSizeScale - 1;
+    int fontSizeScale = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(fontSize_);
     UIFont::GetInstance()->SetCurrentFontId(fontId_, fontSizeScale);
 
     Point textSizeBack = textSize_;

@@ -33,20 +33,8 @@ void DrawRect::Draw(const Rect& rectIn, const Rect& dirtyRectIn, const Style& st
     Rect dirtyRect = dirtyRectIn;
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    rect.SetRect(
-            rectIn.GetLeft() / displayScale,
-            rectIn.GetTop() / displayScale,
-            rectIn.GetRight() / displayScale,
-            rectIn.GetBottom() / displayScale
-            );
-
-    dirtyRect.SetRect(
-            dirtyRectIn.GetLeft() / displayScale,
-            dirtyRectIn.GetTop() / displayScale,
-            dirtyRectIn.GetRight() / displayScale,
-            dirtyRectIn.GetBottom() / displayScale
-            );
+    rect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(rectIn);
+    dirtyRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(dirtyRectIn);
 #endif
 
     /**

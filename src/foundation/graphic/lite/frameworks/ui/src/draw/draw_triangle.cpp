@@ -30,19 +30,10 @@ void DrawTriangle::Draw(const Point* pointsIn, uint8_t count, const Rect& maskIn
     points[2] = pointsIn[2];
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    mask.SetRect(
-            maskIn.GetLeft() / displayScale,
-            maskIn.GetTop() / displayScale,
-            maskIn.GetRight() / displayScale,
-            maskIn.GetBottom() / displayScale
-            );
-    points[0].x = points[0].x / displayScale;
-    points[0].y = points[0].y / displayScale;
-    points[1].x = points[1].x / displayScale;
-    points[1].y = points[1].y / displayScale;
-    points[2].x = points[2].x / displayScale;
-    points[2].y = points[2].y / displayScale;
+    mask = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(maskIn);
+    points[0] = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(pointsIn[0]);
+    points[1] = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(pointsIn[1]);
+    points[2] = OHOS::ScreenDeviceProxy::GetInstance()->calcPoint(pointsIn[2]);
 #endif
 
     // sort vertex according to y axis
