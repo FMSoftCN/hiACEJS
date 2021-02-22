@@ -22,6 +22,7 @@
 #include <minigui/gdi.h>
 
 namespace OHOS {
+
 void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     const ImageInfo* img, const Style& style, uint8_t opaScale)
 {
@@ -35,21 +36,8 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     Rect mask = maskIn;
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    coords.SetRect(
-            coordsIn.GetLeft() / displayScale,
-            coordsIn.GetTop() / displayScale,
-            coordsIn.GetRight() / displayScale,
-            coordsIn.GetBottom() / displayScale
-            );
-
-    mask.SetRect(
-            maskIn.GetLeft() / displayScale,
-            maskIn.GetTop() / displayScale,
-            maskIn.GetRight() / displayScale,
-            maskIn.GetBottom() / displayScale
-            );
-
+    coords = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(coordsIn);
+    mask = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(maskIn);
 
     BITMAP srcBitmap;
     srcBitmap.bmType = BMP_TYPE_NORMAL;
@@ -63,8 +51,8 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     srcBitmap.bmPitch = srcBitmap.bmWidth * srcBitmap.bmBytesPerPixel;
 
     ImageInfo imgInfoScale = *img;
-    imgInfoScale.header.width =  imgInfoScale.header.width / displayScale;
-    imgInfoScale.header.height =  imgInfoScale.header.height / displayScale;
+    imgInfoScale.header.width = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(imgInfoScale.header.width);
+    imgInfoScale.header.height =  OHOS::ScreenDeviceProxy::GetInstance()->calcScale(imgInfoScale.header.height);
     imgInfoScale.dataSize = imgInfoScale.header.height * imgInfoScale.header.width * 4;
     imgInfoScale.data = static_cast<uint8_t*>(UIMalloc(imgInfoScale.dataSize));
     memset((void*)imgInfoScale.data, 0, imgInfoScale.dataSize);
@@ -81,8 +69,6 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     dstBitmap.bmBits = (Uint8*)imgInfoScale.data;
 
 #if 0
-    fprintf(stderr, "\n...........src w=%d|h=%d\n", srcBitmap.bmWidth, srcBitmap.bmHeight);
-    fprintf(stderr, "...........dst w=%d|h=%d\n\n", dstBitmap.bmWidth, dstBitmap.bmHeight);
     HDC hdc = OHOS::ScreenDeviceProxy::GetInstance()->GetHDC();
     SetBitmapScalerType(hdc, BITMAP_SCALER_DDA);
     ScaleBitmapEx(&dstBitmap, &srcBitmap, hdc);
@@ -121,20 +107,8 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     Rect mask = maskIn;
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    coords.SetRect(
-            coordsIn.GetLeft() / displayScale,
-            coordsIn.GetTop() / displayScale,
-            coordsIn.GetRight() / displayScale,
-            coordsIn.GetBottom() / displayScale
-            );
-
-    mask.SetRect(
-            maskIn.GetLeft() / displayScale,
-            maskIn.GetTop() / displayScale,
-            maskIn.GetRight() / displayScale,
-            maskIn.GetBottom() / displayScale
-            );
+    coords = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(coordsIn);
+    mask = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(maskIn);
 #endif
 
     /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
