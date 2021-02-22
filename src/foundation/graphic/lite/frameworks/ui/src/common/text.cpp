@@ -140,7 +140,7 @@ void Text::ReMeasureTextSize(const Rect& textRect, const Style& style)
 }
 
 void Text::OnDraw(const Rect& invalidatedAreaIn, const Rect& viewOrigRectIn, const Rect& textRectIn, int16_t offsetXIn,
-    const Style& style, uint16_t ellipsisIndexIn)
+    const Style& styleIn, uint16_t ellipsisIndexIn)
 {
     if (text_ == nullptr) {
         return;
@@ -152,35 +152,39 @@ void Text::OnDraw(const Rect& invalidatedAreaIn, const Rect& viewOrigRectIn, con
     Rect textRect = textRectIn;
     int16_t offsetX = offsetXIn;
     uint16_t ellipsisIndex = ellipsisIndexIn;
+    Style style = styleIn;
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
     float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
 
-    invalidatedArea.SetRect(
-            invalidatedAreaIn.GetLeft() / displayScale,
-            invalidatedAreaIn.GetTop() / displayScale,
-            invalidatedAreaIn.GetRight() / displayScale,
-            invalidatedAreaIn.GetBottom() / displayScale
-            );
+    style.letterSpace_ = style.letterSpace_ / displayScale;
+    style.lineSpace_ = style.lineSpace_ /displayScale;
 
-    viewOrigRect.SetRect( viewOrigRectIn.GetLeft() / displayScale,
-            viewOrigRectIn.GetTop() / displayScale,
-            viewOrigRectIn.GetRight() / displayScale,
-            viewOrigRectIn.GetBottom() / displayScale
-            );
+    invalidatedArea.SetLeft(invalidatedAreaIn.GetLeft() / displayScale);
+    invalidatedArea.SetTop(invalidatedAreaIn.GetTop() / displayScale);
+    invalidatedArea.SetWidth(invalidatedAreaIn.GetWidth() / displayScale);
+    invalidatedArea.SetHeight(invalidatedAreaIn.GetHeight() / displayScale);
 
-    textRect.SetRect(
-            textRectIn.GetLeft() / displayScale,
-            textRectIn.GetTop() / displayScale,
-            textRectIn.GetRight() / displayScale,
-            textRectIn.GetBottom() / displayScale
-            );
+    viewOrigRect.SetLeft(viewOrigRectIn.GetLeft() / displayScale);
+    viewOrigRect.SetTop(viewOrigRectIn.GetTop() / displayScale);
+    viewOrigRect.SetWidth(viewOrigRectIn.GetWidth() / displayScale);
+    viewOrigRect.SetHeight(viewOrigRectIn.GetHeight() / displayScale);
+
+    textRect.SetLeft(textRectIn.GetLeft() / displayScale);
+    textRect.SetTop(textRectIn.GetTop() / displayScale);
+    textRect.SetWidth(textRectIn.GetWidth() / displayScale);
+    textRect.SetHeight(textRectIn.GetHeight() / displayScale);
 
     offsetX = offsetXIn / displayScale;
     ellipsisIndex = ellipsisIndexIn / displayScale;
 
     int fontSizeScale = fontSize_ / displayScale - 1;
     UIFont::GetInstance()->SetCurrentFontId(fontId_, fontSizeScale);
+
+    Point textSizeBack = textSize_;
+    int16_t maxWidth = (expandWidth_ ? COORD_MAX : textRect.GetWidth());
+    Point textSizeScale = TypedText::GetTextSize(text_, style.letterSpace_, style.lineSpace_, maxWidth);
+    textSize_ = textSizeScale;
 #else
     UIFont::GetInstance()->SetCurrentFontId(fontId_, fontSize_);
 #endif
@@ -209,26 +213,16 @@ void Text::OnDraw(const Rect& invalidatedAreaIn, const Rect& viewOrigRectIn, con
     }
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
     UIFont::GetInstance()->SetCurrentFontId(fontId_, fontSize_);
+    textSize_ = textSizeBack;
 #endif
 }
 
-void Text::Draw(const Rect& mask, const LabelRotation& rotate, const Style& styleIn, int16_t offsetX,
+void Text::Draw(const Rect& mask, const LabelRotation& rotate, const Style& style, int16_t offsetX,
     uint16_t ellipsisIndex)
 {
     Point offset = { offsetX, 0 };
 
-    Style style = styleIn;
-#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    float displayScale = OHOS::ScreenDeviceProxy::GetInstance()->GetDisplayScale();
-    int16_t maxWidth = (expandWidth_ ? COORD_MAX : rotate.coords.GetWidth());
-    style.letterSpace_ = style.letterSpace_ / displayScale;
-    style.lineSpace_ = style.lineSpace_ /displayScale;
-    Point textSizeScale = TypedText::GetTextSize(text_, style.letterSpace_, style.lineSpace_, maxWidth);
-    int16_t lineMaxWidth = expandWidth_ ? textSizeScale.x : rotate.coords.GetWidth();
-#else
     int16_t lineMaxWidth = expandWidth_ ? textSize_.x : rotate.coords.GetWidth();
-#endif
-
     int16_t lineHeight = UIFont::GetInstance()->GetHeight() + style.lineSpace_;
     Point pos;
     pos.y = TextPositionY(rotate.coords);
