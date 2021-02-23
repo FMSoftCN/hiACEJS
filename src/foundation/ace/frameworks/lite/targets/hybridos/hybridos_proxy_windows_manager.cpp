@@ -215,6 +215,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     float hf = (float)wh / sh;
 
     m_displayScale = 0.0f;
+#if 0
     if (wf <= 1.0f && hf <= 1.0f)
     {
         m_displayScale = 1.0f;
@@ -223,6 +224,9 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     {
         m_displayScale = std::max(wf, hf);
     }
+#else
+    m_displayScale = std::max(wf, hf);
+#endif
 
     OHOS::ScreenDeviceProxy::GetInstance()->SetDisplayScale(m_displayScale);
     int displayW = ww / m_displayScale;
@@ -274,7 +278,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     m_mainWndId = GetUniqueWinId();
 
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    m_memDC = CreateMemDC (RECTW(m_windowRect), RECTH(m_windowRect),
+    m_memDC = CreateMemDC (RECTW(m_displayRect), RECTH(m_displayRect),
                         32, MEMDC_FLAG_SWSURFACE,
                         0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 #else
