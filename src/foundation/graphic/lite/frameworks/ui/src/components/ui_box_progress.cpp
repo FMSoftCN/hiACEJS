@@ -112,6 +112,7 @@ void UIBoxProgress::DrawRoundCap(const Image* image, const Point& imgPos, const 
     arcInfo.imgPos = imgPos;
     arcInfo.imgSrc = image;
 
+#ifndef ENABLE_FULL_ADAPTIVE_LAYOUT
     arcInfo.center = leftTop;
     arcInfo.startAngle = THREE_QUARTER_IN_DEGREE;
     arcInfo.endAngle = 0;
@@ -131,6 +132,7 @@ void UIBoxProgress::DrawRoundCap(const Image* image, const Point& imgPos, const 
     arcInfo.startAngle = THREE_QUARTER_IN_DEGREE;
     arcInfo.endAngle = SEMICIRCLE_IN_DEGREE;
     DrawArc::GetInstance()->Draw(arcInfo, invalidatedArea, capStyle, opaScale_, CapType::CAP_NONE);
+#endif
 }
 
 void UIBoxProgress::GetBackgroundParam(Point& startPoint, int16_t& width, int16_t& height, uint16_t& radius,
