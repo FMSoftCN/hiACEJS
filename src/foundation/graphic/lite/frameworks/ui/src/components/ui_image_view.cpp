@@ -22,6 +22,7 @@
 #include "image_info.h"
 #include "imgdecode/cache_manager.h"
 #include "mem_api.h"
+#include <minigui/gdi.h>
 
 namespace OHOS {
 UIImageView::UIImageView()
@@ -91,6 +92,57 @@ void UIImageView::OnDraw(const Rect& invalidatedArea)
                 } else {
                     imgInfo = *(GetImageInfo());
                 }
+
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+                BITMAP srcBitmap;
+                srcBitmap.bmType = BMP_TYPE_NORMAL;
+                srcBitmap.bmBitsPerPixel = 32;
+                srcBitmap.bmBytesPerPixel = 4;
+                srcBitmap.bmAlpha = 0;
+                srcBitmap.bmColorKey = 0;
+                srcBitmap.bmWidth = imgInfo.header.width;
+                srcBitmap.bmHeight = imgInfo.header.height;
+                srcBitmap.bmBits = (Uint8*)imgInfo.data;
+                srcBitmap.bmPitch = srcBitmap.bmWidth * srcBitmap.bmBytesPerPixel;
+
+                ImageInfo imgInfoScale = imgInfo;
+                imgInfoScale.header.width = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(imgInfoScale.header.width);
+                imgInfoScale.header.height =  OHOS::ScreenDeviceProxy::GetInstance()->calcScale(imgInfoScale.header.height);
+                imgInfoScale.dataSize = imgInfoScale.header.height * imgInfoScale.header.width * 4;
+                imgInfoScale.data = static_cast<uint8_t*>(UIMalloc(imgInfoScale.dataSize));
+                memset((void*)imgInfoScale.data, 0, imgInfoScale.dataSize);
+
+                BITMAP dstBitmap;
+                dstBitmap.bmType = BMP_TYPE_NORMAL;
+                dstBitmap.bmBitsPerPixel = 32;
+                dstBitmap.bmBytesPerPixel = 4;
+                dstBitmap.bmAlpha = 0;
+                dstBitmap.bmColorKey = 0;
+                dstBitmap.bmWidth = imgInfoScale.header.width;
+                dstBitmap.bmHeight = imgInfoScale.header.height;
+                dstBitmap.bmPitch = dstBitmap.bmWidth * dstBitmap.bmBytesPerPixel;
+                dstBitmap.bmBits = (Uint8*)imgInfoScale.data;
+
+                ScaleBitmap(&dstBitmap, &srcBitmap);
+
+                uint8_t pxSize = DrawUtils::GetPxSizeByColorMode(imgInfoScale.header.colorMode);
+                TransformDataInfo imageTranDataInfo = {
+                    imgInfoScale.header, imgInfoScale.data, pxSize,
+                    static_cast<BlurLevel>(blurLevel_), static_cast<TransformAlgorithm>(algorithm_)
+                };
+
+                Rect origRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(GetOrigRect());
+                Rect tsMapRect = transMap_->GetTransMapRect();
+                int16_t deltaX = origRect.GetX() - tsMapRect.GetX();
+                int16_t deltaY = origRect.GetY() - tsMapRect.GetY();
+
+                Rect srcRect = GetOrigRect();
+                Rect area = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(invalidatedArea);
+                DrawUtils::GetInstance()->DrawTransform(area, Point{ deltaX, deltaY }, Color::Black(),
+                        *transMap_, imageTranDataInfo);
+
+                UIFree((void*)imgInfoScale.data);
+#else
                 uint8_t pxSize = DrawUtils::GetPxSizeByColorMode(imgInfo.header.colorMode);
                 TransformDataInfo imageTranDataInfo = {
                     imgInfo.header, imgInfo.data, pxSize,
@@ -102,6 +154,7 @@ void UIImageView::OnDraw(const Rect& invalidatedArea)
                 int16_t deltaY = origRect.GetY() - transMap_->GetTransMapRect().GetY();
                 DrawUtils::GetInstance()->DrawTransform(invalidatedArea, Point{ deltaX, deltaY }, Color::Black(),
                     *transMap_, imageTranDataInfo);
+#endif
             }
         }
     }

@@ -22,6 +22,7 @@
 #include "ace_mem_base.h"
 #include "easing_equation.h"
 #include "root_view.h"
+#include <common/screen_device_proxy.h>
 
 namespace OHOS {
 namespace ACELite {
@@ -200,12 +201,22 @@ void TransitionImpl::SetTransformSrcPosition()
 
 void TransitionImpl::RotateAroundCenterPoint(int16_t angle)
 {
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    Rect origRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(view_->GetOrigRect());
+    TransformMap transMap(origRect);
+    const int circleRate = 360;
+    angle = angle % circleRate;
+    uint8_t halfVal = 2;
+    pivot_.x_ = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(view_->GetWidth() / halfVal);
+    pivot_.y_ = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(view_->GetHeight() / halfVal);
+#else
     TransformMap transMap(view_->GetOrigRect());
     const int circleRate = 360;
     angle = angle % circleRate;
     uint8_t halfVal = 2;
     pivot_.x_ = view_->GetWidth() / halfVal;
     pivot_.y_ = view_->GetHeight() / halfVal;
+#endif
     transMap.Rotate((angle), pivot_);
     view_->SetTransformMap(transMap);
 }
