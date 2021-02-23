@@ -54,7 +54,13 @@ bool UIImageView::OnPreDraw(const Rect& invalidatedArea)
 
 void UIImageView::OnDraw(const Rect& invalidatedArea)
 {
+#if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
+    Rect area = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(invalidatedArea);
+    Rect rect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(GetRect());
+    DrawRect::Draw(rect, area, *style_);
+#else
     DrawRect::Draw(GetRect(), invalidatedArea, *style_);
+#endif
     if ((imageHeight_ == 0) || (imageWidth_ == 0)) {
         return;
     }
@@ -132,14 +138,12 @@ void UIImageView::OnDraw(const Rect& invalidatedArea)
                 };
 
                 Rect origRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(GetOrigRect());
-                Rect tsMapRect = transMap_->GetTransMapRect();
+                Rect tsMapRect = transMapScale_.GetTransMapRect();
                 int16_t deltaX = origRect.GetX() - tsMapRect.GetX();
                 int16_t deltaY = origRect.GetY() - tsMapRect.GetY();
 
-                Rect srcRect = GetOrigRect();
-                Rect area = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(invalidatedArea);
                 DrawUtils::GetInstance()->DrawTransform(area, Point{ deltaX, deltaY }, Color::Black(),
-                        *transMap_, imageTranDataInfo);
+                        transMapScale_, imageTranDataInfo);
 
                 UIFree((void*)imgInfoScale.data);
 #else

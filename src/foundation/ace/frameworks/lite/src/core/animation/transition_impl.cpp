@@ -201,22 +201,22 @@ void TransitionImpl::SetTransformSrcPosition()
 
 void TransitionImpl::RotateAroundCenterPoint(int16_t angle)
 {
+    const int circleRate = 360;
+    angle = angle % circleRate;
+    uint8_t halfVal = 2;
+
 #if defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
     Rect origRect = OHOS::ScreenDeviceProxy::GetInstance()->calcRect(view_->GetOrigRect());
-    TransformMap transMap(origRect);
-    const int circleRate = 360;
-    angle = angle % circleRate;
-    uint8_t halfVal = 2;
+    TransformMap transMapScale(origRect);
     pivot_.x_ = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(view_->GetWidth() / halfVal);
     pivot_.y_ = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(view_->GetHeight() / halfVal);
-#else
+    transMapScale.Rotate((angle), pivot_);
+    view_->SetTransformMapScale(transMapScale);
+#endif
+
     TransformMap transMap(view_->GetOrigRect());
-    const int circleRate = 360;
-    angle = angle % circleRate;
-    uint8_t halfVal = 2;
     pivot_.x_ = view_->GetWidth() / halfVal;
     pivot_.y_ = view_->GetHeight() / halfVal;
-#endif
     transMap.Rotate((angle), pivot_);
     view_->SetTransformMap(transMap);
 }

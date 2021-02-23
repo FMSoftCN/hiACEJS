@@ -1023,6 +1023,13 @@ public:
         return *transMap_;
     }
 
+
+    void SetTransformMapScale(const TransformMap& transMap) { transMapScale_ = transMap; }
+    TransformMap& GetTransformMapScale()
+    {
+        return transMapScale_;
+    }
+
     /**
      * @brief Obtains the child view of a specified ID.
      * @return Returns the pointer to the child view.
@@ -1315,6 +1322,7 @@ protected:
     UIView* nextSibling_;
     Style* style_;
     TransformMap* transMap_;
+    TransformMap transMapScale_;
     OnClickListener* onClickListener_;
     OnLongPressListener* onLongPressListener_;
     OnDragListener* onDragListener_;
