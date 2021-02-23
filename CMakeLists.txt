@@ -76,6 +76,13 @@ else()
   message(STATUS "Disable full adaptive layout")
 endif()
 
+if(ENABLE_SCALE_LARGE)
+  MESSAGE(STATUS "Enable scale large")
+  ADD_DEFINITIONS(-DENABLE_SCALE_LARGE)
+else()
+  message(STATUS "Disable scale large")
+endif()
+
 
 # sub-directory
 add_subdirectory(src)

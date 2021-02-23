@@ -215,7 +215,7 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
     float hf = (float)wh / sh;
 
     m_displayScale = 0.0f;
-#if 0
+#ifndef ENABLE_SCALE_LARGE
     if (wf <= 1.0f && hf <= 1.0f)
     {
         m_displayScale = 1.0f;
