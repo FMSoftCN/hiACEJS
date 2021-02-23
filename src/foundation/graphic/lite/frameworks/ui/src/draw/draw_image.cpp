@@ -68,13 +68,7 @@ void DrawImage::DrawCommon(const Rect& coordsIn, const Rect& maskIn,
     dstBitmap.bmPitch = dstBitmap.bmWidth * dstBitmap.bmBytesPerPixel;
     dstBitmap.bmBits = (Uint8*)imgInfoScale.data;
 
-#if 0
-    HDC hdc = OHOS::ScreenDeviceProxy::GetInstance()->GetHDC();
-    SetBitmapScalerType(hdc, BITMAP_SCALER_DDA);
-    ScaleBitmapEx(&dstBitmap, &srcBitmap, hdc);
-#else
     ScaleBitmap(&dstBitmap, &srcBitmap);
-#endif
 
     /* 3 : when single pixel change bit to byte, the buffer should divide by 8, equal to shift right 3 bits. */
     uint8_t pxByteSize = DrawUtils::GetPxSizeByImageInfo(imgInfoScale) >> 3;

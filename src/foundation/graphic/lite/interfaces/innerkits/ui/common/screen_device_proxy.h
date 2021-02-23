@@ -121,14 +121,13 @@ public:
     HDC GetHDC() { return hdc_; }
 
     int calcScale(int param) { return round(param / displayScale_); }
-//    int calcScale(int param) { return param / displayScale_; }
     Rect calcRect(const Rect& rect) {
-        return Rect(
-                calcScale(rect.GetLeft()),
-                calcScale(rect.GetTop()),
-                calcScale(rect.GetRight()),
-                calcScale(rect.GetBottom())
-                );
+        Rect r;
+        r.SetLeft(calcScale(rect.GetLeft()));
+        r.SetTop(calcScale(rect.GetTop()));
+        r.SetWidth(calcScale(rect.GetWidth()));
+        r.SetHeight(calcScale(rect.GetHeight()));
+        return r;
     }
 
     Point calcPoint(const Point& point) {
