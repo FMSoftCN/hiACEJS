@@ -175,10 +175,10 @@ void HybridosProxyWindowsManager::InvalidateRect(const Rect& invalidatedArea)
 {
     RECT rect;
 #if defined(ENABLE_SIMPLE_ADAPTIVE_LAYOUT) || defined(ENABLE_FULL_ADAPTIVE_LAYOUT)
-    rect.left = m_displayRect.left + invalidatedArea.GetX() / m_displayScale;
-    rect.top = m_displayRect.top + invalidatedArea.GetY() / m_displayScale;
-    rect.right = rect.left + invalidatedArea.GetWidth() / m_displayScale;
-    rect.bottom = rect.top + invalidatedArea.GetHeight() / m_displayScale;
+    rect.left = m_displayRect.left + OHOS::ScreenDeviceProxy::GetInstance()->calcScale(invalidatedArea.GetX());
+    rect.top = m_displayRect.top + OHOS::ScreenDeviceProxy::GetInstance()->calcScale(invalidatedArea.GetY());
+    rect.right = rect.left + OHOS::ScreenDeviceProxy::GetInstance()->calcScale(invalidatedArea.GetWidth());
+    rect.bottom = rect.top + OHOS::ScreenDeviceProxy::GetInstance()->calcScale(invalidatedArea.GetHeight());
 #else
     rect.left = m_displayRect.left + invalidatedArea.GetX();
     rect.top = m_displayRect.top + invalidatedArea.GetY();
@@ -229,8 +229,8 @@ IWindow* HybridosProxyWindowsManager::CreateWindow(const LiteWinConfig& config)
 #endif
 
     OHOS::ScreenDeviceProxy::GetInstance()->SetDisplayScale(m_displayScale);
-    int displayW = ww / m_displayScale;
-    int displayH = wh / m_displayScale;
+    int displayW = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(ww);
+    int displayH = OHOS::ScreenDeviceProxy::GetInstance()->calcScale(wh);
 
     HILOG_DEBUG(HILOG_MODULE_ACE, "screen w=%d|h=%d", sw, sh);
     HILOG_DEBUG(HILOG_MODULE_ACE, "window w=%d|h=%d", ww, wh);
