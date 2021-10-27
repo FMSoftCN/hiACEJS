@@ -319,7 +319,7 @@ JSIValue NativeapiHiBus::UnsubscribeEvent(const JSIValue thisVal, const JSIValue
     return JSI::CreateNumber(ret);
 }
 
-int NativeapiHiBus::hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, int retCode, const char* retValue)
+int NativeapiHiBus::hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, const char *call_id, int retCode, const char* retValue)
 {
     HILOG_DEBUG(HILOG_MODULE_ACE, "%s", __func__);
     HiBusHandlerList::HiBusHandlerNode* node = hibusHandlerList.GetHiBusHandler(endpoint, methodName, HIBUS_HANDLER_TYPE_METHOD);
@@ -363,7 +363,7 @@ JSIValue NativeapiHiBus::CallProcedure(const JSIValue thisVal, const JSIValue *a
 
     // SubscribeEvent
     HiBusWrapper* hibus = HiBusWrapper::GetInstance();
-    int ret = hibus->CallProcedure (endpoint, methodName, methodParam, timeExpected, hibusProcedureHandler);
+    int ret = hibus->CallProcedure ((const char *)endpoint, (const char *)methodName, (const char *)methodParam, timeExpected, hibusProcedureHandler);
 
     JSI::ReleaseString(endpoint);
     JSI::ReleaseString(methodName);

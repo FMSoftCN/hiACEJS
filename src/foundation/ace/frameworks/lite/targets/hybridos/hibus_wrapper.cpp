@@ -192,7 +192,8 @@ int HiBusWrapper::UnsubscribeEvent(const char* endpoint, const char* bubbleName)
 
 int HiBusWrapper::CallProcedure (const char* endpoint, const char* methodName, const char* methodParam, int timeExpected, hibus_result_handler resultHandler)
 {
-    return m_hiBusConn ? hibus_call_procedure (m_hiBusConn, endpoint, methodName, methodParam, timeExpected, resultHandler) : -1;
+    const char * id = NULL;
+    return m_hiBusConn ? hibus_call_procedure (m_hiBusConn, endpoint, methodName, methodParam, timeExpected, resultHandler, &id) : -1;
 }
 
 int HiBusWrapper::CallProcedureAndWait (const char* endpoint, const char* methodName, const char* methodParam, int timeExpected, int *retCode, char** retValue)

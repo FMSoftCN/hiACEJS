@@ -87,7 +87,7 @@ public:
     static JSIValue UnsubscribeEvent(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 
     // CallProcedure
-    static int hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, int retCode, const char* retValue);
+    static int hibusProcedureHandler(hibus_conn* conn, const char* endpoint, const char* methodName, const char *call_id, int retCode, const char* retValue);
     static JSIValue CallProcedure(const JSIValue thisVal, const JSIValue *args, uint8_t argsNum);
 
     // only for test
